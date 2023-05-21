@@ -9,20 +9,15 @@ class Character extends MovableObject {
                       'img/2_character_pepe/2_walk/W-24.png',
                       'img/2_character_pepe/2_walk/W-25.png',
                       'img/2_character_pepe/2_walk/W-26.png'];
-    world;
     speed = 10;
+    world;
 
     constructor() {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
         this.loadImageCache(this.IMAGES_WALKING);
+        console.log(this.world);
         this.checkMovement();
         }
-
-    checkMovement() {
-        if(this.world.keyboard.RIGHT) {
-
-        }
-    }
 
     animateWalkingRight() {
         setInterval(() => {
@@ -36,4 +31,9 @@ class Character extends MovableObject {
     animateJump() {
 
     }
+
+    checkMovement() {
+
+    }
+
 }
