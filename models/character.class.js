@@ -9,22 +9,47 @@ class Character extends MovableObject {
                       'img/2_character_pepe/2_walk/W-24.png',
                       'img/2_character_pepe/2_walk/W-25.png',
                       'img/2_character_pepe/2_walk/W-26.png'];
-    speed = 10;
+    speed = 5;
     world;
 
     constructor() {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
         this.loadImageCache(this.IMAGES_WALKING);
-        console.log('Trying to load world variable in character class', this.world);
+        this.animate();
         }
 
-    animateWalkingRight() {
+    animate() {
+        this.movingLeft();
+        this.movingRight();
+    }
+
+    movingLeft() {
         setInterval(() => {
-            let i = this.currentImage % this.IMAGES_WALKING.length
-            let path = this.IMAGES_WALKING[i];
-            this.img = this.imgCache[path];
-            this.currentImage++;
-        }, 100);
+            if(this.world.keyboard.LEFT){
+            this.x -= this.speed;}
+        }, 1000/60);
+        setInterval(() => {
+            if(this.world.keyboard.LEFT){
+                this.animateWalking();}
+        }, 80);
+    }
+
+    movingRight() {
+        setInterval(() => {
+            if(this.world.keyboard.RIGHT){
+            this.x += this.speed;}
+        }, 1000/60);
+        setInterval(() => {
+            if(this.world.keyboard.RIGHT){
+                this.animateWalking();}
+        }, 80);
+    }
+
+    animateWalking() {
+        let i = this.currentImage % this.IMAGES_WALKING.length
+        let path = this.IMAGES_WALKING[i];
+        this.img = this.imgCache[path];
+        this.currentImage++;
     }
 
     animateJump() {
