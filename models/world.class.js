@@ -1,38 +1,46 @@
 class World {
-    character = new Character();
+    backgroundObjects = [
+        new BackgroundObject('img/5_background/layers/air.png', 0),
+        new BackgroundObject('img/5_background/layers/3_third_layer/1.png', 0),
+        new BackgroundObject('img/5_background/layers/2_second_layer/1.png', 0),
+        new BackgroundObject('img/5_background/layers/1_first_layer/1.png', 0),
+    ];
+    clouds = [new Cloud(),];
+    character = [new Character(),];
     enemies = [
         new Chicken(),
         new Chicken(),
         new Chicken(),
     ];
+    canvas;
     ctx;
 
     constructor(canvas) {
+        this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.draw();
     }
     
     draw() {
-        this.drawCharacter();
-        this.drawEnemies();
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.drawMovableObjectArrayOnCanvas(this.backgroundObjects);
+        this.drawMovableObjectArrayOnCanvas(this.clouds);
+        this.drawMovableObjectArrayOnCanvas(this.character);
+        this.drawMovableObjectArrayOnCanvas(this.enemies);
 
         let self = this;
         requestAnimationFrame(function() {
             self.draw()});
     }
 
-    drawCharacter(){
-        this.ctx.drawImage(this.character.img, this.character.x, this.character.y, 
-                            this.character.width, this.character.height);
-        }
+    drawMovableObjectArrayOnCanvas(movableObjectArray) {
+        movableObjectArray.forEach(movableObject => {
+            this.drawOnCanvas(movableObject);
+        });
+    }
 
-    drawEnemies() {
-        let distanceCounter = 100;
-        for (let index = 0; index < this.enemies.length; index++) {
-            distanceCounter = distanceCounter + 100;
-            const enemie = this.enemies[index];
-            this.ctx.drawImage(enemie.img, enemie.x + distanceCounter, enemie.y, 
-                enemie.width, enemie.height);
-        }
+    drawOnCanvas(movableObject) {
+        this.ctx.drawImage(movableObject.img, movableObject.x, movableObject.y, 
+            movableObject.width, movableObject.height);
     }
 }
