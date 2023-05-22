@@ -1,8 +1,6 @@
 class World {
-    backgroundObjects = level1.backgroundObjects;
-    clouds = level1.clouds;
-    enemies = level1.enemies;
-    character = new Character();
+    level = level1;
+    character = new Character(this.level.level_end_x);
     canvas;
     ctx;
     keyboard;
@@ -19,9 +17,9 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
-        this.drawMovableObjectArrayOnCanvas(this.backgroundObjects);
-        this.drawMovableObjectArrayOnCanvas(this.clouds);
-        this.drawMovableObjectArrayOnCanvas(this.enemies);
+        this.drawMovableObjectArrayOnCanvas(this.level.backgroundObjects);
+        this.drawMovableObjectArrayOnCanvas(this.level.clouds);
+        this.drawMovableObjectArrayOnCanvas(this.level.enemies);
         this.drawMovableObjectOnCanvas(this.character);
         this.ctx.translate(-this.camera_x, 0);
 
