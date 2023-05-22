@@ -1,8 +1,8 @@
 class World {
-    level = level1;
-    character = new Character(this.level.level_end_x);
     canvas;
     ctx;
+    level = level1;
+    character = new Character(this.level.level_end_x);
     keyboard;
     camera_x = 0;
 
