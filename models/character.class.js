@@ -11,6 +11,7 @@ class Character extends MovableObject {
                       'img/2_character_pepe/2_walk/W-24.png',
                       'img/2_character_pepe/2_walk/W-25.png',
                       'img/2_character_pepe/2_walk/W-26.png'];
+    WALKING_SOUND = new Audio('audio/walk.mp3');
     speed = 7.5;
 
     constructor(level_end_x) {
@@ -21,6 +22,7 @@ class Character extends MovableObject {
         }
 
     animate() {
+        this.animateWalking()
         this.movingLeft();
         this.movingRight();
     }
@@ -28,30 +30,32 @@ class Character extends MovableObject {
     movingLeft() {
         setInterval(() => {
             if(this.world.keyboard.LEFT && this.x > 0){
-            this.otherDirection = true;
-            this.x -= this.speed;}
+                this.otherDirection = true;
+                this.x -= this.speed;
+                this.WALKING_SOUND.pause();}
             this.world.camera_x = -this.x + 100;
         }, 1000/60);
-        setInterval(() => {
-            if(this.world.keyboard.LEFT){
-                this.animateWalking();}
-        }, 75);
     }
 
     movingRight() {
         setInterval(() => {
-            if(this.world.keyboard.RIGHT && this.x < (this.level_end_x - 100)){
+            if(this.world.keyboard.RIGHT && this.x < (this.level_end_x - 680)){
                 this.otherDirection = false;
-            this.x += this.speed;}
+                this.x += this.speed;}
             this.world.camera_x = -this.x + 100;
         }, 1000/60);
-        setInterval(() => {
-            if(this.world.keyboard.RIGHT){
-                this.animateWalking();}
-        }, 75);
     }
 
     animateWalking() {
+        setInterval(() => {
+            this.WALKING_SOUND.pause();
+            if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
+                this.WALKING_SOUND.play();
+                this.walkAnimation();}
+        }, 75);
+    }
+
+    walkAnimation() {
         let i = this.currentImage % this.IMAGES_WALKING.length
         let path = this.IMAGES_WALKING[i];
         this.img = this.imgCache[path];

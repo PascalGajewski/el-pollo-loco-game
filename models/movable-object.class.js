@@ -30,4 +30,13 @@ class MovableObject {
         setInterval(() => {
             this.x -= speed;}, 1000/60)
     }
+
+    animateMovement(imageArray) {
+        setInterval(() => {
+            let i = this.currentImage % imageArray.length
+            let path = imageArray[i];
+            this.img = this.imgCache[path];
+            this.currentImage++;
+        }, 150);
+    }
 }
