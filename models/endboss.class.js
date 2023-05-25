@@ -22,6 +22,12 @@ class Endboss extends MovableObject {
     constructor() {
         super().loadImage('img/4_enemie_boss_chicken/3_attack/G13.png');
         this.loadImageCache(this.IMAGES_ATTACK);
-        this.animateMovement(this.IMAGES_ATTACK);
+        this.animateAttack();
+    }
+
+    animateAttack() {
+        setInterval(() => {
+            this.animateMovement(this.IMAGES_ATTACK)
+        }, 150);
     }
 }

@@ -21,22 +21,31 @@ class MovableObject {
         });
     }
 
+    animateMovement(imageArray) {
+        let i = this.currentImage % imageArray.length
+        let path = imageArray[i];
+        this.img = this.imgCache[path];
+        this.currentImage++;
+    }
+
     moveRight(speed) {
         setInterval(() => {
-            this.x += speed;}, 1000/60)
+            this.x += speed;
+        }, 1000 / 60)
     }
 
     moveLeft(speed) {
         setInterval(() => {
-            this.x -= speed;}, 1000/60)
+            this.x -= speed;
+        }, 1000 / 60)
     }
 
-    animateMovement(imageArray) {
+    applyGravity() {
         setInterval(() => {
-            let i = this.currentImage % imageArray.length
-            let path = imageArray[i];
-            this.img = this.imgCache[path];
-            this.currentImage++;
-        }, 150);
+            if (this.checkIfAboveGround() || this.speed_y > 0) {
+                this.y -= this.speed_y;
+                this.speed_y -= this.acceleration_y;
+            }
+        }, 1000 / 60);
     }
 }
