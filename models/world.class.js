@@ -17,23 +17,25 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
-        this.drawMovableObjectArrayOnCanvas(this.level.backgroundObjects);
-        this.drawMovableObjectArrayOnCanvas(this.level.clouds);
-        this.drawMovableObjectArrayOnCanvas(this.level.enemies);
-        this.drawMovableObjectOnCanvas(this.character);
+        this.drawAllObjects();
         this.ctx.translate(-this.camera_x, 0);
-
         let self = this;
         requestAnimationFrame(function () {
             self.draw()
         });
     }
 
+    drawAllObjects() {
+        this.drawMovableObjectArrayOnCanvas(this.level.backgroundObjects);
+        this.drawMovableObjectArrayOnCanvas(this.level.clouds);
+        this.drawMovableObjectArrayOnCanvas(this.level.enemies);
+        this.drawMovableObjectOnCanvas(this.character);
+    }
+
     drawMovableObjectOnCanvas(movableObject) {
             this.drawOnCanvas(movableObject);
-    };
+    }
     
-
     drawMovableObjectArrayOnCanvas(movableObjectArray) {
         movableObjectArray.forEach(movableObject => {
             this.drawOnCanvas(movableObject);
@@ -44,7 +46,17 @@ class World {
         this.checkReverse(movableObject);
         this.ctx.drawImage(movableObject.img, movableObject.x, movableObject.y,
             movableObject.width, movableObject.height);
+        this.drawCollidingFrame(movableObject);
         this.restoreReverse(movableObject);
+    }
+
+    drawCollidingFrame(movableObject) {
+        if(movableObject instanceof Character || movableObject instanceof Chicken || movableObject instanceof Endboss){
+        this.ctx.beginPath();
+        this.ctx.lineWidth = '5';
+        this.ctx.strokeStyle = 'blue';
+        this.ctx.rect(movableObject.x, movableObject.y, movableObject.width, movableObject.height);
+        this.ctx.stroke();}
     }
 
     checkReverse(movableObject) {
