@@ -94,4 +94,10 @@ class Character extends MovableObject {
     checkIfAboveGround() {
         return (this.y < this.ground_level);
     }
+    
+    checkIfColliding(movableObject) {
+        return (this.x + this.width) >= movableObject.x && this.x <= (movableObject.x + movableObject.width) &&
+            (this.y + this.height) >= movableObject.y &&
+            (this.y) <= (movableObject.y + movableObject.height)
+    }
 }
