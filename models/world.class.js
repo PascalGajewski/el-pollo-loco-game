@@ -85,7 +85,8 @@ class World {
         setInterval(() => {
             this.level.enemies.forEach((enemy) => {
                 if (this.character.checkIfColliding(enemy)) {
-                    console.log('Collision');
+                    if(this.character.lifepoints > 0) {this.character.lifepoints -= 0.25;
+                    console.log('Collision: Lifepoints =', this.character.lifepoints);}
                 };
             });
         }, 1000 / 60);
