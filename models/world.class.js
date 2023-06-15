@@ -88,6 +88,6 @@ class World {
                     console.log('Collision');
                 };
             });
-        }, 1000/60);
+        }, 1000 / 60);
     }
 }
