@@ -19,20 +19,24 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
-        this.drawAllObjects();
+        this.drawAllMovableObjects();
         this.ctx.translate(-this.camera_x, 0);
+        this.drawAllStaticObjects();
         let self = this;
         requestAnimationFrame(function () {
             self.draw()
         });
     }
 
-    drawAllObjects() {
+    drawAllStaticObjects() {
+        this.drawObjectOnCanvas(this.statusbar);
+    }
+
+    drawAllMovableObjects() {
         this.drawObjectArrayOnCanvas(this.level.backgroundObjects);
         this.drawObjectArrayOnCanvas(this.level.clouds);
         this.drawObjectArrayOnCanvas(this.level.enemies);
         this.drawObjectOnCanvas(this.character);
-        this.drawObjectOnCanvas(this.statusbar);
     }
 
     drawObjectOnCanvas(Object) {
@@ -87,8 +91,9 @@ class World {
         setInterval(() => {
             this.level.enemies.forEach((enemy) => {
                 if (this.character.checkIfColliding(enemy)) {
-                        this.character.getHit(0.25); 
-                        console.log(this.character.lifepoints);    
+                    this.character.getHit(0.25);
+                    this.statusbar.setPercentage(this.character.lifepoints);
+                    console.log(this.character.lifepoints);
                 };
             });
         }, 1000 / 60);

@@ -13,6 +13,7 @@ class StatusBar extends DrawableObject {
         super().loadImageCache(this.IMAGES_HEALTH_BAR);
         this.x = 20;
         this.y = -10;
+        this.height = 50;
         this.width = 200;
         this.setPercentage(this.percentage);
     }
@@ -22,7 +23,6 @@ class StatusBar extends DrawableObject {
         let path = this.IMAGES_HEALTH_BAR[this.resolveImageIndex()];
         this.img = this.imgCache[path];
     }
-
 
     resolveImageIndex() {
         if (this.percentage > 80) {
