@@ -5,20 +5,21 @@ class World {
     character = new Character(this.level.level_end_x);
     keyboard;
     camera_x = 0;
+    statusbar = new StatusBar();
 
     constructor(canvas, keyboard) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.keyboard = keyboard;
         this.draw();
-        this.setWorld();
+        this.setWorldInCharacter();
         this.checkCollisions();
     }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
-        this.drawAllMovableObjects();
+        this.drawAllObjects();
         this.ctx.translate(-this.camera_x, 0);
         let self = this;
         requestAnimationFrame(function () {
@@ -26,58 +27,59 @@ class World {
         });
     }
 
-    drawAllMovableObjects() {
-        this.drawMovableObjectArrayOnCanvas(this.level.backgroundObjects);
-        this.drawMovableObjectArrayOnCanvas(this.level.clouds);
-        this.drawMovableObjectArrayOnCanvas(this.level.enemies);
-        this.drawMovableObjectOnCanvas(this.character);
+    drawAllObjects() {
+        this.drawObjectArrayOnCanvas(this.level.backgroundObjects);
+        this.drawObjectArrayOnCanvas(this.level.clouds);
+        this.drawObjectArrayOnCanvas(this.level.enemies);
+        this.drawObjectOnCanvas(this.character);
+        this.drawObjectOnCanvas(this.statusbar);
     }
 
-    drawMovableObjectOnCanvas(movableObject) {
-        this.drawOnCanvas(movableObject);
+    drawObjectOnCanvas(Object) {
+        this.drawOnCanvas(Object);
     }
 
-    drawMovableObjectArrayOnCanvas(movableObjectArray) {
-        movableObjectArray.forEach(movableObject => {
-            this.drawOnCanvas(movableObject);
+    drawObjectArrayOnCanvas(ObjectArray) {
+        ObjectArray.forEach(Object => {
+            this.drawOnCanvas(Object);
         });
     }
 
-    drawOnCanvas(movableObject) {
-        this.checkReverse(movableObject);
-        this.ctx.drawImage(movableObject.img, movableObject.x, movableObject.y,
-            movableObject.width, movableObject.height);
-        this.drawCollidingFrame(movableObject);
-        this.restoreReverse(movableObject);
+    drawOnCanvas(Object) {
+        this.checkReverse(Object);
+        this.ctx.drawImage(Object.img, Object.x, Object.y,
+            Object.width, Object.height);
+        this.drawCollidingFrame(Object);
+        this.restoreReverse(Object);
     }
 
-    drawCollidingFrame(movableObject) {
-        if (movableObject instanceof Character || movableObject instanceof Chicken || movableObject instanceof Endboss) {
+    drawCollidingFrame(Object) {
+        if (Object instanceof Character || Object instanceof Chicken || Object instanceof Endboss) {
             this.ctx.beginPath();
             this.ctx.lineWidth = '5';
             this.ctx.strokeStyle = 'blue';
-            this.ctx.rect(movableObject.x, movableObject.y, movableObject.width, movableObject.height);
+            this.ctx.rect(Object.x, Object.y, Object.width, Object.height);
             this.ctx.stroke();
         }
     }
 
-    checkReverse(movableObject) {
-        if (movableObject.otherDirection) {
+    checkReverse(Object) {
+        if (Object.otherDirection) {
             this.ctx.save();
-            this.ctx.translate(movableObject.width, 0);
+            this.ctx.translate(Object.width, 0);
             this.ctx.scale(-1, 1);
-            movableObject.x = movableObject.x * -1;
+            Object.x = Object.x * -1;
         }
     }
 
-    restoreReverse(movableObject) {
-        if (movableObject.otherDirection) {
-            movableObject.x = movableObject.x * -1;
+    restoreReverse(Object) {
+        if (Object.otherDirection) {
+            Object.x = Object.x * -1;
             this.ctx.restore();
         }
     }
 
-    setWorld() {
+    setWorldInCharacter() {
         this.character.world = this;
     }
 
@@ -85,8 +87,8 @@ class World {
         setInterval(() => {
             this.level.enemies.forEach((enemy) => {
                 if (this.character.checkIfColliding(enemy)) {
-                    if(this.character.lifepoints > 0) {this.character.lifepoints -= 0.25;
-                    console.log('Collision: Lifepoints =', this.character.lifepoints);}
+                        this.character.getHit(0.25); 
+                        console.log(this.character.lifepoints);    
                 };
             });
         }, 1000 / 60);

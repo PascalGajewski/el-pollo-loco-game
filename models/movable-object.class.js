@@ -1,27 +1,8 @@
-class MovableObject {
-    x = 0;
-    y = 0;
-    width = 100;
-    height = 100;
-    img;
-    imgCache = {};
-    currentImage = 0;
+class MovableObject extends DrawableObject {
     otherDirection = false;
     lifepoints = 100;
-
-    loadImage(path) {
-        this.img = new Image();
-        this.img.src = path;
-    }
-
-    loadImageCache(pathArray) {
-        pathArray.forEach(path => {
-            let img = new Image();
-            img.src = path;
-            this.imgCache[path] = img;
-        });
-    }
-
+    lastHit = 0;
+    
     animateMovement(imageArray) {
         let i = this.currentImage % imageArray.length
         let path = imageArray[i];
@@ -48,5 +29,24 @@ class MovableObject {
                 this.speed_y -= this.acceleration_y;
             }
         }, 1000 / 60);
+    }
+
+    getHit(damage) {
+        this.lifepoints -= damage;
+        if (this.lifepoints < 0) {
+            this.lifepoints = 0;
+        }
+        else {
+            this.lastHit = new Date().getTime();
+        }
+    }
+
+    checkIfDead() {
+        return this.lifepoints == 0;
+    }
+
+    checkIfHurt() {
+        let timePassed = (new Date().getTime() - this.lastHit) / 1000;
+        return timePassed < 0.25;
     }
 }

@@ -23,6 +23,19 @@ class Character extends MovableObject {
         'img/2_character_pepe/3_jump/J-38.png',
         'img/2_character_pepe/3_jump/J-39.png'
     ];
+    IMAGES_HURT = ['img/2_character_pepe/4_hurt/H-41.png',
+        'img/2_character_pepe/4_hurt/H-42.png',
+        'img/2_character_pepe/4_hurt/H-43.png'
+
+    ];
+    IMAGES_DEAD = ['img/2_character_pepe/5_dead/D-51.png',
+        'img/2_character_pepe/5_dead/D-52.png',
+        'img/2_character_pepe/5_dead/D-53.png',
+        'img/2_character_pepe/5_dead/D-54.png',
+        'img/2_character_pepe/5_dead/D-55.png',
+        'img/2_character_pepe/5_dead/D-56.png',
+        'img/2_character_pepe/5_dead/D-57.png'
+    ];
     WALKING_SOUND = new Audio('audio/walk.mp3');
     speed_x = 7.5;
     speed_y = 0;
@@ -30,8 +43,7 @@ class Character extends MovableObject {
 
     constructor(level_end_x) {
         super().loadImage('img/2_character_pepe/3_jump/J-31.png');
-        this.loadImageCache(this.IMAGES_WALKING);
-        this.loadImageCache(this.IMAGES_JUMPING);
+        this.loadCompleteImageCache();
         this.applyGravity();
         this.animate();
         this.level_end_x = level_end_x;
@@ -43,6 +55,13 @@ class Character extends MovableObject {
         this.movingLeft();
         this.movingRight();
         this.movingUp();
+    }
+
+    loadCompleteImageCache() {
+        this.loadImageCache(this.IMAGES_WALKING);
+        this.loadImageCache(this.IMAGES_JUMPING);
+        this.loadImageCache(this.IMAGES_HURT);
+        this.loadImageCache(this.IMAGES_DEAD);
     }
 
     movingLeft() {
@@ -76,7 +95,13 @@ class Character extends MovableObject {
     animateMoves() {
         setInterval(() => {
             this.WALKING_SOUND.pause();
-            if (this.checkIfAboveGround()) {
+            if (this.checkIfDead()) {
+                this.animateMovement(this.IMAGES_DEAD);
+            }
+            else if (this.checkIfHurt()) {
+                this.animateMovement(this.IMAGES_HURT);
+            }
+            else if (this.checkIfAboveGround()) {
                 this.animateMovement(this.IMAGES_JUMPING);
             }
             else {
@@ -94,10 +119,10 @@ class Character extends MovableObject {
     checkIfAboveGround() {
         return (this.y < this.ground_level);
     }
-    
+
     checkIfColliding(movableObject) {
         return (this.x + this.width) >= movableObject.x && this.x <= (movableObject.x + movableObject.width) &&
             (this.y + this.height) >= movableObject.y &&
-            (this.y) <= (movableObject.y + movableObject.height)
+            this.y <= (movableObject.y + movableObject.height)
     }
 }
