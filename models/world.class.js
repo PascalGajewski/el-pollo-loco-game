@@ -92,9 +92,12 @@ class World {
     run() {
         setInterval(() => {
             this.checkCollisions();
+        }, 1000 / 60);
+        setInterval(() => {
             this.checkThrowObjects();
-        }, 1000/10);
+        }, 100);
     }
+
 
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
@@ -107,8 +110,8 @@ class World {
     }
 
     checkThrowObjects() {
-        if(this.keyboard.SPACE) {
-            let bottle = new ThrowableObject(this.character.x + 25, this.character.y + 100);
+        if (this.keyboard.SPACE) {
+            let bottle = new ThrowableObject(this.character.x + 25, this.character.y + 100, this.character.otherDirection);
             this.level.throwableObjects.push(bottle);
         }
     }
