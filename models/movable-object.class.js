@@ -2,7 +2,7 @@ class MovableObject extends DrawableObject {
     otherDirection = false;
     lifepoints = 100;
     lastHit = 0;
-    
+
     animateMovement(imageArray) {
         let i = this.currentImage % imageArray.length
         let path = imageArray[i];
@@ -20,6 +20,15 @@ class MovableObject extends DrawableObject {
         setInterval(() => {
             this.x -= speed;
         }, 1000 / 60)
+    }
+
+    checkIfAboveGround() {
+        if (this instanceof ThrowableObject) {
+            return true;
+        }
+        else {
+            return (this.y < this.ground_level);
+        }
     }
 
     applyGravity() {

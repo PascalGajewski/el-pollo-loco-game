@@ -86,7 +86,7 @@ class Character extends MovableObject {
 
     movingUp() {
         setInterval(() => {
-            if (this.world.keyboard.SPACE && !this.checkIfAboveGround()) {
+            if (this.world.keyboard.UP && !this.checkIfAboveGround()) {
                 this.speed_y = 14;
             }
         }, 1000 / 60);
@@ -114,10 +114,6 @@ class Character extends MovableObject {
                 }
             }
         }, 75);
-    }
-
-    checkIfAboveGround() {
-        return (this.y < this.ground_level);
     }
 
     checkIfColliding(movableObject) {

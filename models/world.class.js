@@ -1,11 +1,12 @@
 class World {
     canvas;
     ctx;
+    keyboard;
     level = level1;
     character = new Character(this.level.level_end_x);
-    keyboard;
     camera_x = 0;
     statusbar = new StatusBar();
+
 
     constructor(canvas, keyboard) {
         this.canvas = canvas;
@@ -13,7 +14,7 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorldInCharacter();
-        this.checkCollisions();
+        this.run();
     }
 
     draw() {
@@ -36,6 +37,7 @@ class World {
         this.drawObjectArrayOnCanvas(this.level.backgroundObjects);
         this.drawObjectArrayOnCanvas(this.level.clouds);
         this.drawObjectArrayOnCanvas(this.level.enemies);
+        this.drawObjectArrayOnCanvas(this.level.throwableObjects);
         this.drawObjectOnCanvas(this.character);
     }
 
@@ -58,7 +60,7 @@ class World {
     }
 
     drawCollidingFrame(Object) {
-        if (Object instanceof Character || Object instanceof Chicken || Object instanceof Endboss) {
+        if (Object instanceof Character || Object instanceof Chicken || Object instanceof Endboss || Object instanceof ThrowableObject) {
             this.ctx.beginPath();
             this.ctx.lineWidth = '5';
             this.ctx.strokeStyle = 'blue';
@@ -87,15 +89,27 @@ class World {
         this.character.world = this;
     }
 
-    checkCollisions() {
+    run() {
         setInterval(() => {
-            this.level.enemies.forEach((enemy) => {
-                if (this.character.checkIfColliding(enemy)) {
-                    this.character.getHit(0.25);
-                    this.statusbar.setPercentage(this.character.lifepoints);
-                    console.log(this.character.lifepoints);
-                };
-            });
-        }, 1000 / 60);
+            this.checkCollisions();
+            this.checkThrowObjects();
+        }, 1000/10);
+    }
+
+    checkCollisions() {
+        this.level.enemies.forEach((enemy) => {
+            if (this.character.checkIfColliding(enemy)) {
+                this.character.getHit(0.25);
+                this.statusbar.setPercentage(this.character.lifepoints);
+                console.log(this.character.lifepoints);
+            };
+        });
+    }
+
+    checkThrowObjects() {
+        if(this.keyboard.SPACE) {
+            let bottle = new ThrowableObject(this.character.x + 25, this.character.y + 100);
+            this.level.throwableObjects.push(bottle);
+        }
     }
 }
