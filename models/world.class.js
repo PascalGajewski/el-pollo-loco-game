@@ -5,7 +5,9 @@ class World {
     level = level1;
     character = new Character(this.level.level_end_x);
     camera_x = 0;
-    statusbar = new StatusBar();
+    healthbar = new StatusBar(`HEALTH`, 100, 20, -10);
+    coinbar = new StatusBar(`COIN`, 0, 20, 20);
+    bottlebar = new StatusBar(`BOTTLE`, 0, 20, 50);
 
 
     constructor(canvas, keyboard) {
@@ -30,14 +32,15 @@ class World {
     }
 
     drawAllStaticObjects() {
-        this.drawObjectOnCanvas(this.statusbar);
+        this.drawObjectOnCanvas(this.healthbar);
+        this.drawObjectOnCanvas(this.coinbar);
+        this.drawObjectOnCanvas(this.bottlebar);
     }
 
     drawAllMovableObjects() {
         this.drawObjectArrayOnCanvas(this.level.backgroundObjects);
         this.drawObjectArrayOnCanvas(this.level.clouds);
         this.drawObjectArrayOnCanvas(this.level.enemies);
-        this.drawObjectArrayOnCanvas(this.level.throwableObjects);
         this.drawObjectOnCanvas(this.character);
     }
 
@@ -103,7 +106,7 @@ class World {
         this.level.enemies.forEach((enemy) => {
             if (this.character.checkIfColliding(enemy)) {
                 this.character.getHit(0.25);
-                this.statusbar.setPercentage(this.character.lifepoints);
+                this.healthbar.setPercentage(this.character.lifepoints);
                 console.log(this.character.lifepoints);
             };
         });
@@ -112,7 +115,7 @@ class World {
     checkThrowObjects() {
         if (this.keyboard.SPACE) {
             let bottle = new ThrowableObject(this.character.x + 25, this.character.y + 100, this.character.otherDirection);
-            this.level.throwableObjects.push(bottle);
+            this.level.bottles.push(bottle);
         }
     }
 }

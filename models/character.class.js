@@ -40,6 +40,8 @@ class Character extends MovableObject {
     speed_x = 7.5;
     speed_y = 0;
     acceleration_y = 0.5;
+    paralysed = false;
+
 
     constructor(level_end_x) {
         super().loadImage('img/2_character_pepe/3_jump/J-31.png');
@@ -66,7 +68,7 @@ class Character extends MovableObject {
 
     movingLeft() {
         setInterval(() => {
-            if (this.world.keyboard.LEFT && this.x > 0) {
+            if (this.world.keyboard.LEFT && this.x > 0 && !this.paralysed) {
                 this.otherDirection = true;
                 this.x -= this.speed_x;
             }
@@ -76,7 +78,7 @@ class Character extends MovableObject {
 
     movingRight() {
         setInterval(() => {
-            if (this.world.keyboard.RIGHT && this.x < (this.level_end_x - 680)) {
+            if (this.world.keyboard.RIGHT && this.x < (this.level_end_x - 680) && !this.paralysed) {
                 this.otherDirection = false;
                 this.x += this.speed_x;
             }

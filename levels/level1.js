@@ -30,5 +30,6 @@ const level1 = new Level (
         new Chicken(),
         new Endboss(),
     ],
-    []
+    [], // array for coins
+    []  // array for bottles
 );
