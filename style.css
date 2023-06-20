@@ -17,6 +17,7 @@ body h1 {
     font-size: 75px;
     text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
     color: rgb(255, 191, 0);
+    letter-spacing: 5px;
 }
 
 canvas {
