@@ -88,7 +88,7 @@ class Character extends MovableObject {
 
     movingUp() {
         setInterval(() => {
-            if (this.world.keyboard.UP && !this.checkIfAboveGround()) {
+            if (this.world.keyboard.UP && !this.checkIfAboveGround() && !this.checkIfHurt()) {
                 this.speed_y = 14;
             }
         }, 1000 / 60);
@@ -102,6 +102,7 @@ class Character extends MovableObject {
             }
             else if (this.checkIfHurt()) {
                 this.animateMovement(this.IMAGES_HURT);
+                this.animateParalisation();
             }
             else if (this.checkIfAboveGround()) {
                 this.animateMovement(this.IMAGES_JUMPING);
@@ -116,6 +117,13 @@ class Character extends MovableObject {
                 }
             }
         }, 75);
+    }
+
+    animateParalisation() {
+        this.paralysed = true;
+        setTimeout(() => {
+            this.paralysed = false;
+        }, 50);
     }
 
     checkIfColliding(movableObject) {
