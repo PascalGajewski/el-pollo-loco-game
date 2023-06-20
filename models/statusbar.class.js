@@ -28,22 +28,11 @@ class StatusBar extends DrawableObject {
     width = 200;
 
     constructor(bar, percentage, positionx, positiony) {
-        super();
-        this.percentage = percentage;
+        super().percentage = percentage;
         this.x = positionx;
         this.y = positiony;
-        if (bar == 'HEALTH') {
-            this.loadImageCache(this.IMAGES_HEALTH);
-            this.setPercentage(this.percentage, this.IMAGES_HEALTH);
-        }
-        if (bar == 'COIN') {
-            this.loadImageCache(this.IMAGES_COIN);
-            this.setPercentage(this.percentage, this.IMAGES_COIN);
-        }
-        if (bar == 'BOTTLE') {
-            this.loadImageCache(this.IMAGES_BOTTLE);
-            this.setPercentage(this.percentage, this.IMAGES_BOTTLE);
-        }
+        this.loadImageCache(this[`IMAGES_${bar}`]);
+        this.setPercentage(this.percentage, this[`IMAGES_${bar}`]);
     }
 
     setPercentage(percentage, bar) {
