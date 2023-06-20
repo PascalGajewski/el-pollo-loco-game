@@ -98,6 +98,7 @@ class World {
         }, 1000 / 60);
         setInterval(() => {
             this.checkThrowObjects();
+            this.checkDeath();
         }, 100);
     }
 
@@ -112,10 +113,25 @@ class World {
         });
     }
 
+    checkDeath () {
+        if(this.character.checkIfDead()) {
+            let img = new DrawableObject();
+            img.loadImage('img/9_intro_outro_screens/game_over/game over!.png');
+            this.drawOnCanvas(img, 100, 100);
+            this.clearAllIntervals();
+        }
+    }
+
     checkThrowObjects() {
         if (this.keyboard.SPACE) {
             let bottle = new ThrowableObject(this.character.x + 25, this.character.y + 100, this.character.otherDirection);
             this.level.bottles.push(bottle);
+        }
+    }
+    
+    clearAllIntervals() {
+        for (let i = 0; i < 100; i++) {
+            clearInterval(i);
         }
     }
 }
