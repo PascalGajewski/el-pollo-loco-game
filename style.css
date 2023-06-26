@@ -22,6 +22,7 @@ body h1 {
 
 canvas {
     background-color: black;
+    margin-bottom: 1%;
 }
 
 .guide-box {

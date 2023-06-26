@@ -41,6 +41,7 @@ class World {
         this.drawObjectArrayOnCanvas(this.level.backgroundObjects);
         this.drawObjectArrayOnCanvas(this.level.clouds);
         this.drawObjectArrayOnCanvas(this.level.enemies);
+        this.drawObjectArrayOnCanvas(this.level.coins);
         this.drawObjectOnCanvas(this.character);
     }
 
@@ -56,18 +57,36 @@ class World {
 
     drawOnCanvas(Object) {
         this.checkReverse(Object);
+        try {
         this.ctx.drawImage(Object.img, Object.x, Object.y,
             Object.width, Object.height);
+        } catch (e){
+            console.log(this.img.src);
+        }
         this.drawCollidingFrame(Object);
         this.restoreReverse(Object);
     }
 
     drawCollidingFrame(Object) {
-        if (Object instanceof Character || Object instanceof Chicken || Object instanceof Endboss || Object instanceof ThrowableObject) {
+        if (Object instanceof Chicken || Object instanceof Endboss || Object instanceof ThrowableObject) {
             this.ctx.beginPath();
-            this.ctx.lineWidth = '5';
-            this.ctx.strokeStyle = 'blue';
+            this.ctx.lineWidth = '3';
+            this.ctx.strokeStyle = 'red';
             this.ctx.rect(Object.x, Object.y, Object.width, Object.height);
+            this.ctx.stroke();
+        }
+        if (Object instanceof Coin) {
+            this.ctx.beginPath();
+            this.ctx.lineWidth = '3';
+            this.ctx.strokeStyle = 'blue';
+            this.ctx.rect(Object.x+35, Object.y+35, Object.width-70, Object.height-70);
+            this.ctx.stroke();
+        }
+        if (Object instanceof Character) {
+            this.ctx.beginPath();
+            this.ctx.lineWidth = '3';
+            this.ctx.strokeStyle = 'blue';
+            this.ctx.rect(Object.x + 30, Object.y + 120, Object.width - 50, Object.height - 130);
             this.ctx.stroke();
         }
     }

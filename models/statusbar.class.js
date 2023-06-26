@@ -1,11 +1,11 @@
 class StatusBar extends DrawableObject {
     IMAGES_HEALTH = [
-        'img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png',
-        'img/7_statusbars/1_statusbar/2_statusbar_health/blue/20.png',
-        'img/7_statusbars/1_statusbar/2_statusbar_health/blue/40.png',
-        'img/7_statusbars/1_statusbar/2_statusbar_health/blue/60.png',
-        'img/7_statusbars/1_statusbar/2_statusbar_health/blue/80.png',
-        'img/7_statusbars/1_statusbar/2_statusbar_health/blue/100.png'
+        'img/7_statusbars/1_statusbar/2_statusbar_health/orange/0.png',
+        'img/7_statusbars/1_statusbar/2_statusbar_health/orange/20.png',
+        'img/7_statusbars/1_statusbar/2_statusbar_health/orange/40.png',
+        'img/7_statusbars/1_statusbar/2_statusbar_health/orange/60.png',
+        'img/7_statusbars/1_statusbar/2_statusbar_health/orange/80.png',
+        'img/7_statusbars/1_statusbar/2_statusbar_health/orange/100.png'
     ];
     IMAGES_COIN = [
         'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png',
@@ -28,7 +28,8 @@ class StatusBar extends DrawableObject {
     width = 200;
 
     constructor(bar, percentage, positionx, positiony) {
-        super().percentage = percentage;
+        super();
+        this.percentage = percentage;
         this.x = positionx;
         this.y = positiony;
         this.loadImageCache(this[`IMAGES_${bar}`]);

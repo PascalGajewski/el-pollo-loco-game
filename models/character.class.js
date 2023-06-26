@@ -127,8 +127,9 @@ class Character extends MovableObject {
     }
 
     checkIfColliding(movableObject) {
-        return (this.x + this.width) >= movableObject.x && this.x <= (movableObject.x + movableObject.width) &&
-            (this.y + this.height) >= movableObject.y &&
-            this.y <= (movableObject.y + movableObject.height)
+        return (this.x + this.width - 20) >= movableObject.x && 
+                this.x + 15 <= (movableObject.x + movableObject.width) &&
+                (this.y + this.height - 10) >= movableObject.y && 
+                this.y + 120 <= (movableObject.y + movableObject.height)
     }
 }
