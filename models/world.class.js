@@ -42,6 +42,7 @@ class World {
         this.drawObjectArrayOnCanvas(this.level.clouds);
         this.drawObjectArrayOnCanvas(this.level.enemies);
         this.drawObjectArrayOnCanvas(this.level.coins);
+        this.drawObjectArrayOnCanvas(this.level.bottles);
         this.drawObjectOnCanvas(this.character);
     }
 
@@ -80,6 +81,13 @@ class World {
             this.ctx.lineWidth = '3';
             this.ctx.strokeStyle = 'blue';
             this.ctx.rect(Object.x+35, Object.y+35, Object.width-70, Object.height-70);
+            this.ctx.stroke();
+        }
+        if (Object instanceof Bottle) {
+            this.ctx.beginPath();
+            this.ctx.lineWidth = '3';
+            this.ctx.strokeStyle = 'blue';
+            this.ctx.rect(Object.x+25, Object.y+12, Object.width-50, Object.height-20);
             this.ctx.stroke();
         }
         if (Object instanceof Character) {
