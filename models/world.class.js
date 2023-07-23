@@ -160,9 +160,6 @@ class World {
 
     checkDeath() {
         if (this.character.checkIfDead()) {
-            let img = new DrawableObject();
-            img.loadImage('img/9_intro_outro_screens/game_over/game over!.png');
-            this.drawOnCanvas(img, 100, 100);
             this.endGame();
             show('restart-button');
         }
@@ -177,6 +174,8 @@ class World {
         requestAnimationFrame(function () {
             self.endGame()
         });
+        cancelAnimationFrame(function () {
+            self.endGame()});
         this.clearAllIntervals();
     }
 
