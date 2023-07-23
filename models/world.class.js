@@ -2,24 +2,42 @@ class World {
     canvas;
     ctx;
     keyboard;
-    level = level1;
-    character = new Character(this.level.level_end_x);
+    level;
+    character = new Character();
     camera_x = 0;
     healthbar = new StatusBar(`HEALTH`, 100, 20, -10);
     coinbar = new StatusBar(`COIN`, 0, 20, 20);
     bottlebar = new StatusBar(`BOTTLE`, 0, 20, 50);
-
+    start_screen = new DrawableObject();
+    end_screen = new DrawableObject();
 
     constructor(canvas, keyboard) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.keyboard = keyboard;
-        this.draw();
+        this.drawStartMenu();
         this.setWorldInCharacter();
+    }
+
+    drawStartMenu() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.start_screen.loadImage("img/9_intro_outro_screens/start/startscreen_1.png");
+        this.start_screen.width = 720;
+        this.start_screen.height = 480;
+        this.drawObjectOnCanvas(this.start_screen);
+        let self = this;
+        requestAnimationFrame(function () {
+            self.drawStartMenu()
+        });
+    }
+
+    startGame() {
+        this.level = level1;
+        this.drawGame();
         this.run();
     }
 
-    draw() {
+    drawGame() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
         this.drawAllMovableObjects();
@@ -27,7 +45,7 @@ class World {
         this.drawAllStaticObjects();
         let self = this;
         requestAnimationFrame(function () {
-            self.draw()
+            self.drawGame()
         });
     }
 
@@ -59,10 +77,10 @@ class World {
     drawOnCanvas(Object) {
         this.checkReverse(Object);
         try {
-        this.ctx.drawImage(Object.img, Object.x, Object.y,
-            Object.width, Object.height);
-        } catch (e){
-            console.log(this.img.src);
+            this.ctx.drawImage(Object.img, Object.x, Object.y,
+                Object.width, Object.height);
+        } catch (e) {
+            console.log(Object.img);
         }
         this.drawCollidingFrame(Object);
         this.restoreReverse(Object);
@@ -80,14 +98,14 @@ class World {
             this.ctx.beginPath();
             this.ctx.lineWidth = '3';
             this.ctx.strokeStyle = 'blue';
-            this.ctx.rect(Object.x+35, Object.y+35, Object.width-70, Object.height-70);
+            this.ctx.rect(Object.x + 35, Object.y + 35, Object.width - 70, Object.height - 70);
             this.ctx.stroke();
         }
         if (Object instanceof Bottle) {
             this.ctx.beginPath();
             this.ctx.lineWidth = '3';
             this.ctx.strokeStyle = 'blue';
-            this.ctx.rect(Object.x+25, Object.y+12, Object.width-50, Object.height-20);
+            this.ctx.rect(Object.x + 25, Object.y + 12, Object.width - 50, Object.height - 20);
             this.ctx.stroke();
         }
         if (Object instanceof Character) {
@@ -140,14 +158,28 @@ class World {
         });
     }
 
-    checkDeath () {
-        if(this.character.checkIfDead()) {
+    checkDeath() {
+        if (this.character.checkIfDead()) {
             let img = new DrawableObject();
             img.loadImage('img/9_intro_outro_screens/game_over/game over!.png');
             this.drawOnCanvas(img, 100, 100);
-            this.clearAllIntervals();
+            this.endGame();
+            show('restart-button');
         }
     }
+
+    endGame() {
+        this.end_screen.loadImage("img/9_intro_outro_screens/game_over/game over!.png");
+        this.end_screen.width = 720;
+        this.end_screen.height = 480;
+        this.drawObjectOnCanvas(this.end_screen);
+        let self = this;
+        requestAnimationFrame(function () {
+            self.endGame()
+        });
+        this.clearAllIntervals();
+    }
+
 
     checkThrowObjects() {
         if (this.keyboard.SPACE) {
@@ -155,7 +187,7 @@ class World {
             this.level.bottles.push(bottle);
         }
     }
-    
+
     clearAllIntervals() {
         for (let i = 0; i < 100; i++) {
             clearInterval(i);

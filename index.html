@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,9 +25,15 @@
     <script src="./models/keyboard.class.js"></script>
     <script src="./js/game.js"></script>
 </head>
+
 <body onload="init()">
     <h1>El Pollo Loco</h1>
-    <canvas id="canvas" width="720" height="480"></canvas>
+    <div class="button-box">
+        <button id="start-button" onclick="initLevel(), world.startGame(), hide('start-button')">Start Game</button>
+        <button id="restart-button" onclick="init()">Back to Menu</button>
+    </div>
+    <canvas id="canvas" width="720" height="480">
+    </canvas>
     <div class="guide-box">
         <span>Arrow-Left: Move left</span>
         <span>Arrow-Right: Move right</span>
@@ -34,4 +41,5 @@
         <span>SPACE: Throw Bottle</span>
     </div>
 </body>
+
 </html>

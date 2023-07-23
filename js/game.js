@@ -5,6 +5,16 @@ let keyboard = new Keyboard();
 function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
+    document.getElementById('start-button').style.display = "flex";
+    document.getElementById('restart-button').style.display = "none";
+}
+
+function hide(elementId) {
+    document.getElementById(elementId).style.display = "none";
+}
+
+function show(elementId) {
+    document.getElementById(elementId).style.display = "flex";
 }
 
 window.addEventListener("keydown", (event) => {

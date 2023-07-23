@@ -25,6 +25,28 @@ canvas {
     margin-bottom: 1%;
 }
 
+.button-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 100%;
+}
+
+button {
+    background-color: rgb(255, 191, 0);
+    font-family: 'zabras', Arial, Helvetica, sans-serif;
+    font-size: 35px;
+    color: black;
+    letter-spacing: 5px;
+}
+
+button:hover {
+    transition: 50ms ease-in-out;
+    font-size: 40px;
+    cursor: pointer;
+}
+
 .guide-box {
     width: 720px;
     display: flex;

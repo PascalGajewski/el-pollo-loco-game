@@ -1,6 +1,5 @@
 class Character extends MovableObject {
     world;
-    level_end_x;
     ground_level = 130;
     x = 100;
     y = this.ground_level;
@@ -43,12 +42,11 @@ class Character extends MovableObject {
     paralysed = false;
 
 
-    constructor(level_end_x) {
+    constructor() {
         super().loadImage('img/2_character_pepe/3_jump/J-31.png');
         this.loadCompleteImageCache();
         this.applyGravity();
         this.animate();
-        this.level_end_x = level_end_x;
         this.WALKING_SOUND.playbackRate = 2.5;
     }
 
@@ -78,7 +76,7 @@ class Character extends MovableObject {
 
     movingRight() {
         setInterval(() => {
-            if (this.world.keyboard.RIGHT && this.x < (this.level_end_x - 680) && !this.paralysed) {
+            if (this.world.keyboard.RIGHT && this.x < (this.world.level.level_end_x - 680) && !this.paralysed) {
                 this.otherDirection = false;
                 this.x += this.speed_x;
             }
