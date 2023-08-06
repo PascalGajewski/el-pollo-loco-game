@@ -9,6 +9,10 @@ function init() {
     document.getElementById('restart-button').style.display = "none";
 }
 
+function reload(){
+ location.reload();
+}
+
 function hide(elementId) {
     document.getElementById(elementId).style.display = "none";
 }

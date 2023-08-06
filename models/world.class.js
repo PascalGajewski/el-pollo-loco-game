@@ -34,7 +34,7 @@ class World {
     startGame() {
         this.level = level1;
         this.drawGame();
-        this.run();
+        this.runFeedbackFunctions();
     }
 
     drawGame() {
@@ -137,7 +137,7 @@ class World {
         this.character.world = this;
     }
 
-    run() {
+    runFeedbackFunctions() {
         setInterval(() => {
             this.checkCollisions();
         }, 1000 / 60);
@@ -160,22 +160,20 @@ class World {
 
     checkDeath() {
         if (this.character.checkIfDead()) {
-            this.endGame();
+            this.drawGameOver();
             show('restart-button');
         }
     }
 
-    endGame() {
+    drawGameOver() {
         this.end_screen.loadImage("img/9_intro_outro_screens/game_over/game over!.png");
         this.end_screen.width = 720;
         this.end_screen.height = 480;
         this.drawObjectOnCanvas(this.end_screen);
         let self = this;
         requestAnimationFrame(function () {
-            self.endGame()
+            self.drawGameOver()
         });
-        cancelAnimationFrame(function () {
-            self.endGame()});
         this.clearAllIntervals();
     }
 
