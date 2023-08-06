@@ -6,8 +6,8 @@ class World {
     character = new Character();
     camera_x = 0;
     healthbar = new StatusBar(`HEALTH`, 100, 20, -10);
-    coinbar = new StatusBar(`COIN`, 0, 20, 20);
-    bottlebar = new StatusBar(`BOTTLE`, 0, 20, 50);
+    coinbar;
+    bottlebar;
     start_screen = new DrawableObject();
     end_screen = new DrawableObject();
 
@@ -33,6 +33,8 @@ class World {
 
     startGame() {
         this.level = level1;
+        this.coinbar = new StatusBar(`COIN`, (this.character.coinStore/((this.level.coins.length) + 1)), 20, 20);
+        this.bottlebar = new StatusBar(`BOTTLE`, (this.character.bottleStore/((this.level.bottles.length) + 1)), 20, 50);
         this.drawGame();
         this.runFeedbackFunctions();
     }
@@ -163,6 +165,22 @@ class World {
                 this.character.getHit(0.25);
                 this.healthbar.setPercentage(this.character.lifepoints, this.healthbar.IMAGES_HEALTH);
                 console.log(this.character.lifepoints);
+            };
+        });
+        this.level.coins.forEach((coin) => {
+            if (this.character.checkIfColliding(coin)) {
+                this.level.coins.splice(this.level.coins.indexOf(coin),1);
+                this.character.coinStore ++;
+                this.coinbar.setPercentage(this.character.coinStore, this.coinbar.IMAGES_COIN);
+                console.log(this.character.coinStore);
+            };
+        });
+        this.level.bottles.forEach((bottle) => {
+            if (this.character.checkIfColliding(bottle)) {
+                this.level.bottles.splice(this.level.bottles.indexOf(bottle),1);
+                this.character.bottleStore ++;
+                this.bottlebar.setPercentage(this.character.bottleStore, this.bottlebar.IMAGES_BOTTLE);
+                console.log(this.character.bottleStore);
             };
         });
     }
