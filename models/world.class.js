@@ -102,11 +102,20 @@ class World {
             this.ctx.stroke();
         }
         if (Object instanceof Bottle) {
-            this.ctx.beginPath();
-            this.ctx.lineWidth = '3';
-            this.ctx.strokeStyle = 'blue';
-            this.ctx.rect(Object.x + 25, Object.y + 12, Object.width - 50, Object.height - 20);
-            this.ctx.stroke();
+            if (Object.direction == 1) {
+                this.ctx.beginPath();
+                this.ctx.lineWidth = '3';
+                this.ctx.strokeStyle = 'blue';
+                this.ctx.rect(Object.x + 25, Object.y + 12, Object.width - 50, Object.height - 20);
+                this.ctx.stroke();
+            }
+            else {
+                this.ctx.beginPath();
+                this.ctx.lineWidth = '3';
+                this.ctx.strokeStyle = 'blue';
+                this.ctx.rect(Object.x + 35, Object.y + 12, Object.width - 50, Object.height - 20);
+                this.ctx.stroke();
+            }
         }
         if (Object instanceof Character) {
             this.ctx.beginPath();

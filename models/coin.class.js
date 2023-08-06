@@ -7,10 +7,28 @@ class Coin extends MovableObject {
 
     constructor() {
         super().loadImage('img/8_coin/coin_1.png');
-        this.x = 400 + Math.random() * (719 * 4);
-        this.y = 320 - Math.random() * 200;
-        this.loadImageCache(this.IMAGES_COIN)
+        this.x = 400 + this.calculateDistanceX();
+        this.y = 320 - this.calculateDistanceY();
+        this.loadImageCache(this.IMAGES_COIN);
         this.setCoin();
+    }
+
+    calculateDistanceX() {
+        let x = Math.floor((Math.random() * 50) + 1);
+        return x * ((719 * 4)/50)
+    }
+
+    calculateDistanceY() {
+        let x = Math.random();
+        if (x < 0.3333) {
+            return 50
+        };
+        if (x > 0.3333 && x < 0.6666) {
+            return 150
+        };
+        if (x > 0.6666) {
+            return 250
+        };
     }
 
     setCoin() {
