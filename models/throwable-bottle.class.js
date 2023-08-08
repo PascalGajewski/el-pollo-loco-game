@@ -1,4 +1,4 @@
-class ThrowableObject extends MovableObject {
+class ThrowableBottle extends MovableObject {
     keyboard;
     speed_x = 0;
     speed_y = 12.5;

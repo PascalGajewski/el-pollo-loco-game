@@ -23,7 +23,7 @@ class MovableObject extends DrawableObject {
     }
 
     checkIfAboveGround() {
-        if (this instanceof ThrowableObject) {
+        if (this instanceof ThrowableBottle) {
             return true;
         }
         else {
