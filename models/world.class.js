@@ -8,6 +8,7 @@ class World {
     healthbar = new StatusBar(`HEALTH`, 100, 20, -10);
     coinbar;
     bottlebar;
+    flyingBottles = [];
     start_screen = new DrawableObject();
     end_screen = new DrawableObject();
 
@@ -64,6 +65,9 @@ class World {
         this.drawObjectArrayOnCanvas(this.level.coins);
         this.drawObjectArrayOnCanvas(this.level.bottles);
         this.drawObjectOnCanvas(this.character);
+        if (this.flyingBottles.length > 0) {
+        this.drawObjectArrayOnCanvas(this.flyingBottles);
+        }
     }
 
     drawObjectOnCanvas(Object) {
@@ -199,8 +203,8 @@ class World {
 
 
     checkThrowObjects() {
-        if (this.keyboard.SPACE) {
-            let bottle = new ThrowableBottle(this.character.x + 25, this.character.y + 100, this.character.otherDirection);
+        if (this.keyboard.SPACE && this.character.bottleStore > 0) {
+            this.flyingBottles.push(new ThrowableBottle(this.character.x + 25, this.character.y + 100, this.character.otherDirection));
             if (this.character.bottleStore > 0) {
                 this.character.bottleStore--;
                 this.bottlebar.setPercentage(((this.character.bottleStore / this.level.maxBottles) * 100), this.bottlebar.IMAGES_BOTTLE);
