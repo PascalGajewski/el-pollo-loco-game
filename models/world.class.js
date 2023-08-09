@@ -32,44 +32,6 @@ class World {
         });
     }
 
-    startGame() {
-        this.level = level1;
-        this.coinbar = new StatusBar(`COIN`, ((this.character.coinStore / this.level.maxCoins) * 100), 20, 20);
-        this.bottlebar = new StatusBar(`BOTTLE`, ((this.character.bottleStore / this.level.maxBottles) * 100), 20, 50);
-        this.drawGame();
-        this.runFeedbackFunctions();
-    }
-
-    drawGame() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.translate(this.camera_x, 0);
-        this.drawAllMovableObjects();
-        this.ctx.translate(-this.camera_x, 0);
-        this.drawAllStaticObjects();
-        let self = this;
-        requestAnimationFrame(function () {
-            self.drawGame()
-        });
-    }
-
-    drawAllStaticObjects() {
-        this.drawObjectOnCanvas(this.healthbar);
-        this.drawObjectOnCanvas(this.coinbar);
-        this.drawObjectOnCanvas(this.bottlebar);
-    }
-
-    drawAllMovableObjects() {
-        this.drawObjectArrayOnCanvas(this.level.backgroundObjects);
-        this.drawObjectArrayOnCanvas(this.level.clouds);
-        this.drawObjectArrayOnCanvas(this.level.enemies);
-        this.drawObjectArrayOnCanvas(this.level.coins);
-        this.drawObjectArrayOnCanvas(this.level.bottles);
-        this.drawObjectOnCanvas(this.character);
-        if (this.flyingBottles.length > 0) {
-        this.drawObjectArrayOnCanvas(this.flyingBottles);
-        }
-    }
-
     drawObjectOnCanvas(Object) {
         this.drawOnCanvas(Object);
     }
@@ -148,24 +110,70 @@ class World {
         this.character.world = this;
     }
 
-    runFeedbackFunctions() {
+    startGame() {
+        this.level = level1;
+        this.coinbar = new StatusBar(`COIN`, ((this.character.coinStore / this.level.maxCoins) * 100), 20, 20);
+        this.bottlebar = new StatusBar(`BOTTLE`, ((this.character.bottleStore / this.level.maxBottles) * 100), 20, 50);
+        this.drawGame();
+        this.runFeedbackFunctions();
+    }
+
+    drawGame() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.translate(this.camera_x, 0);
+        this.drawAllMovableObjects();
+        this.ctx.translate(-this.camera_x, 0);
+        this.drawAllStaticObjects();
+        let self = this;
+        requestAnimationFrame(function () {
+            self.drawGame()
+        });
+    }
+
+    drawAllStaticObjects() {
+        this.drawObjectOnCanvas(this.healthbar);
+        this.drawObjectOnCanvas(this.coinbar);
+        this.drawObjectOnCanvas(this.bottlebar);
+    }
+
+    drawAllMovableObjects() {
+        this.drawObjectArrayOnCanvas(this.level.backgroundObjects);
+        this.drawObjectArrayOnCanvas(this.level.clouds);
+        this.drawObjectArrayOnCanvas(this.level.enemies);
+        this.drawObjectArrayOnCanvas(this.level.coins);
+        this.drawObjectArrayOnCanvas(this.level.bottles);
+        this.drawObjectOnCanvas(this.character);
+        if (this.flyingBottles.length > 0) {
+            this.drawObjectArrayOnCanvas(this.flyingBottles);
+        }
+    }
+
+    runningFeedbackFunctions() {
         setInterval(() => {
             this.checkCollisions();
         }, 1000 / 60);
         setInterval(() => {
             this.checkThrowObjects();
-            this.checkDeath();
+            this.checkGameOver();
         }, 100);
     }
 
-
     checkCollisions() {
+        this.collisionWithEnemie();
+        this.collisionWithCoin();
+        this.collisionWithBottle();
+    }
+
+    collisionWithEnemie() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.checkIfColliding(enemy)) {
                 this.character.getHit(0.25);
                 this.healthbar.setPercentage(this.character.lifepoints, this.healthbar.IMAGES_HEALTH);
             };
         });
+    }
+
+    collisionWithCoin() {
         this.level.coins.forEach((coin) => {
             if (this.character.checkIfColliding(coin)) {
                 this.level.coins.splice(this.level.coins.indexOf(coin), 1);
@@ -173,6 +181,9 @@ class World {
                 this.coinbar.setPercentage(((this.character.coinStore / this.level.maxCoins) * 100), this.coinbar.IMAGES_COIN);
             };
         });
+    }
+
+    collisionWithBottle() {
         this.level.bottles.forEach((bottle) => {
             if (this.character.checkIfColliding(bottle)) {
                 this.level.bottles.splice(this.level.bottles.indexOf(bottle), 1);
@@ -182,7 +193,17 @@ class World {
         });
     }
 
-    checkDeath() {
+    checkThrowObjects() {
+        if (this.keyboard.SPACE && this.character.bottleStore > 0) {
+            this.flyingBottles.push(new ThrowableBottle(this.character.x + 25, this.character.y + 100, this.character.otherDirection));
+            if (this.character.bottleStore > 0) {
+                this.character.bottleStore--;
+                this.bottlebar.setPercentage(((this.character.bottleStore / this.level.maxBottles) * 100), this.bottlebar.IMAGES_BOTTLE);
+            }
+        }
+    }
+
+    checkGameOver() {
         if (this.character.checkIfDead()) {
             this.drawGameOver();
             show('restart-button');
@@ -199,17 +220,6 @@ class World {
             self.drawGameOver()
         });
         this.clearAllIntervals();
-    }
-
-
-    checkThrowObjects() {
-        if (this.keyboard.SPACE && this.character.bottleStore > 0) {
-            this.flyingBottles.push(new ThrowableBottle(this.character.x + 25, this.character.y + 100, this.character.otherDirection));
-            if (this.character.bottleStore > 0) {
-                this.character.bottleStore--;
-                this.bottlebar.setPercentage(((this.character.bottleStore / this.level.maxBottles) * 100), this.bottlebar.IMAGES_BOTTLE);
-            }
-        }
     }
 
     clearAllIntervals() {
