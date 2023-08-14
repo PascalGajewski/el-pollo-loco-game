@@ -12,21 +12,26 @@ class MovableObject extends DrawableObject {
 
     moveRight(speed) {
         setInterval(() => {
-            this.x += speed;
+            if (!this.checkIfDead()) {
+                this.x += speed;
+            }
         }, 1000 / 60)
     }
 
     moveLeft(speed) {
         setInterval(() => {
-            this.x -= speed;
+            if (!this.checkIfDead()) {
+                this.x -= speed;
+            }
         }, 1000 / 60)
     }
 
     checkIfAboveGround() {
-        if (this instanceof ThrowableBottle){
-            if(this.y < 350) {
-            return true;
-        }}
+        if (this instanceof ThrowableBottle) {
+            if (this.y < 350) {
+                return true;
+            }
+        }
         else {
             return (this.y < this.ground_level);
         }

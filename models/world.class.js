@@ -46,7 +46,7 @@ class World {
         this.checkReverse(Object);
         this.ctx.drawImage(Object.img, Object.x, Object.y,
             Object.width, Object.height);
-        //this.drawCollidingFrame(Object);
+        this.drawCollidingFrame(Object);
         this.restoreReverse(Object);
     }
 
@@ -159,18 +159,26 @@ class World {
     }
 
     checkCollisions() {
-        this.collisionWithEnemie();
+        this.collisionWithEnemy();
         this.collisionWithCoin();
         this.collisionWithBottle();
     }
 
-    collisionWithEnemie() {
+    collisionWithEnemy() {
         this.level.enemies.forEach((enemy) => {
-            if (this.character.checkIfColliding(enemy)) {
-                this.character.getHit(0.25);
-                this.healthbar.setPercentage(this.character.lifepoints, this.healthbar.IMAGES_HEALTH);
-            };
-        });
+            if (!enemy.killed) {
+                if (this.character.checkIfColliding(enemy) && this.character.y > 80 && !enemy.checkIfDead()) {
+                    this.character.getHit(0.25);
+                    this.healthbar.setPercentage(this.character.lifepoints, this.healthbar.IMAGES_HEALTH);
+                };
+                if (this.character.checkIfColliding(enemy) && this.character.y <= 80 && enemy instanceof Chicken && this.character.speed_y < 0) {
+                    enemy.getHit(100);
+                    setTimeout(() => {
+                        this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
+                    }, 1500);
+                }
+            }
+        })
     }
 
     collisionWithCoin() {
