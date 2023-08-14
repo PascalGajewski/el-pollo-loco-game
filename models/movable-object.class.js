@@ -23,9 +23,10 @@ class MovableObject extends DrawableObject {
     }
 
     checkIfAboveGround() {
-        if (this instanceof ThrowableBottle) {
+        if (this instanceof ThrowableBottle){
+            if(this.y < 350) {
             return true;
-        }
+        }}
         else {
             return (this.y < this.ground_level);
         }

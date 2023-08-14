@@ -46,7 +46,7 @@ class World {
         this.checkReverse(Object);
         this.ctx.drawImage(Object.img, Object.x, Object.y,
             Object.width, Object.height);
-        this.drawCollidingFrame(Object);
+        //this.drawCollidingFrame(Object);
         this.restoreReverse(Object);
     }
 
@@ -115,7 +115,7 @@ class World {
         this.coinbar = new StatusBar(`COIN`, ((this.character.coinStore / this.level.maxCoins) * 100), 20, 20);
         this.bottlebar = new StatusBar(`BOTTLE`, ((this.character.bottleStore / this.level.maxBottles) * 100), 20, 50);
         this.drawGame();
-        this.runFeedbackFunctions();
+        this.runningFeedbackFunctions();
     }
 
     drawGame() {
@@ -201,6 +201,11 @@ class World {
                 this.bottlebar.setPercentage(((this.character.bottleStore / this.level.maxBottles) * 100), this.bottlebar.IMAGES_BOTTLE);
             }
         }
+        this.flyingBottles.forEach(flyingBottle => {
+            if (flyingBottle.splashed) {
+                this.flyingBottles.splice(this.flyingBottles.indexOf(flyingBottle), 1);
+            }
+        });
     }
 
     checkGameOver() {
