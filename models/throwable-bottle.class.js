@@ -5,6 +5,7 @@ class ThrowableBottle extends MovableObject {
     acceleration_y = 0.5;
     otherDirection;
     splashed = false;
+    intervalIsPaused = false;
     IMAGES_ROTATING_BOTTLE = ['img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
         'img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
         'img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png',
@@ -44,19 +45,23 @@ class ThrowableBottle extends MovableObject {
             }
             else {
                 clearInterval(rotatingBottleInterval);
-                this.animateSplashingBottle();
                 clearInterval(flyingBottleInterval);
                 setTimeout(() => {
                     this.splashed = true;
-                }, 250);
+                }, 500);
+                this.animateSplashingBottle();
             }
         }, 25);
     }
 
     animateSplashingBottle() {
-        for (let i = 0; i < this.IMAGES_SPLASHING_BOTTLE.length; i++) {
-            let path = this.IMAGES_SPLASHING_BOTTLE[i];
-            this.img = this.imgCache[path];
-        }
+        let i = 0;
+        setInterval(() => {
+            if (i < this.IMAGES_SPLASHING_BOTTLE.length) {
+                this.img = this.imgCache[this.IMAGES_SPLASHING_BOTTLE[i]];
+                i++;
+            }
+        }, 50);
     }
 }
+
