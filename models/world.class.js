@@ -167,7 +167,6 @@ class World {
     }
 
     collisionWithEnemy() {
-        let currentKilledEnemy;
         this.level.enemies.forEach((enemy) => {
             if (!enemy.killed) {
                 if (this.character.checkIfColliding(enemy) && this.character.y > 80 && !enemy.checkIfDead()) {
