@@ -11,6 +11,7 @@ class World {
     flyingBottles = [];
     start_screen = new DrawableObject();
     end_screen = new DrawableObject();
+    isPaused = false;
 
     constructor(canvas, keyboard) {
         this.canvas = canvas;
@@ -149,9 +150,10 @@ class World {
     }
 
     runningFeedbackFunctions() {
+        if(!this.isPaused){
         setInterval(() => {
             this.checkCollisions();
-        }, 1000 / 60);
+        }, 1000 / 60);}
         setInterval(() => {
             this.checkThrowObjects();
             this.checkGameOver();
@@ -165,20 +167,23 @@ class World {
     }
 
     collisionWithEnemy() {
+        let currentKilledEnemy;
         this.level.enemies.forEach((enemy) => {
             if (!enemy.killed) {
                 if (this.character.checkIfColliding(enemy) && this.character.y > 80 && !enemy.checkIfDead()) {
                     this.character.getHit(0.25);
                     this.healthbar.setPercentage(this.character.lifepoints, this.healthbar.IMAGES_HEALTH);
                 };
-                if (this.character.checkIfColliding(enemy) && this.character.y <= 80 && enemy instanceof Chicken && this.character.speed_y < 0) {
+                if (this.character.checkIfColliding(enemy) && this.character.y <= 80 && enemy instanceof Chicken && this.character.speed_y < 0 && !this.isPaused) {
+                    this.isPaused = true;
                     enemy.getHit(100);
                     setTimeout(() => {
                         this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
-                    }, 1500);
+                        this.isPaused = false;
+                    }, 1000);
                 }
             }
-        })
+        });
     }
 
     collisionWithCoin() {
