@@ -77,7 +77,7 @@ function initLevel() {
             new Coin(),
             new Coin(),
             new Coin(),
-        ], // array for coins
+        ],
         [
             new Bottle(),
             new Bottle(),
@@ -89,6 +89,6 @@ function initLevel() {
             new Bottle(),
             new Bottle(),
             new Bottle(),
-        ]  // array for bottles
+        ]
     );
 }

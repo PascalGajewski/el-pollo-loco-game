@@ -11,7 +11,9 @@ class World {
     flyingBottles = [];
     start_screen = new DrawableObject();
     end_screen = new DrawableObject();
-    isPaused = false;
+    collidingPaused = false;
+    flyingPaused = false; 
+    throwingPaused = false;
 
     constructor(canvas, keyboard) {
         this.canvas = canvas;
@@ -52,41 +54,11 @@ class World {
     }
 
     drawCollidingFrame(Object) {
-        if (Object instanceof Chicken || Object instanceof Endboss || Object instanceof ThrowableBottle) {
+        if (Object instanceof Chicken || Object instanceof ThrowableBottle || Object instanceof Endboss || Object instanceof Coin || Object instanceof Bottle || Object instanceof Character) {
             this.ctx.beginPath();
             this.ctx.lineWidth = '3';
             this.ctx.strokeStyle = 'red';
-            this.ctx.rect(Object.x, Object.y, Object.width, Object.height);
-            this.ctx.stroke();
-        }
-        if (Object instanceof Coin) {
-            this.ctx.beginPath();
-            this.ctx.lineWidth = '3';
-            this.ctx.strokeStyle = 'blue';
-            this.ctx.rect(Object.x + 35, Object.y + 35, Object.width - 70, Object.height - 70);
-            this.ctx.stroke();
-        }
-        if (Object instanceof Bottle) {
-            if (Object.direction == 1) {
-                this.ctx.beginPath();
-                this.ctx.lineWidth = '3';
-                this.ctx.strokeStyle = 'blue';
-                this.ctx.rect(Object.x + 25, Object.y + 12, Object.width - 50, Object.height - 20);
-                this.ctx.stroke();
-            }
-            else {
-                this.ctx.beginPath();
-                this.ctx.lineWidth = '3';
-                this.ctx.strokeStyle = 'blue';
-                this.ctx.rect(Object.x + 35, Object.y + 12, Object.width - 50, Object.height - 20);
-                this.ctx.stroke();
-            }
-        }
-        if (Object instanceof Character) {
-            this.ctx.beginPath();
-            this.ctx.lineWidth = '3';
-            this.ctx.strokeStyle = 'blue';
-            this.ctx.rect(Object.x + 30, Object.y + 120, Object.width - 50, Object.height - 130);
+            this.ctx.rect(Object.x + Object.offsetX, Object.y + Object.offsetY, Object.width + Object.offsetWidth, Object.height + Object.offsetHeight);
             this.ctx.stroke();
         }
     }
@@ -150,48 +122,53 @@ class World {
     }
 
     runningFeedbackFunctions() {
-        if (!this.isPaused) {
-            setInterval(() => {
-                this.checkCollisions();
-            }, 1000 / 60);
-        }
         setInterval(() => {
+            this.checkCollisions();
             this.checkThrowObjects();
             this.checkGameOver();
-        }, 100);
+        }, 1000/60);
     }
 
     checkCollisions() {
+        if(!this.collidingPaused){
         this.collisionWithEnemy();
+        }
         this.collisionWithCoin();
         this.collisionWithBottle();
+        if(!this.throwingPaused){
+        this.collisionFlyingBottles();
+        }
     }
 
     collisionWithEnemy() {
         this.level.enemies.forEach((enemy) => {
             if (!enemy.killed) {
-                this.characterGetHurt(enemy);
-                this.enemyGetHurt(enemy);
+                this.characterGetsHurt(enemy);
+                this.enemyGetsHurt(enemy);
             }
         });
     }
 
-    characterGetHurt(enemy) {
+    characterGetsHurt(enemy) {
         if (this.character.checkIfColliding(enemy) && this.character.y > 80 && !enemy.checkIfDead()) {
             this.character.getHit(0.25);
             this.healthbar.setPercentage(this.character.lifepoints, this.healthbar.IMAGES_HEALTH);
         };
     }
 
-    enemyGetHurt(enemy) {
-        if (this.character.checkIfColliding(enemy) && this.character.y <= 80 && enemy instanceof Chicken && this.character.speed_y < 0 && !this.isPaused) {
-            this.isPaused = true;
-            enemy.getHit(100);
-            setTimeout(() => {
-                this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
-                this.isPaused = false;
-            }, 1000);
+    enemyGetsHurt(enemy) {
+        if (this.character.checkIfColliding(enemy) && this.character.y <= 80 && enemy instanceof Chicken && this.character.speed_y < 0 && !this.collidingPaused) {
+            this.deletingEnemy(enemy);
         }
+    }
+
+    deletingEnemy(enemy) {
+        this.collidingPaused = true;
+        enemy.getHit(100);
+        setTimeout(() => {
+            this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
+            this.collidingPaused = false;
+        }, 1000);
     }
 
     collisionWithCoin() {
@@ -214,13 +191,42 @@ class World {
         });
     }
 
+    collisionFlyingBottles() {
+        this.flyingBottles.forEach(thrownBottle => {
+            this.level.enemies.forEach(enemy => {
+                if (thrownBottle.checkIfColliding(enemy) && enemy instanceof Chicken) {
+                    this.flyingPaused = true;
+                    thrownBottle.isCollided = true;
+                    this.deletingEnemy(enemy);
+                    this.flyingPaused = false;
+                }
+                if (thrownBottle.checkIfColliding(enemy) && enemy instanceof Endboss) {
+                    this.flyingPaused = true;
+                    thrownBottle.isCollided = true;
+                    enemy.getHit(10);
+                    this.flyingPaused = false;
+                }
+                if (enemy instanceof Endboss && enemy.killed) {
+                    setTimeout(() => {
+                        this.drawGameOver();
+                        show('restart-button');
+                    }, 30000);
+                }
+            });
+        })
+    }
+
     checkThrowObjects() {
-        if (this.keyboard.SPACE && this.character.bottleStore > 0) {
+        if (this.keyboard.SPACE && this.character.bottleStore > 0 && !this.throwingPaused) {
+            this.throwingPaused = true;
             this.flyingBottles.push(new ThrowableBottle(this.character.x + 25, this.character.y + 100, this.character.otherDirection));
             if (this.character.bottleStore > 0) {
                 this.character.bottleStore--;
                 this.bottlebar.setPercentage(((this.character.bottleStore / this.level.maxBottles) * 100), this.bottlebar.IMAGES_BOTTLE);
             }
+            setTimeout(() => {
+                this.throwingPaused = false;
+            }, 250);
         }
         this.flyingBottles.forEach(flyingBottle => {
             if (flyingBottle.splashed) {

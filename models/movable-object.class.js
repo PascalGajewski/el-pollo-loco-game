@@ -2,6 +2,11 @@ class MovableObject extends DrawableObject {
     otherDirection = false;
     lifepoints = 100;
     lastHit = 0;
+    gravityInterval;
+    offsetX = 0;
+    offsetY = 0;
+    offsetWidth = 0;
+    offsetHeight = 0;
 
     animateMovement(imageArray) {
         let i = this.currentImage % imageArray.length
@@ -38,7 +43,7 @@ class MovableObject extends DrawableObject {
     }
 
     applyGravity() {
-        setInterval(() => {
+        this.gravityInterval = setInterval(() => {
             if (this.checkIfAboveGround() || this.speed_y > 0) {
                 this.y -= this.speed_y;
                 this.speed_y -= this.acceleration_y;
@@ -63,5 +68,12 @@ class MovableObject extends DrawableObject {
     checkIfHurt() {
         let timePassed = (new Date().getTime() - this.lastHit) / 1000;
         return timePassed < 0.25;
+    }
+            
+    checkIfColliding(movableObject) {
+        return (this.x + this.offsetX + this.width + this.offsetWidth) >= movableObject.x + movableObject.offsetX && 
+                this.x + this.offsetX <= (movableObject.x + movableObject.offsetX + movableObject.width + movableObject.offsetWidth) &&
+                (this.y + this.offsetY + this.height + this.offsetHeight) >= movableObject.y + movableObject.offsetY && 
+                this.y + this.offsetY <= (movableObject.y + movableObject.offsetY + movableObject.height + movableObject.offsetHeight)
     }
 }

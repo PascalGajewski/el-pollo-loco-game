@@ -7,6 +7,10 @@ class Character extends MovableObject {
     height = 300;
     coinStore = 0;
     bottleStore = 0;
+    offsetX = 30; 
+    offsetY = 130;
+    offsetWidth = -60; 
+    offsetHeight = -145;
     IMAGES_WALKING = ['img/2_character_pepe/2_walk/W-21.png',
         'img/2_character_pepe/2_walk/W-22.png',
         'img/2_character_pepe/2_walk/W-23.png',
@@ -124,12 +128,5 @@ class Character extends MovableObject {
         setTimeout(() => {
             this.paralysed = false;
         }, 50);
-    }
-
-    checkIfColliding(movableObject) {
-        return (this.x + this.width - 20) >= movableObject.x && 
-                this.x + 15 <= (movableObject.x + movableObject.width) &&
-                (this.y + this.height - 10) >= movableObject.y && 
-                this.y + 120 <= (movableObject.y + movableObject.height)
     }
 }
