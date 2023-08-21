@@ -12,7 +12,7 @@ class World {
     start_screen = new DrawableObject();
     end_screen = new DrawableObject();
     collidingPaused = false;
-    flyingPaused = false; 
+    flyingPaused = false;
     throwingPaused = false;
 
     constructor(canvas, keyboard) {
@@ -126,17 +126,17 @@ class World {
             this.checkCollisions();
             this.checkThrowObjects();
             this.checkGameOver();
-        }, 1000/60);
+        }, 1000 / 60);
     }
 
     checkCollisions() {
-        if(!this.collidingPaused){
-        this.collisionWithEnemy();
+        if (!this.collidingPaused) {
+            this.collisionWithEnemy();
         }
         this.collisionWithCoin();
         this.collisionWithBottle();
-        if(!this.throwingPaused){
-        this.collisionFlyingBottles();
+        if (!this.flyingPaused) {
+            this.collisionFlyingBottles();
         }
     }
 
@@ -158,17 +158,13 @@ class World {
 
     enemyGetsHurt(enemy) {
         if (this.character.checkIfColliding(enemy) && this.character.y <= 80 && enemy instanceof Chicken && this.character.speed_y < 0 && !this.collidingPaused) {
-            this.deletingEnemy(enemy);
+            this.collidingPaused = true;
+            enemy.getHit(100);
+            setTimeout(() => {
+                this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
+                this.collidingPaused = false;
+            }, 1000);
         }
-    }
-
-    deletingEnemy(enemy) {
-        this.collidingPaused = true;
-        enemy.getHit(100);
-        setTimeout(() => {
-            this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
-            this.collidingPaused = false;
-        }, 1000);
     }
 
     collisionWithCoin() {
@@ -194,13 +190,16 @@ class World {
     collisionFlyingBottles() {
         this.flyingBottles.forEach(thrownBottle => {
             this.level.enemies.forEach(enemy => {
-                if (thrownBottle.checkIfColliding(enemy) && enemy instanceof Chicken) {
+                if (thrownBottle.checkIfColliding(enemy) && enemy instanceof Chicken && !this.flyingPaused) {
                     this.flyingPaused = true;
                     thrownBottle.isCollided = true;
-                    this.deletingEnemy(enemy);
-                    this.flyingPaused = false;
+                    enemy.getHit(100);
+                    setTimeout(() => {
+                        this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
+                        this.flyingPaused = false;
+                    }, 1000);
                 }
-                if (thrownBottle.checkIfColliding(enemy) && enemy instanceof Endboss) {
+                if (thrownBottle.checkIfColliding(enemy) && enemy instanceof Endboss && !this.flyingPaused) {
                     this.flyingPaused = true;
                     thrownBottle.isCollided = true;
                     enemy.getHit(10);
@@ -210,13 +209,18 @@ class World {
                     setTimeout(() => {
                         this.drawGameOver();
                         show('restart-button');
-                    }, 30000);
+                    }, 3000);
                 }
             });
         })
     }
 
     checkThrowObjects() {
+        this.generateThrownBottle();
+        this.checkIfDeleteThrownBottle();
+    }
+
+    generateThrownBottle() {
         if (this.keyboard.SPACE && this.character.bottleStore > 0 && !this.throwingPaused) {
             this.throwingPaused = true;
             this.flyingBottles.push(new ThrowableBottle(this.character.x + 25, this.character.y + 100, this.character.otherDirection));
@@ -228,6 +232,9 @@ class World {
                 this.throwingPaused = false;
             }, 250);
         }
+    }
+
+    checkIfDeleteThrownBottle() {
         this.flyingBottles.forEach(flyingBottle => {
             if (flyingBottle.splashed) {
                 this.flyingBottles.splice(this.flyingBottles.indexOf(flyingBottle), 1);
