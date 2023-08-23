@@ -206,7 +206,7 @@ class World {
                         setTimeout(() => {
                             this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
                             this.flyingPaused = false;
-                        }, 500);
+                        }, 1000);
                     }
                 }
                 if (thrownBottle.checkIfColliding(enemy) && enemy instanceof Endboss) {
@@ -217,7 +217,7 @@ class World {
                         this.endbossHealthbar.setPercentage(enemy.lifepoints, this.endbossHealthbar.IMAGES_HEALTH_ENDBOSS);
                         setTimeout(() => {
                             this.flyingPaused = false;
-                        }, 500);
+                        }, 1000);
                     }
                 }
                 if (enemy instanceof Endboss && enemy.killed && !this.gameOver) {
