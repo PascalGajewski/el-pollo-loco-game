@@ -7,9 +7,9 @@ class Character extends MovableObject {
     height = 300;
     coinStore = 0;
     bottleStore = 0;
-    offsetX = 30; 
+    offsetX = 30;
     offsetY = 130;
-    offsetWidth = -60; 
+    offsetWidth = -60;
     offsetHeight = -145;
     IMAGES_WALKING = ['img/2_character_pepe/2_walk/W-21.png',
         'img/2_character_pepe/2_walk/W-22.png',
@@ -46,7 +46,7 @@ class Character extends MovableObject {
     speed_y = 0;
     acceleration_y = 0.5;
     paralysed = false;
-
+    reachedEndboss = false;
 
     constructor() {
         super().loadImage('img/2_character_pepe/3_jump/J-31.png');
@@ -72,11 +72,20 @@ class Character extends MovableObject {
 
     movingLeft() {
         setInterval(() => {
-            if (this.world.keyboard.LEFT && this.x > 0 && !this.paralysed) {
-                this.otherDirection = true;
-                this.x -= this.speed_x;
+            if (!this.reachedEndboss) {
+                if (this.world.keyboard.LEFT && this.x > 0 && !this.paralysed) {
+                    this.otherDirection = true;
+                    this.x -= this.speed_x;
+                }
+                this.world.camera_x = -this.x + 100;
             }
-            this.world.camera_x = -this.x + 100;
+            else {
+                if (this.world.keyboard.LEFT && this.x > 2800 && !this.paralysed) {
+                    this.otherDirection = true;
+                    this.x -= this.speed_x;
+                }
+                this.world.camera_x = -this.x + 100;
+            }
         }, 1000 / 60);
     }
 
@@ -101,6 +110,7 @@ class Character extends MovableObject {
     animateMoves() {
         setInterval(() => {
             this.WALKING_SOUND.pause();
+            this.checkReachedEndboss();
             if (this.checkIfDead()) {
                 this.animateMovement(this.IMAGES_DEAD);
             }
@@ -120,8 +130,15 @@ class Character extends MovableObject {
                     this.loadImage('img/2_character_pepe/3_jump/J-31.png');
                 }
             }
+            console.log(this.x);
         }, 75);
     }
+
+    checkReachedEndboss() {
+        if (this.x > 3200) {
+            this.reachedEndboss = true;
+        }
+    };
 
     animateParalisation() {
         this.paralysed = true;
