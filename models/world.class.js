@@ -3,7 +3,7 @@ class World {
     ctx;
     keyboard;
     level;
-    character = new Character();
+    character;
     camera_x = 0;
     characterHealthbar = new StatusBar(`HEALTH`, 100, 20, -10);
     endbossHealthbar = new StatusBar(`HEALTH_ENDBOSS`, 100, 500, -10);
@@ -17,13 +17,14 @@ class World {
     throwingPaused = false;
     gameOver = false;
     animationFrame;
+    isFullscreen = false;
 
     constructor(canvas, keyboard) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.keyboard = keyboard;
         this.drawStartMenu();
-        this.setWorldInCharacter();
+        this.checkFullscreen();
     }
 
     drawStartMenu() {
@@ -88,8 +89,10 @@ class World {
 
     startGame() {
         this.level = level1;
+        this.character = new Character();
         this.coinbar = new StatusBar(`COIN`, ((this.character.coinStore / this.level.maxCoins) * 100), 20, 20);
         this.bottlebar = new StatusBar(`BOTTLE`, ((this.character.bottleStore / this.level.maxBottles) * 100), 20, 50);
+        this.setWorldInCharacter();
         this.drawGame();
         this.runningFeedbackFunctions();
     }
@@ -282,6 +285,44 @@ class World {
     clearAllIntervals() {
         for (let i = 0; i < 1000; i++) {
             clearInterval(i);
+        }
+    }
+
+    checkFullscreen() {
+        setInterval(() => {
+            if (this.keyboard.ENTER && !this.isFullscreen) {
+                let fullscreen = document.getElementById('fullscreen');
+                this.enterFullscreen(fullscreen);
+            }
+            else if (this.keyboard.ENTER && this.isFullscreen) {
+                this.exitFullscreen();
+            }
+        }, 100);
+    }
+
+    enterFullscreen(element) {
+        this.isFullscreen = true;
+        if (element.requestFullscreen) {
+            element.requestFullscreen();
+        } else if (element.mozRequestFullScreen) { // Firefox
+            element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullscreen) { // Chrome, Safari und Opera
+            element.webkitRequestFullscreen();
+        } else if (element.msRequestFullscreen) { // Internet Explorer
+            element.msRequestFullscreen();
+        }
+    }
+
+    exitFullscreen() {
+        this.isFullscreen = false;
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) { // Firefox
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) { // Chrome, Safari und Opera
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { // Internet Explorer
+            document.msExitFullscreen();
         }
     }
 }

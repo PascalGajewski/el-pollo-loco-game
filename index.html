@@ -32,13 +32,16 @@
         <button id="start-button" onclick="initLevel(), world.startGame(), hide('start-button')">Start Game</button>
         <button id="restart-button" onclick="reload()">Back to Menu</button>
     </div>
-    <canvas id="canvas" width="720" height="480">
-    </canvas>
+    <div id="fullscreen">
+        <canvas id="canvas" width="720" height="480">
+        </canvas>
+    </div>
     <div class="guide-box">
         <span>Arrow-Left: Move left</span>
         <span>Arrow-Right: Move right</span>
         <span>Arrow-Up: Jump</span>
         <span>SPACE: Throw Bottle</span>
+        <span>ENTER: Fullscreen Mode</span>
     </div>
 </body>
 

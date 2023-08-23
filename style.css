@@ -11,6 +11,7 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     font-family: 'zabras', Arial, Helvetica, sans-serif;
+    overflow: hidden;
 }
 
 body h1 {
@@ -18,11 +19,8 @@ body h1 {
     text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
     color: rgb(255, 191, 0);
     letter-spacing: 5px;
-}
-
-canvas {
-    background-color: black;
-    margin-bottom: 1%;
+    text-align: center;
+    margin: 10px;
 }
 
 .button-box {
@@ -31,6 +29,7 @@ canvas {
     align-items: center;
     height: 50px;
     width: 100%;
+    margin: 10px;
 }
 
 button {
@@ -47,15 +46,72 @@ button:hover {
     cursor: pointer;
 }
 
-.guide-box {
-    width: 720px;
+#fullscreen {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+}
+
+canvas {
+    background-color: black;
+    display: block;
+}
+
+.guide-box {
+    width: 75%;
+    display: flex;
+    justify-content: space-evenly;
     color: black;
     font-size: 25px;
+}
+
+span {
+    margin: 5px;
 }
 
 @font-face {
     font-family: 'zabras';
     src: url('/fonts/zabars.ttf');
+}
+
+
+@media only screen and (max-width: 500px) {
+    body h1 {
+        font-size: 50px;
+    }
+
+    button {
+        font-size: 28px;
+    }
+
+    .guide-box {
+        font-size: 22px;
+    }
+}
+
+@media only screen and (max-width: 760px) {
+    canvas {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    }
+}
+
+
+@media only screen and (max-height: 700px) {
+    body h1 {
+        font-size: 50px;
+    }
+
+    button {
+        font-size: 28px;
+    }
+
+    .guide-box {
+        font-size: 22px;
+    }
 }
