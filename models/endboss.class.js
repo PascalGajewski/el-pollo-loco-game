@@ -4,9 +4,9 @@ class Endboss extends MovableObject {
     width = 260;
     height = 280;
     offsetX = 30;
-    offsetY = 40;
+    offsetY = 80;
     offsetWidth = -60;
-    offsetHeight = -50;
+    offsetHeight = -90;
     killed = false;
     randomMove = 1;
     randomDirection = 1;
@@ -67,6 +67,7 @@ class Endboss extends MovableObject {
                     i++;
                 }
                 else if (this.checkIfHurt()) {
+                    clearInterval(movingInterval);
                     this.animateMovement(this.IMAGES_HURT);
                 }
                 else if (this.randomMove == 1 && !this.movingPaused) {
