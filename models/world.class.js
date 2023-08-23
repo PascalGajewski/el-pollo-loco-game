@@ -53,9 +53,11 @@ class World {
         this.checkReverse(Object);
         this.ctx.drawImage(Object.img, Object.x, Object.y,
             Object.width, Object.height);
-        this.drawCollidingFrame(Object);
+        // this.drawCollidingFrame(Object);    Function draws colliding frames arround all movable objects
         this.restoreReverse(Object);
     }
+
+    /* 
 
     drawCollidingFrame(Object) {
         if (Object instanceof Chicken || Object instanceof ThrowableBottle || Object instanceof Endboss || Object instanceof Coin || Object instanceof Bottle || Object instanceof Character) {
@@ -66,6 +68,7 @@ class World {
             this.ctx.stroke();
         }
     }
+    */
 
     checkReverse(Object) {
         if (Object.otherDirection) {
