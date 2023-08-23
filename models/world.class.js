@@ -15,6 +15,8 @@ class World {
     collidingPaused = false;
     flyingPaused = false;
     throwingPaused = false;
+    gameOver = false;
+    animationFrame;
 
     constructor(canvas, keyboard) {
         this.canvas = canvas;
@@ -31,7 +33,7 @@ class World {
         this.start_screen.height = 480;
         this.drawObjectOnCanvas(this.start_screen);
         let self = this;
-        requestAnimationFrame(function () {
+        this.animationFrame = requestAnimationFrame(function () {
             self.drawStartMenu()
         });
     }
@@ -98,8 +100,9 @@ class World {
         this.drawAllMovableObjects();
         this.ctx.translate(-this.camera_x, 0);
         this.drawAllStaticObjects();
+        cancelAnimationFrame(this.animationFrame);
         let self = this;
-        requestAnimationFrame(function () {
+        this.animationFrame = requestAnimationFrame(function () {
             self.drawGame()
         });
     }
@@ -192,27 +195,29 @@ class World {
     collisionFlyingBottles() {
         this.flyingBottles.forEach(thrownBottle => {
             this.level.enemies.forEach(enemy => {
-                if (thrownBottle.checkIfColliding(enemy) && enemy instanceof Chicken && !this.flyingPaused) {
-                    this.flyingPaused = true;
+                if (thrownBottle.checkIfColliding(enemy) && enemy instanceof Chicken) {
                     thrownBottle.isCollided = true;
-                    enemy.getHit(100);
-                    setTimeout(() => {
-                        this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
-                        this.flyingPaused = false;
-                    }, 1000);
+                    if (!this.flyingPaused) {
+                        this.flyingPaused = true;
+                        enemy.getHit(100);
+                        setTimeout(() => {
+                            this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
+                            this.flyingPaused = false;
+                        }, 500);
+                    }
                 }
-                if (thrownBottle.checkIfColliding(enemy) && enemy instanceof Endboss && !this.flyingPaused) {
-                    this.flyingPaused = true;
+                if (thrownBottle.checkIfColliding(enemy) && enemy instanceof Endboss) {
                     thrownBottle.isCollided = true;
-                    enemy.getHit(20);
-                    this.endbossHealthbar.setPercentage(enemy.lifepoints, this.endbossHealthbar.IMAGES_HEALTH_ENDBOSS);
-                    console.log(enemy.lifepoints);
-                    setTimeout(() => {
-                        this.flyingPaused = false;
-                    }, 1000);
+                    if (!this.flyingPaused) {
+                        this.flyingPaused = true;
+                        enemy.getHit(20);
+                        this.endbossHealthbar.setPercentage(enemy.lifepoints, this.endbossHealthbar.IMAGES_HEALTH_ENDBOSS);
+                        setTimeout(() => {
+                            this.flyingPaused = false;
+                        }, 500);
+                    }
                 }
-                if (enemy instanceof Endboss && enemy.killed) {
-                    console.log('gameOver');
+                if (enemy instanceof Endboss && enemy.killed && !this.gameOver) {
                     setTimeout(() => {
                         this.drawGameOver();
                         show('restart-button');
@@ -250,22 +255,28 @@ class World {
     }
 
     checkGameOver() {
-        if (this.character.checkIfDead()) {
+        if (this.character.checkIfDead() && !this.gameOver) {
             this.drawGameOver();
             show('restart-button');
         }
     }
 
     drawGameOver() {
+        this.gameOver = true;
         this.end_screen.loadImage("img/9_intro_outro_screens/game_over/game over!.png");
         this.end_screen.width = 720;
         this.end_screen.height = 480;
         this.drawObjectOnCanvas(this.end_screen);
+        cancelAnimationFrame(this.animationFrame);
         let self = this;
-        requestAnimationFrame(function () {
+        this.animationFrame = requestAnimationFrame(function () {
             self.drawGameOver()
         });
-        this.clearAllIntervals();
+        setTimeout(() => {
+            this.clearAllIntervals();
+            cancelAnimationFrame(this.animationFrame);
+            this.animationFrame = 0;
+        }, 25);
     }
 
     clearAllIntervals() {

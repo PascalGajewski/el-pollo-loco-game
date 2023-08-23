@@ -121,6 +121,7 @@ class Endboss extends MovableObject {
                 }
             }
             else if (this.checkIfDead()) {
+                clearInterval(movingInterval);
                 clearInterval(animationInterval);
                 this.killed = true;
                 this.animateOnlyOneImageArray(this.IMAGES_DEAD);
@@ -130,12 +131,10 @@ class Endboss extends MovableObject {
 
     randomiseMovement() {
         this.randomMove = Math.floor(Math.random() * 2) + 1;
-        console.log('MOVE', this.randomMove);
     }
 
     randomiseDirection() {
         this.randomDirection = Math.floor(Math.random() * 2) + 1;
-        console.log('Direction', this.randomDirection);
     }
 
     checkIfHurt() {

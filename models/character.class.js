@@ -130,7 +130,6 @@ class Character extends MovableObject {
                     this.loadImage('img/2_character_pepe/3_jump/J-31.png');
                 }
             }
-            console.log(this.x);
         }, 75);
     }
 
