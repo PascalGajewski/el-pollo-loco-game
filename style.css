@@ -39,20 +39,17 @@ body h1 {
     align-items: center;
     width: 100%;
     height: 100%;
+    justify-content: space-between;
 }
 
-canvas {
-    background-color: black;
-    display: block;
-}
 
 .button-box {
-    position: relative;
+    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 50px;
-    width: 80%;
+    width: 100%;
     margin: 10px 0px;
 }
 
@@ -74,6 +71,11 @@ button:hover {
     cursor: pointer;
 }
 
+canvas {
+    background-color: black;
+    display: block;
+}
+
 .guide-box {
     width: 100%;
     display: flex;
@@ -85,6 +87,38 @@ button:hover {
 
 span {
     padding: 5px;
+}
+
+.responsive-box {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    width: 100%;
+    bottom: 0;
+    margin: 10px 0px;
+}
+
+.button-responsive {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+    border: 1px solid black;
+}
+
+.button-responsive:hover {
+    transform: scale(1.1);
+    transition: none;
+}
+
+.button-responsive img {
+    height: 25px;
+    object-fit: cover;
+
 }
 
 @font-face {

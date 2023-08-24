@@ -6,7 +6,7 @@ class World {
     character;
     camera_x = 0;
     characterHealthbar = new StatusBar(`HEALTH`, 100, 20, -10);
-    endbossHealthbar = new StatusBar(`HEALTH_ENDBOSS`, 100, 500, -10);
+    endbossHealthbar = new StatusBar(`HEALTH_ENDBOSS`, 100, 450, -10);
     coinbar;
     bottlebar;
     flyingBottles = [];

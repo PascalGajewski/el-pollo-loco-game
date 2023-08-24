@@ -35,17 +35,31 @@
                     Game</button>
                 <button id="restart-button" onclick="reload()">Back to Menu</button>
             </div>
+            <div class="responsive-box" id="responsive-box">
+                    <button style="margin-left: 25px;" class="button-responsive" id="button-left"><img
+                            src="img/10_control_icons/arrow-left.png"></button>
+                    <div style="display: flex; justify-content: space-evenly; align-items: center; gap: 10px;">
+                        <button class="button-responsive" id="button-jump"><img
+                                src="img/10_control_icons/jump.png"></button>
+                        <button class="button-responsive" id="button-bottle"><img
+                                src="img/10_control_icons/bottle.png"></button>
+                    </div>
+                    <button style="margin-right: 25px;" class="button-responsive" id="button-right"><img
+                            src="img/10_control_icons/arrow-right.png"></button>
+            </div>
+            <button style="position: absolute; right: 10px; top: 10px" class="button-responsive" id="button-fullscreen"><img
+                src="img/10_control_icons/fullscreen.png"></button>
         </div>
         <canvas id="canvas" width="720" height="480">
         </canvas>
-        <div class="guide-box">
-            <span>Arrow-Left: Move left</span>
-            <span>Arrow-Right: Move right</span>
-            <span>Arrow-Up: Jump</span>
-            <span>SPACE: Throw Bottle</span>
-            <span>ENTER: Fullscreen Mode</span>
+    </div>
+    <div class="guide-box">
+        <span>Arrow-Left: Move left</span>
+        <span>Arrow-Right: Move right</span>
+        <span>Arrow-Up: Jump</span>
+        <span>SPACE: Throw Bottle</span>
+        <span>ENTER: Fullscreen Mode</span>
 
-        </div>
     </div>
 </body>
 
