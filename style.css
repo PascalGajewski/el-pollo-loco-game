@@ -47,6 +47,7 @@ canvas {
 }
 
 .button-box {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -55,9 +56,9 @@ canvas {
     margin: 10px 0px;
 }
 
-/*#fullscreen:fullscreen .button-box {
+#fullscreen:fullscreen .button-box {
     top: 25vh;
-}*/
+}
 
 button {
     background-color: rgb(255, 191, 0);
