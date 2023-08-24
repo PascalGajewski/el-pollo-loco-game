@@ -28,20 +28,20 @@
 
 <body onload="init()">
     <h1>El Pollo Loco</h1>
-    <div class="button-box">
-        <button id="start-button" onclick="initLevel(), world.startGame(), hide('start-button')">Start Game</button>
-        <button id="restart-button" onclick="reload()">Back to Menu</button>
-    </div>
     <div id="fullscreen">
+        <div class="button-box">
+            <button id="start-button" onclick="initLevel(), world.startGame(), hide('start-button')">Start Game</button>
+            <button id="restart-button" onclick="reload()">Back to Menu</button>
+        </div>
         <canvas id="canvas" width="720" height="480">
         </canvas>
-    </div>
-    <div class="guide-box">
-        <span>Arrow-Left: Move left</span>
-        <span>Arrow-Right: Move right</span>
-        <span>Arrow-Up: Jump</span>
-        <span>SPACE: Throw Bottle</span>
-        <span>ENTER: Fullscreen Mode</span>
+        <div class="guide-box">
+            <span>Arrow-Left: Move left</span>
+            <span>Arrow-Right: Move right</span>
+            <span>Arrow-Up: Jump</span>
+            <span>SPACE: Throw Bottle</span>
+            <span>ENTER: Fullscreen Mode</span>
+        </div>
     </div>
 </body>
 
