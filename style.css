@@ -53,8 +53,9 @@ body h1 {
     margin: 10px 0px;
 }
 
-#fullscreen:fullscreen .button-box {
-    top: 25vh;
+#fullscreen:fullscreen .overlay {
+    width: 720px;
+    height: 480px;
 }
 
 button {
@@ -77,7 +78,7 @@ canvas {
 }
 
 .guide-box {
-    width: 100%;
+    max-width: 720px;
     display: flex;
     justify-content: space-evenly;
     color: black;
@@ -91,7 +92,7 @@ span {
 
 .responsive-box {
     position: absolute;
-    display: flex;
+    display: none;
     justify-content: space-between;
     align-items: center;
     height: 50px;

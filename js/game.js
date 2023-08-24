@@ -1,8 +1,10 @@
 let canvas;
 let world;
 let keyboard;
+const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 function init() {
+    checkIfMobile();
     keyboard = new Keyboard();
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
@@ -67,3 +69,15 @@ window.addEventListener("keyup", (event) => {
         keyboard.ENTER = false;
     };
 });
+
+
+function checkIfMobile() {
+    setInterval(() => {
+        if (isMobileDevice) {
+            document.getElementById('responsive-box').style.display = 'flex';
+            document.getElementById('button-fullscreen').style.display = 'flex';
+            document.getElementById('guide-box').style.display = 'none';
+        }
+    }, 1000/60);
+}
+
