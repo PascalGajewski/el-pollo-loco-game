@@ -29,6 +29,16 @@ body h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    max-width: 720px;
+}
+
+.overlay {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 }
 
 canvas {
@@ -37,19 +47,17 @@ canvas {
 }
 
 .button-box {
-    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 50px;
     width: 80%;
     margin: 10px 0px;
-    top: 0%;
 }
 
-#fullscreen:fullscreen .button-box{
+/*#fullscreen:fullscreen .button-box {
     top: 25vh;
-}
+}*/
 
 button {
     background-color: rgb(255, 191, 0);
@@ -66,12 +74,12 @@ button:hover {
 }
 
 .guide-box {
-    width: 80%;
+    width: 100%;
     display: flex;
     justify-content: space-evenly;
     color: black;
     font-size: 25px;
-    margin: 10px;
+    margin: 10px 0px;
 }
 
 span {
