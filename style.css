@@ -31,6 +31,11 @@ body h1 {
     align-items: center;
 }
 
+canvas {
+    background-color: black;
+    display: block;
+}
+
 .button-box {
     position: absolute;
     display: flex;
@@ -40,6 +45,10 @@ body h1 {
     width: 80%;
     margin: 10px 0px;
     top: 0%;
+}
+
+#fullscreen:fullscreen .button-box{
+    top: 25vh;
 }
 
 button {
@@ -54,11 +63,6 @@ button:hover {
     transition: 50ms ease-in-out;
     font-size: 40px;
     cursor: pointer;
-}
-
-canvas {
-    background-color: black;
-    display: block;
 }
 
 .guide-box {
@@ -83,9 +87,10 @@ span {
     body h1 {
         font-size: 35px !important;
     }
-    
+
     button {
         font-size: 22px !important;
+        letter-spacing: 3px;
     }
 
     button:hover {
@@ -101,6 +106,10 @@ span {
 @media only screen and (max-width: 500px) {
     body h1 {
         font-size: 50px;
+    }
+
+    .button-box {
+        margin: 0;
     }
 
     button {
@@ -122,13 +131,46 @@ span {
     }
 }
 
-@media only screen and (max-height: 480px) {
+@media only screen and (max-height: 300px) {
+    .button-box {
+        margin: 0;
+    }
+
+    button {
+        font-size: 22px !important;
+        letter-spacing: 3px;
+    }
+
+    button:hover {
+        font-size: 25px !important;
+    }
+}
+
+@media only screen and (max-height: 420px) {
+    button {
+        font-size: 28px;
+    }
+
+    button:hover {
+        font-size: 30px;
+    }
+}
+
+@media only screen and (max-height: 560px) {
     canvas {
         height: 100vh;
-        max-width: 100% !important;
+    }
+
+    .guide-box {
+        display: none;
     }
 }
 
 
-@media only screen and (max-height: 900px) {
+@media only screen and (max-height: 650px) {
+
+    body h1 {
+        display: none;
+    }
+
 }
