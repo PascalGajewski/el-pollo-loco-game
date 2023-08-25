@@ -70,6 +70,7 @@ button:hover {
     transition: 50ms ease-in-out;
     font-size: 40px;
     cursor: pointer;
+    background-color: rgb(255, 157, 0);
 }
 
 canvas {
@@ -92,8 +93,7 @@ span {
 
 .responsive-box {
     position: absolute;
-    display: flex;
-    /*change to 'none'*/
+    display: none;
     justify-content: space-between;
     align-items: center;
     width: 100%;
@@ -114,6 +114,7 @@ span {
 .button-responsive:hover {
     transform: scale(1.1);
     transition: none;
+    background-color: rgb(255, 157, 0);
 }
 
 .button-responsive img {
