@@ -314,9 +314,7 @@ class World {
         } else if (element.msRequestFullscreen) { // Internet Explorer
             element.msRequestFullscreen();
         }
-        setTimeout(() => {
-
-        }, 500);
+        setTimeout(() => {}, 250);
     }
 
     exitFullscreen() {
@@ -330,9 +328,7 @@ class World {
         } else if (document.msExitFullscreen) { // Internet Explorer
             document.msExitFullscreen();
         }
-        setTimeout(() => {
-
-        }, 500);
+        setTimeout(() => {}, 250);
     }
 
     switchFullscreen() {

@@ -143,8 +143,6 @@ function runMobileEventListeners() {
 */
 };
 
-
-
 function checkIfMobile() {
     setInterval(() => {
         if (isMobileDevice) {
