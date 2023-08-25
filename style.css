@@ -92,10 +92,10 @@ span {
 
 .responsive-box {
     position: absolute;
-    display: none;
+    display: flex;
+    /*change to 'none'*/
     justify-content: space-between;
     align-items: center;
-    height: 50px;
     width: 100%;
     bottom: 0;
     margin: 10px 0px;
@@ -167,6 +167,34 @@ span {
     .guide-box {
         font-size: 22px;
     }
+
+    .button-responsive {
+        height: 30px !important;
+        width: 30px !important;
+    }
+
+    .button-responsive img {
+        height: 16px !important;
+    }
+
+    .responsive-box {
+        margin: 3px 0px !important;
+    }
+}
+
+@media only screen and (max-width: 720px) {
+    .button-responsive {
+        height: 40px;
+        width: 40px;
+    }
+
+    .button-responsive img {
+        height: 22px;
+    }
+
+    .responsive-box {
+        margin: 5px 0px;
+    }
 }
 
 @media only screen and (max-width: 720px) {
@@ -190,6 +218,21 @@ span {
     }
 }
 
+@media only screen and (max-height: 350px) {
+    .button-responsive {
+        height: 30px;
+        width: 30px;
+    }
+
+    .button-responsive img {
+        height: 16px !important;
+    }
+
+    .responsive-box {
+        margin: 3px 0px !important;
+    }
+}
+
 @media only screen and (max-height: 420px) {
     button {
         font-size: 28px;
@@ -197,6 +240,15 @@ span {
 
     button:hover {
         font-size: 30px;
+    }
+
+    .button-responsive {
+        height: 40px;
+        width: 40px;
+    }
+
+    .button-responsive img {
+        height: 22px;
     }
 }
 
