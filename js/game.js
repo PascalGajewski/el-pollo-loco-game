@@ -10,7 +10,7 @@ function init() {
     world = new World(canvas, keyboard);
     document.getElementById('start-button').style.display = "flex";
     document.getElementById('restart-button').style.display = "none";
-    if(isMobileDevice) {
+    if (isMobileDevice) {
         runMobileEventListeners();
     }
 }
@@ -75,24 +75,54 @@ window.addEventListener("keyup", (event) => {
 
 function runMobileEventListeners() {
     let buttonLeft = document.getElementById('button-left');
-    buttonLeft.addEventListener("touchstart", () => {keyboard.LEFT = true;});
-    buttonLeft.addEventListener("touchend", () => {keyboard.LEFT = false;});
+    buttonLeft.addEventListener("touchstart", (event) => {
+        event.preventDefault();
+        keyboard.LEFT = true;
+    });
+    buttonLeft.addEventListener("touchend", (event) => {
+        event.preventDefault();
+        keyboard.LEFT = false;
+    });
 
     let buttonRight = document.getElementById('button-right');
-    buttonRight.addEventListener("touchstart", () => {keyboard.RIGHT = true;});
-    buttonRight.addEventListener("touchend", () => {keyboard.RIGHT = false;});
+    buttonRight.addEventListener("touchstart", (event) => {
+        event.preventDefault();
+        keyboard.RIGHT = true;
+    });
+    buttonRight.addEventListener("touchend", (event) => {
+        event.preventDefault();
+        keyboard.RIGHT = false;
+    });
 
     let buttonJump = document.getElementById('button-jump');
-    buttonJump.addEventListener("touchstart", () => {keyboard.UP = true;});
-    buttonJump.addEventListener("touchend", () => {keyboard.UP = false;});
+    buttonJump.addEventListener("touchstart", (event) => {
+        event.preventDefault();
+        keyboard.UP = true;
+    });
+    buttonJump.addEventListener("touchend", (event) => {
+        event.preventDefault();
+        keyboard.UP = false;
+    });
 
     let buttonBottle = document.getElementById('button-bottle');
-    buttonBottle.addEventListener("touchstart", () => {keyboard.SPACE = true;});
-    buttonBottle.addEventListener("touchend", () => {keyboard.SPACE = false;});
+    buttonBottle.addEventListener("touchstart", (event) => {
+        event.preventDefault();
+        keyboard.SPACE = true;
+    });
+    buttonBottle.addEventListener("touchend", (event) => {
+        event.preventDefault();
+        keyboard.SPACE = false;
+    });
 
     let buttonFullscreen = document.getElementById('button-fullscreen');
-    buttonFullscreen.addEventListener("touchstart", () => {keyboard.ENTER = true;});
-    buttonFullscreen.addEventListener("touchend", () => {keyboard.ENTER = false;});
+    buttonFullscreen.addEventListener("touchstart", (event) => {
+        event.preventDefault();
+        keyboard.ENTER = true;
+    });
+    buttonFullscreen.addEventListener("touchend", (event) => {
+        event.preventDefault();
+        keyboard.ENTER = false;
+    });
 }
 
 
@@ -103,6 +133,6 @@ function checkIfMobile() {
             document.getElementById('button-fullscreen').style.display = 'flex';
             document.getElementById('guide-box').style.display = 'none';
         }
-    }, 1000/60);
+    }, 1000 / 60);
 }
 

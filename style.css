@@ -259,9 +259,7 @@ span {
 
 
 @media only screen and (max-height: 650px) {
-
     body h1 {
         display: none;
     }
-
 }
