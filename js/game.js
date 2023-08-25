@@ -114,6 +114,11 @@ function runMobileEventListeners() {
         keyboard.SPACE = false;
     });
 
+/* 
+    The following part does not work, because modern browsers prevent the fullscreen mode from beeing executed, 
+    if its not executed by a direct input of the user! 
+    
+
     let buttonFullscreen = document.getElementById('button-fullscreen');
     buttonFullscreen.addEventListener("touchstart", (event) => {
         event.preventDefault();
@@ -123,7 +128,21 @@ function runMobileEventListeners() {
         event.preventDefault();
         keyboard.ENTER = false;
     });
-}
+
+    document.addEventListener('orientationchange', () => {
+        if (window.orientation === 90 || window.orientation === -90) {
+            let fullscreen = document.getElementById('fullscreen');
+            world.enterFullscreen(fullscreen);
+            document.getElementById('button-fullscreen').style.display = 'none';
+        }
+        else {
+            world.exitFullscreen();
+            document.getElementById('button-fullscreen').style.display = 'flex';
+        }
+    }) 
+*/
+};
+
 
 
 function checkIfMobile() {

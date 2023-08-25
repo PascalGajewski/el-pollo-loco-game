@@ -114,7 +114,13 @@ span {
 .button-responsive img {
     height: 25px;
     object-fit: cover;
+}
 
+#button-fullscreen {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    display: none;
 }
 
 @font-face {
@@ -195,6 +201,11 @@ span {
 @media only screen and (max-width: 720px) {
     canvas {
         width: 100%;
+        height: 100%;
+    }
+    
+    body h1 {
+        display: none;
     }
 }
 
@@ -213,10 +224,16 @@ span {
     }
 }
 
+@media only screen and (max-height: 250px) {
+    canvas {
+        height: 100vh !important;
+    }
+}
+
 @media only screen and (max-height: 350px) {
     .button-responsive {
-        height: 30px;
-        width: 30px;
+        height: 30px !important;
+        width: 30px !important;
     }
 
     .button-responsive img {
@@ -249,7 +266,7 @@ span {
 
 @media only screen and (max-height: 560px) {
     canvas {
-        height: 100vh;
+        height: 100%;
     }
 
     .guide-box {

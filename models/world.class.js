@@ -297,7 +297,7 @@ class World {
                 let fullscreen = document.getElementById('fullscreen');
                 this.enterFullscreen(fullscreen);
             }
-            else if (this.keyboard.ENTER && this.isFullscreen) {
+            if (this.keyboard.ENTER && this.isFullscreen) {
                 this.exitFullscreen();
             }
         }, 100);
@@ -314,6 +314,9 @@ class World {
         } else if (element.msRequestFullscreen) { // Internet Explorer
             element.msRequestFullscreen();
         }
+        setTimeout(() => {
+
+        }, 500);
     }
 
     exitFullscreen() {
@@ -326,6 +329,19 @@ class World {
             document.webkitExitFullscreen();
         } else if (document.msExitFullscreen) { // Internet Explorer
             document.msExitFullscreen();
+        }
+        setTimeout(() => {
+
+        }, 500);
+    }
+
+    switchFullscreen() {
+        if (!this.isFullscreen) {
+            let fullscreen = document.getElementById('fullscreen');
+            this.enterFullscreen(fullscreen);
+        }
+        else {
+            this.exitFullscreen();
         }
     }
 }
