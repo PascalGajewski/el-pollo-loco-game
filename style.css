@@ -111,12 +111,6 @@ span {
     border: 1px solid black;
 }
 
-.button-responsive:hover {
-    transform: scale(1.1);
-    transition: none;
-    background-color: rgb(255, 157, 0);
-}
-
 .button-responsive img {
     height: 25px;
     object-fit: cover;

@@ -10,6 +10,9 @@ function init() {
     world = new World(canvas, keyboard);
     document.getElementById('start-button').style.display = "flex";
     document.getElementById('restart-button').style.display = "none";
+    if(isMobileDevice) {
+        runMobileEventListeners();
+    }
 }
 
 function reload() {
@@ -69,6 +72,28 @@ window.addEventListener("keyup", (event) => {
         keyboard.ENTER = false;
     };
 });
+
+function runMobileEventListeners() {
+    let buttonLeft = document.getElementById('button-left');
+    buttonLeft.addEventListener("touchstart", () => {keyboard.LEFT = true;});
+    buttonLeft.addEventListener("touchend", () => {keyboard.LEFT = false;});
+
+    let buttonRight = document.getElementById('button-right');
+    buttonRight.addEventListener("touchstart", () => {keyboard.RIGHT = true;});
+    buttonRight.addEventListener("touchend", () => {keyboard.RIGHT = false;});
+
+    let buttonJump = document.getElementById('button-jump');
+    buttonJump.addEventListener("touchstart", () => {keyboard.UP = true;});
+    buttonJump.addEventListener("touchend", () => {keyboard.UP = false;});
+
+    let buttonBottle = document.getElementById('button-bottle');
+    buttonBottle.addEventListener("touchstart", () => {keyboard.SPACE = true;});
+    buttonBottle.addEventListener("touchend", () => {keyboard.SPACE = false;});
+
+    let buttonFullscreen = document.getElementById('button-fullscreen');
+    buttonFullscreen.addEventListener("touchstart", () => {keyboard.ENTER = true;});
+    buttonFullscreen.addEventListener("touchend", () => {keyboard.ENTER = false;});
+}
 
 
 function checkIfMobile() {
