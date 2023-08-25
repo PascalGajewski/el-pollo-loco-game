@@ -174,7 +174,7 @@ class World {
             setTimeout(() => {
                 this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
                 this.collidingPaused = false;
-            }, 1000);
+            }, 250);
         }
     }
 

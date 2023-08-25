@@ -224,12 +224,6 @@ span {
     }
 }
 
-@media only screen and (max-height: 250px) {
-    canvas {
-        height: 100vh !important;
-    }
-}
-
 @media only screen and (max-height: 350px) {
     .button-responsive {
         height: 30px !important;
@@ -264,6 +258,12 @@ span {
     }
 }
 
+@media only screen and (max-height: 480px) {
+    canvas {
+        max-height: 100vh;
+    }
+}
+
 @media only screen and (max-height: 560px) {
     canvas {
         height: 100%;
@@ -273,7 +273,6 @@ span {
         display: none;
     }
 }
-
 
 @media only screen and (max-height: 650px) {
     body h1 {
