@@ -17,7 +17,6 @@ class World {
     throwingPaused = false;
     gameOver = false;
     animationFrame;
-    isFullscreen = false;
 
     constructor(canvas, keyboard) {
         this.canvas = canvas;
@@ -53,22 +52,8 @@ class World {
         this.checkReverse(Object);
         this.ctx.drawImage(Object.img, Object.x, Object.y,
             Object.width, Object.height);
-        // this.drawCollidingFrame(Object);    Function draws colliding frames arround all movable objects
         this.restoreReverse(Object);
     }
-
-    /* 
-
-    drawCollidingFrame(Object) {
-        if (Object instanceof Chicken || Object instanceof ThrowableBottle || Object instanceof Endboss || Object instanceof Coin || Object instanceof Bottle || Object instanceof Character) {
-            this.ctx.beginPath();
-            this.ctx.lineWidth = '3';
-            this.ctx.strokeStyle = 'red';
-            this.ctx.rect(Object.x + Object.offsetX, Object.y + Object.offsetY, Object.width + Object.offsetWidth, Object.height + Object.offsetHeight);
-            this.ctx.stroke();
-        }
-    }
-    */
 
     checkReverse(Object) {
         if (Object.otherDirection) {
@@ -174,7 +159,7 @@ class World {
             setTimeout(() => {
                 this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
                 this.collidingPaused = false;
-            }, 250);
+            }, 100);
         }
     }
 
@@ -293,18 +278,17 @@ class World {
 
     checkFullscreen() {
         setInterval(() => {
-            if (this.keyboard.ENTER && !this.isFullscreen) {
+            if (this.keyboard.ENTER && !document.fullscreenElement) {
                 let fullscreen = document.getElementById('fullscreen');
                 this.enterFullscreen(fullscreen);
             }
-            if (this.keyboard.ENTER && this.isFullscreen) {
+            else if (this.keyboard.ENTER && (this.isFullscreen || document.fullscreenElement)) {
                 this.exitFullscreen();
             }
         }, 100);
     }
 
     enterFullscreen(element) {
-        this.isFullscreen = true;
         if (element.requestFullscreen) {
             element.requestFullscreen();
         } else if (element.mozRequestFullScreen) { // Firefox
@@ -314,11 +298,9 @@ class World {
         } else if (element.msRequestFullscreen) { // Internet Explorer
             element.msRequestFullscreen();
         }
-        setTimeout(() => {}, 250);
     }
 
     exitFullscreen() {
-        this.isFullscreen = false;
         if (document.exitFullscreen) {
             document.exitFullscreen();
         } else if (document.mozCancelFullScreen) { // Firefox
@@ -328,7 +310,6 @@ class World {
         } else if (document.msExitFullscreen) { // Internet Explorer
             document.msExitFullscreen();
         }
-        setTimeout(() => {}, 250);
     }
 
     switchFullscreen() {

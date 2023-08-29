@@ -59,15 +59,16 @@ body h1 {
     height: 480px;
 }
 
-button {
+.menu-button {
     background-color: rgb(255, 191, 0);
     font-family: 'zabras', Arial, Helvetica, sans-serif;
     font-size: 35px;
     color: black;
     letter-spacing: 5px;
+    border-radius: 5px;
 }
 
-button:hover {
+.menu-button:hover {
     transition: 50ms ease-in-out;
     font-size: 40px;
     cursor: pointer;
@@ -110,6 +111,12 @@ span {
     width: 50px;
     border-radius: 100%;
     border: 1px solid black;
+    background-color: rgb(255, 191, 0);
+}
+
+.button-responsive:hover {
+    cursor: pointer;
+    background-color: rgb(255, 157, 0);
 }
 
 .button-responsive img {
