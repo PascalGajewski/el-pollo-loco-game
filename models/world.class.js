@@ -313,11 +313,11 @@ class World {
     }
 
     switchFullscreen() {
-        if (!this.isFullscreen) {
+        if (!document.fullscreenElement) {
             let fullscreen = document.getElementById('fullscreen');
             this.enterFullscreen(fullscreen);
         }
-        else {
+        else if (document.fullscreenElement) {
             this.exitFullscreen();
         }
     }

@@ -141,12 +141,12 @@ span {
         font-size: 35px !important;
     }
 
-    button {
+    .menu-button {
         font-size: 22px !important;
         letter-spacing: 3px;
     }
 
-    button:hover {
+    .menu-button:hover {
         font-size: 25px !important;
     }
 
@@ -165,11 +165,11 @@ span {
         margin: 0;
     }
 
-    button {
+    .menu-button {
         font-size: 28px;
     }
 
-    button:hover {
+    .menu-button:hover {
         font-size: 30px;
     }
 
@@ -218,10 +218,6 @@ span {
         padding-bottom: 66.67%;
         height: auto;
     }
-
-    #button-fullscreen{
-        display: none !important;
-    }
 }
 
 @media only screen and (max-height: 300px) {
@@ -229,12 +225,12 @@ span {
         margin: 0;
     }
 
-    button {
+    .menu-button {
         font-size: 22px !important;
         letter-spacing: 3px;
     }
 
-    button:hover {
+    .menu-button:hover {
         font-size: 25px !important;
     }
 }
@@ -255,11 +251,11 @@ span {
 }
 
 @media only screen and (max-height: 420px) {
-    button {
+    .menu-button {
         font-size: 28px;
     }
 
-    button:hover {
+    .menu-button:hover {
         font-size: 30px;
     }
 
@@ -276,10 +272,6 @@ span {
 @media only screen and (max-height: 480px) {
     canvas {
         max-height: 100vh !important;
-    }
-
-    #button-fullscreen{
-        display: none !important;
     }
 }
 
