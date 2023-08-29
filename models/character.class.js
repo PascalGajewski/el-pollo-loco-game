@@ -41,6 +41,28 @@ class Character extends MovableObject {
         'img/2_character_pepe/5_dead/D-56.png',
         'img/2_character_pepe/5_dead/D-57.png'
     ];
+    IMAGES_IDLE = ['img/2_character_pepe/1_idle/idle/I-1.png',
+        'img/2_character_pepe/1_idle/idle/I-2.png',
+        'img/2_character_pepe/1_idle/idle/I-3.png',
+        'img/2_character_pepe/1_idle/idle/I-4.png',
+        'img/2_character_pepe/1_idle/idle/I-5.png',
+        'img/2_character_pepe/1_idle/idle/I-6.png',
+        'img/2_character_pepe/1_idle/idle/I-7.png',
+        'img/2_character_pepe/1_idle/idle/I-8.png',
+        'img/2_character_pepe/1_idle/idle/I-9.png',
+        'img/2_character_pepe/1_idle/idle/I-10.png'
+    ];
+    IMAGES_SLEEP = ['img/2_character_pepe/1_idle/long_idle/I-11.png',
+        'img/2_character_pepe/1_idle/long_idle/I-12.png',
+        'img/2_character_pepe/1_idle/long_idle/I-13.png',
+        'img/2_character_pepe/1_idle/long_idle/I-14.png',
+        'img/2_character_pepe/1_idle/long_idle/I-15.png',
+        'img/2_character_pepe/1_idle/long_idle/I-16.png',
+        'img/2_character_pepe/1_idle/long_idle/I-17.png',
+        'img/2_character_pepe/1_idle/long_idle/I-18.png',
+        'img/2_character_pepe/1_idle/long_idle/I-19.png',
+        'img/2_character_pepe/1_idle/long_idle/I-20.png'
+    ];
     WALKING_SOUND = new Audio('audio/walk.mp3');
     speed_x = 7.5;
     speed_y = 0;
@@ -68,6 +90,8 @@ class Character extends MovableObject {
         this.loadImageCache(this.IMAGES_JUMPING);
         this.loadImageCache(this.IMAGES_HURT);
         this.loadImageCache(this.IMAGES_DEAD);
+        this.loadImageCache(this.IMAGES_IDLE);
+        this.loadImageCache(this.IMAGES_SLEEP);
     }
 
     movingLeft() {
@@ -121,6 +145,12 @@ class Character extends MovableObject {
             else if (this.checkIfAboveGround()) {
                 this.animateMovement(this.IMAGES_JUMPING);
             }
+            else if(this.checkIfSleeping() == 1){
+                this.animateMovement(this.IMAGES_IDLE);
+            }
+            else if(this.checkIfSleeping() == 2){
+                this.animateMovement(this.IMAGES_SLEEP);
+            }
             else {
                 if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
                     this.WALKING_SOUND.play();
@@ -144,5 +174,15 @@ class Character extends MovableObject {
         setTimeout(() => {
             this.paralysed = false;
         }, 50);
+    }
+
+    checkIfSleeping(){
+        let timePassed = (new Date().getTime() - this.world.lastCharacterMove) / 1000;
+        if(timePassed < 1){
+            return 1;
+        }
+        if(timePassed < 5){
+            return 2;
+        }
     }
 }

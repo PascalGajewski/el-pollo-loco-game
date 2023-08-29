@@ -17,6 +17,7 @@ class World {
     throwingPaused = false;
     gameOver = false;
     animationFrame;
+    lastCharacterMove;
 
     constructor(canvas, keyboard) {
         this.canvas = canvas;
@@ -124,6 +125,7 @@ class World {
             this.checkCollisions();
             this.checkThrowObjects();
             this.checkGameOver();
+            this.checkCharacterMovement();
         }, 1000 / 60);
     }
 
@@ -250,6 +252,11 @@ class World {
             this.drawGameOver();
             show('restart-button');
         }
+    }
+
+    checkCharacterMovement(){
+        if(!(this.keyboard.LEFT && this.keyboard.UP && this.keyboard.RIGHT && this.keyboard.SPACE))
+            this.lastCharacterMove = new Date().getTime();
     }
 
     drawGameOver() {
