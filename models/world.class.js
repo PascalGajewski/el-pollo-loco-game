@@ -93,8 +93,8 @@ class World {
     startGame() {
         this.level = level1;
         this.character = new Character();
-        this.coinbar = new StatusBar(`COIN`, ((this.character.coinStore / this.level.maxCoins) * 100), 20, 20);
-        this.bottlebar = new StatusBar(`BOTTLE`, ((this.character.bottleStore / this.level.maxBottles) * 100), 20, 50);
+        this.coinbar = new StatusBar(`COIN`, ((this.character.coinStore / this.level.maxCoins) * 100), 20, 30);
+        this.bottlebar = new StatusBar(`BOTTLE`, ((this.character.bottleStore / this.level.maxBottles) * 100), 20, 70);
         this.setWorldInCharacter();
         this.drawGame();
         this.runningFeedbackFunctions();
