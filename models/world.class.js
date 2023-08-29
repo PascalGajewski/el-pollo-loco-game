@@ -208,11 +208,11 @@ class World {
                         }, 1000);
                     }
                 }
-                if (enemy instanceof Endboss && enemy.killed && !this.gameOver) {
+                if (enemy instanceof Endboss && enemy.killed) {
                     setTimeout(() => {
                         this.drawGameOver();
                         show('restart-button');
-                    }, 1500);
+                    }, 500);
                 }
             });
         })
@@ -278,11 +278,11 @@ class World {
 
     checkFullscreen() {
         setInterval(() => {
-            if (this.keyboard.ENTER && !document.fullscreenElement) {
+            if (this.keyboard.ENTER && !document.fullscreen) {
                 let fullscreen = document.getElementById('fullscreen');
                 this.enterFullscreen(fullscreen);
             }
-            else if (this.keyboard.ENTER && (this.isFullscreen || document.fullscreenElement)) {
+            else if (this.keyboard.ENTER && (this.isFullscreen || document.fullscreen)) {
                 this.exitFullscreen();
             }
         }, 100);
@@ -313,11 +313,11 @@ class World {
     }
 
     switchFullscreen() {
-        if (!document.fullscreenElement) {
+        if (!document.fullscreen) {
             let fullscreen = document.getElementById('fullscreen');
             this.enterFullscreen(fullscreen);
         }
-        else if (document.fullscreenElement) {
+        else if (document.fullscreen) {
             this.exitFullscreen();
         }
     }

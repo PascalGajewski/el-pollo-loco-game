@@ -117,21 +117,21 @@ function runMobileEventListeners() {
     let buttonFullscreen = document.getElementById('button-fullscreen');
     buttonFullscreen.addEventListener("click", (event) => {
         event.preventDefault();
-        if (world) {
+        if (world && (window.orientation === 0 || window.orientation === 180)) {
             world.switchFullscreen();
         }
     });
 
-
     document.addEventListener('orientationchange', () => {
-        if (window.orientation === 90 || window.orientation === -90) {
+        if ((window.orientation === 90 || window.orientation === -90) && !document.fullscreen) {
+            console.log('orientation changed');
             let fullscreen = document.getElementById('fullscreen');
             world.enterFullscreen(fullscreen);
-            document.getElementById('button-fullscreen').style.display = 'none';
+            buttonFullscreen.style.display = 'none !important';
         }
-        else {
+        else if (document.fullscreen){
             world.exitFullscreen();
-            document.getElementById('button-fullscreen').style.display = 'flex';
+            buttonFullscreen.style.display = 'flex';
         }
     }) 
 };
