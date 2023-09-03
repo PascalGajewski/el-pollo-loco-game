@@ -2,7 +2,6 @@ let canvas;
 let world;
 let keyboard;
 let isMuted = true;
-let buttonSound = document.getElementById('button-sound');
 
 /** 
  * This variable is true, if the used device is a mobile device, and it is false, if not.
@@ -14,14 +13,36 @@ const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera
  */
 function init() {
     checkIfMobile();
+    setDefaultValues();
+    if (isMobileDevice) {
+        runMobileEventListeners();
+    }
+    if (!isMuted) {
+        world.THEME_SONG.play();
+        world.THEME_SONG.muted = false;
+    }
+}
+
+/**
+ * This function hides the guide-box element and shows the responsive buttons, if the used device 
+ * is a mobile device
+ */
+function checkIfMobile() {
+    setInterval(() => {
+        if (isMobileDevice) {
+            show('responsive-box');
+            show('button-fullscreen');
+            hide('guide-box');
+        }
+    }, 1000 / 60);
+}
+
+function setDefaultValues() {
     keyboard = new Keyboard();
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
     document.getElementById('start-button').style.display = "flex";
     document.getElementById('restart-button').style.display = "none";
-    if (isMobileDevice) {
-        runMobileEventListeners();
-    }
 }
 
 /**
@@ -29,10 +50,11 @@ function init() {
  * when the 'Back to Menu' button is pressed
  */
 function reload() {
-    world.animationFrame = 0;
-    canvas = 0;
-    world = 0;
-    keyboard = 0;
+    world.THEME_SONG.src = '';
+    world.animationFrame = [];
+    canvas = [];
+    world = [];
+    keyboard = [];
     init();
 }
 
@@ -54,28 +76,6 @@ function hide(elementId) {
  */
 function show(elementId) {
     document.getElementById(elementId).style.display = "flex";
-}
-
-// Mute a singular HTML5 element
-function muteMe(elem) {
-    elem.muted = true;
-    elem.pause();
-}
-
-// Try to mute all video and audio elements on the page
-function mutePage() {
-    document.querySelectorAll("audio").forEach((elem) => muteMe(elem));
-}
-
-// Unmute a singular HTML5 element
-function unmuteMe(elem) {
-    elem.muted = false;
-    elem.pause();
-}
-
-// Try to unmute all video and audio elements on the page
-function unmutePage() {
-    document.querySelectorAll("audio").forEach((elem) => unmuteMe(elem));
 }
 
 /**
@@ -129,35 +129,36 @@ window.addEventListener("keyup", (event) => {
 });
 
 /**
- * If the screen is turned to "landscape" mode, the document siwtches to fullscreen
- * when it is not in the fullscreen mode yet. If it is turned to "portrait" mode,
- * the document exits the fullscreen mode, when it is in fullscreen mode yet. 
- */
-window.addEventListener('orientationchange', () => {
-    if ((window.orientation === 90 || window.orientation === -90) && !document.fullscreen) {
-        let fullscreen = document.getElementById('fullscreen');
-        world.enterFullscreen(fullscreen);
-    }
-    else if ((window.orientation === 0 || window.orientation === 180) && document.fullscreen) {
-        world.exitFullscreen();
-    }
-})
-
-/**
  *  Switches the sound mode, if the sound button is pressed/touched 
  */
-function switchMute () {
+function switchMute() {
     if (!isMuted) {
         isMuted = true;
-        mutePage();
-        document.getElementById('sound-logo').src = 'img/10_control_icons/sound-on.png';
+        muteAllAudio();
+        document.getElementById('sound-logo').src = 'img/10_control_icons/sound-off.png';
+        world.THEME_SONG.pause();
     }
     else if (isMuted) {
         isMuted = false;
-        unmutePage();
-        document.getElementById('sound-logo').src = 'img/10_control_icons/sound-off.png';
+        unmuteAllAudio();
+        document.getElementById('sound-logo').src = 'img/10_control_icons/sound-on.png';
+        world.THEME_SONG.play();
     }
 };
+
+function muteAllAudio() {
+    world.THEME_SONG.muted = true;
+    if (world.character) {
+        world.character.WALKING_SOUND.muted = true;
+    }
+}
+
+function unmuteAllAudio() {
+    world.THEME_SONG.muted = false;
+    if (world.character) {
+        world.character.WALKING_SOUND.muted = false;
+    }
+}
 
 
 /**
@@ -215,19 +216,20 @@ function runMobileEventListeners() {
             world.switchFullscreen();
         }
     });
-};
 
-/**
- * This function hides the guide-box element and shows the responsive buttons, if the used device 
- * is a mobile device
- */
-function checkIfMobile() {
-    setInterval(() => {
-        if (isMobileDevice) {
-            show('responsive-box');
-            show('button-fullscreen');
-            hide('guide-box');
+    /**
+     * If the screen is turned to "landscape" mode, the document siwtches to fullscreen
+     * when it is not in the fullscreen mode yet. If it is turned to "portrait" mode,
+     * the document exits the fullscreen mode, when it is in fullscreen mode yet. 
+     */
+    window.addEventListener('orientationchange', () => {
+        if ((window.orientation === 90 || window.orientation === -90) && !document.fullscreen) {
+            let fullscreen = document.getElementById('fullscreen');
+            world.enterFullscreen(fullscreen);
         }
-    }, 1000 / 60);
-}
+        else if ((window.orientation === 0 || window.orientation === 180) && document.fullscreen) {
+            world.exitFullscreen();
+        }
+    })
+};
 
