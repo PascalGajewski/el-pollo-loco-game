@@ -1,6 +1,8 @@
 let canvas;
 let world;
 let keyboard;
+let isMuted = true;
+let buttonSound = document.getElementById('button-sound');
 
 /** 
  * This variable is true, if the used device is a mobile device, and it is false, if not.
@@ -54,6 +56,28 @@ function show(elementId) {
     document.getElementById(elementId).style.display = "flex";
 }
 
+// Mute a singular HTML5 element
+function muteMe(elem) {
+    elem.muted = true;
+    elem.pause();
+}
+
+// Try to mute all video and audio elements on the page
+function mutePage() {
+    document.querySelectorAll("audio").forEach((elem) => muteMe(elem));
+}
+
+// Unmute a singular HTML5 element
+function unmuteMe(elem) {
+    elem.muted = false;
+    elem.pause();
+}
+
+// Try to unmute all video and audio elements on the page
+function unmutePage() {
+    document.querySelectorAll("audio").forEach((elem) => unmuteMe(elem));
+}
+
 /**
  * This function cheks the window for pressed buttons (Arrow Left, Right, Up; Space and Enter) 
  * on the keyboard an sets their values in the JSON "keyboard" to "true" for the time they are pressed 
@@ -103,6 +127,38 @@ window.addEventListener("keyup", (event) => {
         keyboard.ENTER = false;
     };
 });
+
+/**
+ * If the screen is turned to "landscape" mode, the document siwtches to fullscreen
+ * when it is not in the fullscreen mode yet. If it is turned to "portrait" mode,
+ * the document exits the fullscreen mode, when it is in fullscreen mode yet. 
+ */
+window.addEventListener('orientationchange', () => {
+    if ((window.orientation === 90 || window.orientation === -90) && !document.fullscreen) {
+        let fullscreen = document.getElementById('fullscreen');
+        world.enterFullscreen(fullscreen);
+    }
+    else if ((window.orientation === 0 || window.orientation === 180) && document.fullscreen) {
+        world.exitFullscreen();
+    }
+})
+
+/**
+ *  Switches the sound mode, if the sound button is pressed/touched 
+ */
+function switchMute () {
+    if (!isMuted) {
+        isMuted = true;
+        mutePage();
+        document.getElementById('sound-logo').src = 'img/10_control_icons/sound-on.png';
+    }
+    else if (isMuted) {
+        isMuted = false;
+        unmutePage();
+        document.getElementById('sound-logo').src = 'img/10_control_icons/sound-off.png';
+    }
+};
+
 
 /**
  * This function checks the responsive control buttons for their status (touched or not)
@@ -159,21 +215,6 @@ function runMobileEventListeners() {
             world.switchFullscreen();
         }
     });
-
-    /**
-     * If the screen is turned to "landscape" mode, the document siwtches to fullscreen
-     * when it is not in the fullscreen mode yet. If it is turned to "portrait" mode,
-     * the document exits the fullscreen mode, when it is in fullscreen mode yet. 
-     */
-    document.addEventListener('orientationchange', () => {
-        if ((window.orientation === 90 || window.orientation === -90) && !document.fullscreen) {
-            let fullscreen = document.getElementById('fullscreen');
-            world.enterFullscreen(fullscreen);
-        }
-        else if ((window.orientation === 0 || window.orientation === 180) && document.fullscreen) {
-            world.exitFullscreen();
-        }
-    })
 };
 
 /**

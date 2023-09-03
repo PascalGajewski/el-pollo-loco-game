@@ -131,6 +131,12 @@ span {
     display: none;
 }
 
+#button-sound {
+    position: absolute;
+    justify-self: center;
+    bottom: 10px;
+}
+
 @font-face {
     font-family: 'zabras';
     src: url('/fonts/zabars.ttf');
@@ -189,6 +195,10 @@ span {
     .responsive-box {
         margin: 3px 0px !important;
     }
+
+    #button-sound {
+        bottom: 3px !important;
+    }
 }
 
 @media only screen and (max-width: 720px) {
@@ -203,6 +213,10 @@ span {
 
     .responsive-box {
         margin: 5px 0px;
+    }
+
+    #button-sound {
+        bottom: 5px;
     }
 
     canvas {

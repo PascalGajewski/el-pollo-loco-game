@@ -1,4 +1,5 @@
 class World {
+    THEME_SONG = new Audio('audio/theme-song.mp3');
     canvas;
     ctx;
     keyboard;
@@ -84,6 +85,9 @@ class World {
         this.setWorldInCharacter();
         this.drawGame();
         this.runningFeedbackFunctions();
+        this.THEME_SONG.loop = true;
+        this.THEME_SONG.volume = 0.5;
+        this.THEME_SONG.play();
     }
 
     drawGame() {

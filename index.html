@@ -31,24 +31,29 @@
     <div id="fullscreen">
         <div class="overlay">
             <div class="button-box" id="button-box">
-                <button class="menu-button" id="start-button" onclick="initLevel(), world.startGame(), hide('start-button')">Start
+                <button class="menu-button" id="start-button"
+                    onclick="initLevel(), world.startGame(), hide('start-button')">Start
                     Game</button>
                 <button class="menu-button" id="restart-button" onclick="reload()">Back to Menu</button>
             </div>
             <div class="responsive-box" id="responsive-box">
-                <button style="margin-left: 25px;" class="button-responsive" id="button-left"><img
-                        src="img/10_control_icons/arrow-left.png"></button>
-                <div style="display: flex; justify-content: space-evenly; align-items: center; gap: 10px;">
-                    <button class="button-responsive" id="button-jump"><img
+                <div style="display: flex; justify-content: space-evenly; align-items: center; gap: 20px;">
+                    <button style="margin-left: 25px;" class="button-responsive" id="button-jump"><img
                             src="img/10_control_icons/jump.png"></button>
-                    <button class="button-responsive" id="button-bottle"><img
+                    <button style="margin-right: 25px;" class="button-responsive" id="button-bottle"><img
                             src="img/10_control_icons/bottle.png"></button>
                 </div>
-                <button style="margin-right: 25px;" class="button-responsive" id="button-right"><img
-                        src="img/10_control_icons/arrow-right.png"></button>
+                <div style="display: flex; justify-content: space-evenly; align-items: center; gap: 20px;">
+                    <button style="margin-left: 25px;" class="button-responsive" id="button-left"><img
+                            src="img/10_control_icons/arrow-left.png"></button>
+                    <button style="margin-right: 25px;" class="button-responsive" id="button-right"><img
+                            src="img/10_control_icons/arrow-right.png"></button>
+                </div>
             </div>
             <button class="button-responsive" id="button-fullscreen"><img
                     src="img/10_control_icons/fullscreen.png"></button>
+            <button class="button-responsive" id="button-sound" onclick="switchMute()"><img 
+                    src="img/10_control_icons/sound-on.png" id="sound-logo"></button>
         </div>
         <canvas id="canvas" width="720" height="480">
         </canvas>
