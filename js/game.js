@@ -37,6 +37,9 @@ function checkIfMobile() {
     }, 1000 / 60);
 }
 
+/**
+ * This functions sets some default variables and values 
+ */
 function setDefaultValues() {
     keyboard = new Keyboard();
     canvas = document.getElementById('canvas');

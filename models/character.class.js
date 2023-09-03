@@ -64,6 +64,8 @@ class Character extends MovableObject {
         'img/2_character_pepe/1_idle/long_idle/I-20.png'
     ];
     WALKING_SOUND = new Audio('audio/walk.mp3');
+    HURTING_SOUND = new Audio('audio/hurt.mp3');
+    JUMPING_SOUND = new Audio('audio/jump.mp3');
     speed_x = 7.5;
     speed_y = 0;
     acceleration_y = 0.5;
@@ -76,6 +78,7 @@ class Character extends MovableObject {
         this.applyGravity();
         this.animate();
         this.WALKING_SOUND.playbackRate = 2.5;
+        this.HURTING_SOUND.playbackRate = 0.5;
     }
 
     animate() {
@@ -127,6 +130,8 @@ class Character extends MovableObject {
         setInterval(() => {
             if (this.world.keyboard.UP && !this.checkIfAboveGround() && !this.checkIfHurt()) {
                 this.speed_y = 14;
+                this.JUMPING_SOUND.currentTime = 0;
+                this.JUMPING_SOUND.play();
             }
         }, 1000 / 60);
     }
@@ -166,6 +171,7 @@ checkReachedEndboss() {
 
 animateParalisation() {
     this.paralysed = true;
+    this.HURTING_SOUND.play();
     setTimeout(() => {
         this.paralysed = false;
     }, 50);
