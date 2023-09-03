@@ -145,44 +145,39 @@ class Character extends MovableObject {
             else if (this.checkIfAboveGround()) {
                 this.animateMovement(this.IMAGES_JUMPING);
             }
-            else if(this.checkIfSleeping() == 1){
-                this.animateMovement(this.IMAGES_IDLE);
-            }
-            else if(this.checkIfSleeping() == 2){
+            else if (this.checkIfSleeping()) {
                 this.animateMovement(this.IMAGES_SLEEP);
             }
+            else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+                this.animateMovement(this.IMAGES_WALKING);
+                this.WALKING_SOUND.play();
+            }
             else {
-                if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                    this.WALKING_SOUND.play();
-                    this.animateMovement(this.IMAGES_WALKING);
-                }
-                else {
-                    this.loadImage('img/2_character_pepe/3_jump/J-31.png');
-                }
+                this.animateMovement(this.IMAGES_IDLE);
             }
         }, 75);
-    }
+}
 
-    checkReachedEndboss() {
-        if (this.x > 3200) {
-            this.reachedEndboss = true;
-        }
-    };
-
-    animateParalisation() {
-        this.paralysed = true;
-        setTimeout(() => {
-            this.paralysed = false;
-        }, 50);
+checkReachedEndboss() {
+    if (this.x > 3200) {
+        this.reachedEndboss = true;
     }
+};
 
-    checkIfSleeping(){
-        let timePassed = (new Date().getTime() - this.world.lastCharacterMove) / 1000;
-        if(timePassed < 1){
-            return 1;
-        }
-        if(timePassed < 5){
-            return 2;
-        }
+animateParalisation() {
+    this.paralysed = true;
+    setTimeout(() => {
+        this.paralysed = false;
+    }, 50);
+}
+
+checkIfSleeping(){
+    if(this.world.lastCharacterMove){
+    let timePassed = (new Date().getTime() - this.world.lastCharacterMove[0]) / 1000;
+    return timePassed > 3
     }
+    else {
+        return false;
+    }
+}
 }

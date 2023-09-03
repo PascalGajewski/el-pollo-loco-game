@@ -17,7 +17,7 @@ class World {
     throwingPaused = false;
     gameOver = false;
     animationFrame;
-    lastCharacterMove;
+    lastCharacterMove = [];
 
     constructor(canvas, keyboard) {
         this.canvas = canvas;
@@ -255,8 +255,12 @@ class World {
     }
 
     checkCharacterMovement(){
-        if(!(this.keyboard.LEFT && this.keyboard.UP && this.keyboard.RIGHT && this.keyboard.SPACE))
-            this.lastCharacterMove = new Date().getTime();
+        if(!this.keyboard.LEFT && !this.keyboard.UP && !this.keyboard.RIGHT && !this.keyboard.SPACE && !this.keyboard.ENTER){
+            this.lastCharacterMove.push(new Date().getTime());
+        }
+        else {
+            this.lastCharacterMove = [];
+        }
     }
 
     drawGameOver() {
