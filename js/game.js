@@ -12,7 +12,7 @@ const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera
  * This function initiates the canvas and the world in it
  */
 function init() {
-    checkIfMobile();
+    settingsForMobileDevice();
     setDefaultValues();
     if (isMobileDevice) {
         runMobileEventListeners();
@@ -27,14 +27,15 @@ function init() {
  * This function hides the guide-box element and shows the responsive buttons, if the used device 
  * is a mobile device
  */
-function checkIfMobile() {
-    setInterval(() => {
-        if (isMobileDevice) {
+function settingsForMobileDevice() {
+    if (isMobileDevice) {
+        show('dialog-box');
+        setInterval(() => {
             show('responsive-box');
             show('button-fullscreen');
             hide('guide-box');
-        }
-    }, 1000 / 60);
+        }, 1000 / 60);
+    }
 }
 
 /**
@@ -151,15 +152,25 @@ function switchMute() {
 
 function muteAllAudio() {
     world.THEME_SONG.muted = true;
+    world.DYING_BIRD_SOUND.muted = true;
+    world.FLYING_BOTTLE_SOUND.muted = true;
+    world.SMASHING_BOTTLE_SOUND.muted = true;
     if (world.character) {
         world.character.WALKING_SOUND.muted = true;
+        world.character.JUMPING_SOUND.muted = true;
+        world.character.HURTING_SOUND.muted = true;
     }
 }
 
 function unmuteAllAudio() {
     world.THEME_SONG.muted = false;
+    world.DYING_BIRD_SOUND.muted = false;
+    world.FLYING_BOTTLE_SOUND.muted = false;
+    world.SMASHING_BOTTLE_SOUND.muted = false;
     if (world.character) {
         world.character.WALKING_SOUND.muted = false;
+        world.character.JUMPING_SOUND.muted = false;
+        world.character.HURTING_SOUND.muted = false;
     }
 }
 

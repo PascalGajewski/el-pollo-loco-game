@@ -1,7 +1,6 @@
 class World {
-    THEME_SONG = new Audio('audio/theme-song.mp3');
     canvas;
-    ctx;
+    ctx
     keyboard;
     level;
     character;
@@ -19,6 +18,10 @@ class World {
     gameOver = false;
     animationFrame;
     lastCharacterMove = [];
+    THEME_SONG = new Audio('audio/theme-song.mp3');
+    DYING_BIRD_SOUND = new Audio('audio/bird-dying.mp3');
+    SMASHING_BOTTLE_SOUND = new Audio('audio/smashing-bottle.mp3');
+    FLYING_BOTTLE_SOUND = new Audio('audio/flying-bottle.mp3');
 
     constructor(canvas, keyboard) {
         this.canvas = canvas;
@@ -26,7 +29,7 @@ class World {
         this.keyboard = keyboard;
         this.drawStartMenu();
         this.checkFullscreen();
-        this.initiateThemeSong();
+        this.initiateSoundSettings();
     }
 
     drawStartMenu() {
@@ -121,10 +124,14 @@ class World {
         }
     }
 
-    initiateThemeSong() {
+    initiateSoundSettings() {
         this.THEME_SONG.muted = true;
+        this.SMASHING_BOTTLE_SOUND.muted = true;
+        this.FLYING_BOTTLE_SOUND.muted = true;
+        this.DYING_BIRD_SOUND.muted = true;
         this.THEME_SONG.loop = true;
         this.THEME_SONG.volume = 0.5;
+        this.FLYING_BOTTLE_SOUND.volume = 0.25;
     }
 
     startGame() {
@@ -212,6 +219,7 @@ class World {
     enemyGetsHurt(enemy) {
         if (this.character.checkIfColliding(enemy) && this.character.y <= 80 && enemy instanceof Chicken && this.character.speed_y < 0 && !this.collidingPaused) {
             this.collidingPaused = true;
+            this.DYING_BIRD_SOUND.play();
             enemy.getHit(100);
             setTimeout(() => {
                 this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
@@ -248,6 +256,8 @@ class World {
                     if (!this.flyingPaused) {
                         this.flyingPaused = true;
                         enemy.getHit(100);
+                        this.SMASHING_BOTTLE_SOUND.play();
+                        this.DYING_BIRD_SOUND.play();
                         setTimeout(() => {
                             this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
                             this.flyingPaused = false;
@@ -259,6 +269,7 @@ class World {
                     if (!this.flyingPaused) {
                         this.flyingPaused = true;
                         enemy.getHit(20);
+                        this.SMASHING_BOTTLE_SOUND.play();
                         this.endbossHealthbar.setPercentage(enemy.lifepoints, this.endbossHealthbar.IMAGES_HEALTH_ENDBOSS);
                         setTimeout(() => {
                             this.flyingPaused = false;
@@ -266,6 +277,7 @@ class World {
                     }
                 }
                 if (enemy instanceof Endboss && enemy.killed) {
+                    this.DYING_BIRD_SOUND.play();
                     setTimeout(() => {
                         this.drawGameOver();
                         show('restart-button');
@@ -283,6 +295,7 @@ class World {
     generateThrownBottle() {
         if (this.keyboard.SPACE && this.character.bottleStore > 0 && !this.throwingPaused) {
             this.throwingPaused = true;
+            this.FLYING_BOTTLE_SOUND.play();
             this.flyingBottles.push(new ThrowableBottle(this.character.x + 25, this.character.y + 100, this.character.otherDirection));
             if (this.character.bottleStore > 0) {
                 this.character.bottleStore--;

@@ -22,6 +22,7 @@ class ThrowableBottle extends MovableObject {
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
     ];
+    SMASHING_BOTTLE_SOUND = new Audio('audio/smashing-bottle.mp3');
 
     constructor(currentLocationX, currentLocationY, otherDirection) {
         super().loadImage('img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png');
@@ -31,6 +32,7 @@ class ThrowableBottle extends MovableObject {
         this.y = currentLocationY;
         this.otherDirection = otherDirection;
         this.throw();
+        this.SMASHING_BOTTLE_SOUND.muted = true;
     }
 
     throw() {
@@ -53,6 +55,7 @@ class ThrowableBottle extends MovableObject {
                 this.acceleration_y = 0;
                 clearInterval(rotatingBottleInterval);
                 clearInterval(flyingBottleInterval);
+                this.SMASHING_BOTTLE_SOUND.play();
                 setTimeout(() => {
                     this.splashed = true;
                 }, 500);

@@ -63,22 +63,21 @@ class Character extends MovableObject {
         'img/2_character_pepe/1_idle/long_idle/I-19.png',
         'img/2_character_pepe/1_idle/long_idle/I-20.png'
     ];
-    WALKING_SOUND = new Audio('audio/walk.mp3');
-    HURTING_SOUND = new Audio('audio/hurt.mp3');
-    JUMPING_SOUND = new Audio('audio/jump.mp3');
     speed_x = 7.5;
     speed_y = 0;
     acceleration_y = 0.5;
     paralysed = false;
     reachedEndboss = false;
+    WALKING_SOUND = new Audio('audio/walk.mp3');
+    HURTING_SOUND = new Audio('audio/hurt.mp3');
+    JUMPING_SOUND = new Audio('audio/jump.mp3');
 
     constructor() {
         super().loadImage('img/2_character_pepe/3_jump/J-31.png');
         this.loadCompleteImageCache();
         this.applyGravity();
         this.animate();
-        this.WALKING_SOUND.playbackRate = 2.5;
-        this.HURTING_SOUND.playbackRate = 0.5;
+        this.initiateAudioSetting();
     }
 
     animate() {
@@ -86,6 +85,14 @@ class Character extends MovableObject {
         this.movingLeft();
         this.movingRight();
         this.movingUp();
+    }
+
+    initiateAudioSetting(){
+        this.WALKING_SOUND.playbackRate = 2.5;
+        this.HURTING_SOUND.playbackRate = 0.5;
+        this.WALKING_SOUND.muted = true;
+        this.JUMPING_SOUND.muted = true; 
+        this.HURTING_SOUND.muted = true;  
     }
 
     loadCompleteImageCache() {

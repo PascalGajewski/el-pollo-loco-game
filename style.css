@@ -14,6 +14,18 @@ body {
     overflow: hidden;
 }
 
+.dialog-box {
+    display: none;
+    position: absolute;
+    z-index: 99;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    opacity: 0.9;
+}
+
 body h1 {
     font-size: 75px;
     text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
