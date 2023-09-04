@@ -9,32 +9,16 @@ let isMuted = true;
 const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 /**
- * This function initiates the canvas and the world in it
+ * This function initiates the canvas and the world in it, and checks if it is used on a mobile device or not.
+ * There are special settings for mobile devices ("settingsForMobileDevice").
+ * It also checks, if the audio is already turned on before (when restarting a game).
  */
 function init() {
-    settingsForMobileDevice();
     setDefaultValues();
-    if (isMobileDevice) {
-        runMobileEventListeners();
-    }
+    settingsForMobileDevice();
     if (!isMuted) {
         world.THEME_SONG.play();
-        world.THEME_SONG.muted = false;
-    }
-}
-
-/**
- * This function hides the guide-box element and shows the responsive buttons, if the used device 
- * is a mobile device
- */
-function settingsForMobileDevice() {
-    if (isMobileDevice) {
-        show('dialog-box');
-        setInterval(() => {
-            show('responsive-box');
-            show('button-fullscreen');
-            hide('guide-box');
-        }, 1000 / 60);
+        unmuteAllAudio();
     }
 }
 
@@ -50,6 +34,46 @@ function setDefaultValues() {
 }
 
 /**
+ * This function hides the guide-box element and shows the responsive buttons, if the used device 
+ * is a mobile device
+ */
+function settingsForMobileDevice() {
+    if (isMobileDevice) {
+        show('responsive-box');
+        show('button-fullscreen');
+        hide('guide-box');
+        runMobileEventListeners();
+        if ((window.orientation === 90 || window.orientation === -90)) {
+            hide('dialog-box');
+        }
+        else {
+            show('dialog-box');
+        }
+    }
+}
+
+/**
+ * This function needs an elements Id an sets its css style attribute "display" to "none", 
+ * so that the elemnt is not on the screen
+ * 
+ * @param {string} elementId - ID of the HTML Element that should be hided 
+ */
+function hide(elementId) {
+    document.getElementById(elementId).style.display = "none";
+}
+
+/**
+ * This function needs an elements Id an sets its css style attribute "display" to "flex", 
+ * so that the elemnt is shown on the screen
+ * 
+ * @param {string} elementId - ID of the Element that should be shown 
+ */
+function show(elementId) {
+    document.getElementById(elementId).style.display = "flex";
+}
+
+
+/**
  * This function resets all variables and intervals and initiates the canvas an the world in it again, 
  * when the 'Back to Menu' button is pressed
  */
@@ -60,26 +84,6 @@ function reload() {
     world = [];
     keyboard = [];
     init();
-}
-
-/**
- * This function needs an elements Id an sets its css style attribute "display" to "none", 
- * so that the elemnt is not on the screen
- * 
- * @param {string} elementId 
- */
-function hide(elementId) {
-    document.getElementById(elementId).style.display = "none";
-}
-
-/**
- * This function needs an elements Id an sets its css style attribute "display" to "flex", 
- * so that the elemnt is shown on the screen
- * 
- * @param {string} elementId 
- */
-function show(elementId) {
-    document.getElementById(elementId).style.display = "flex";
 }
 
 /**
@@ -150,6 +154,9 @@ function switchMute() {
     }
 };
 
+/**
+ * This function mutes all Sounds in the game
+ */
 function muteAllAudio() {
     world.THEME_SONG.muted = true;
     world.DYING_BIRD_SOUND.muted = true;
@@ -162,6 +169,9 @@ function muteAllAudio() {
     }
 }
 
+/**
+ * This function unmutes all Sounds in the game
+ */
 function unmuteAllAudio() {
     world.THEME_SONG.muted = false;
     world.DYING_BIRD_SOUND.muted = false;
@@ -174,13 +184,12 @@ function unmuteAllAudio() {
     }
 }
 
-
 /**
  * This function checks the responsive control buttons for their status (touched or not)
  * an sets their analogous values in the JSON "keyboard" to "true" or "false" for the time they are touched 
  */
 function runMobileEventListeners() {
-    let buttonLeft = document.getElementById('button-left');
+    let buttonLeft = document.getElementById('button-left');    // responsive button LEFT
     buttonLeft.addEventListener("touchstart", (event) => {
         event.preventDefault();
         keyboard.LEFT = true;
@@ -190,7 +199,7 @@ function runMobileEventListeners() {
         keyboard.LEFT = false;
     });
 
-    let buttonRight = document.getElementById('button-right');
+    let buttonRight = document.getElementById('button-right');  // responsive button RIGHT
     buttonRight.addEventListener("touchstart", (event) => {
         event.preventDefault();
         keyboard.RIGHT = true;
@@ -200,7 +209,7 @@ function runMobileEventListeners() {
         keyboard.RIGHT = false;
     });
 
-    let buttonJump = document.getElementById('button-jump');
+    let buttonJump = document.getElementById('button-jump');    // responsive button UP
     buttonJump.addEventListener("touchstart", (event) => {
         event.preventDefault();
         keyboard.UP = true;
@@ -210,7 +219,7 @@ function runMobileEventListeners() {
         keyboard.UP = false;
     });
 
-    let buttonBottle = document.getElementById('button-bottle');
+    let buttonBottle = document.getElementById('button-bottle');    // responsive button SPACE
     buttonBottle.addEventListener("touchstart", (event) => {
         event.preventDefault();
         keyboard.SPACE = true;
@@ -221,28 +230,21 @@ function runMobileEventListeners() {
     });
 
     /**
-     *  Switches the Fullscreen Mode, if the Fullscreen button is pressed/touched 
-     */
-    let buttonFullscreen = document.getElementById('button-fullscreen');
-    buttonFullscreen.addEventListener("click", (event) => {
-        event.preventDefault();
-        if (world) {
-            world.switchFullscreen();
-        }
-    });
-
-    /**
      * If the screen is turned to "landscape" mode, the document siwtches to fullscreen
      * when it is not in the fullscreen mode yet. If it is turned to "portrait" mode,
      * the document exits the fullscreen mode, when it is in fullscreen mode yet. 
      */
     window.addEventListener('orientationchange', () => {
-        if ((window.orientation === 90 || window.orientation === -90) && !document.fullscreen) {
+        if ((window.orientation === 90 || window.orientation === -90) && (!document.fullscreenElement || !document.webkitFullscreenElement || !document.mozFullScreenElement || !document.msFullscreenElement)) {
             let fullscreen = document.getElementById('fullscreen');
             world.enterFullscreen(fullscreen);
+            hide('button-fullscreen');
+            console.log('is fullscreen');
         }
-        else if ((window.orientation === 0 || window.orientation === 180) && document.fullscreen) {
+        else if ((window.orientation === 0 || window.orientation === 180) && (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement)) {
             world.exitFullscreen();
+            show('button-fullscreen');
+            console.log('is not fullscreen');
         }
     })
 };

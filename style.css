@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'zabras';
+    src: url('/fonts/zabars.ttf');
+}
+
 body {
     margin: 0;
     width: 100vw;
@@ -65,15 +70,8 @@ body h1 {
     margin: 10px 0px;
 }
 
-#fullscreen:fullscreen .overlay {
-    position: absolute;
-    width: 720px;
-    height: 480px;
-}
-
 .menu-button {
     background-color: rgb(255, 191, 0);
-    font-family: 'zabras', Arial, Helvetica, sans-serif;
     font-size: 35px;
     color: black;
     letter-spacing: 5px;
@@ -85,24 +83,6 @@ body h1 {
     font-size: 40px;
     cursor: pointer;
     background-color: rgb(255, 157, 0);
-}
-
-canvas {
-    background-color: black;
-    display: block;
-}
-
-.guide-box {
-    max-width: 720px;
-    display: flex;
-    justify-content: space-evenly;
-    color: black;
-    font-size: 25px;
-    margin: 10px 0px;
-}
-
-span {
-    padding: 5px;
 }
 
 .responsive-box {
@@ -149,9 +129,22 @@ span {
     bottom: 10px;
 }
 
-@font-face {
-    font-family: 'zabras';
-    src: url('/fonts/zabars.ttf');
+canvas {
+    background-color: black;
+    display: block;
+}
+
+.guide-box {
+    max-width: 720px;
+    display: flex;
+    justify-content: space-evenly;
+    color: black;
+    font-size: 25px;
+    margin: 10px 0px;
+}
+
+span {
+    padding: 5px;
 }
 
 @media only screen and (max-width: 460px) {

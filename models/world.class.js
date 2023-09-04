@@ -80,12 +80,14 @@ class World {
 
     checkFullscreen() {
         setInterval(() => {
-            if (this.keyboard.ENTER && !document.fullscreen) {
+            if (this.keyboard.ENTER && (!document.fullscreenElement || !document.webkitFullscreenElement || !document.mozFullScreenElement || !document.msFullscreenElement)) {
                 let fullscreen = document.getElementById('fullscreen');
                 this.enterFullscreen(fullscreen);
+                console.log('is fullscreen');
             }
-            else if (this.keyboard.ENTER && (this.isFullscreen || document.fullscreen)) {
+            else if (this.keyboard.ENTER && (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement)) {
                 this.exitFullscreen();
+                console.log('is not fullscreen');
             }
         }, 100);
     }
@@ -115,12 +117,14 @@ class World {
     }
 
     switchFullscreen() {
-        if (!document.fullscreen) {
+        if (!document.fullscreenElement || !document.webkitFullscreenElement || !document.mozFullScreenElement || !document.msFullscreenElement) {
             let fullscreen = document.getElementById('fullscreen');
             this.enterFullscreen(fullscreen);
+            console.log('is fullscreen');
         }
-        else if (document.fullscreen) {
+        if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
             this.exitFullscreen();
+            console.log('is not fullscreen');
         }
     }
 
@@ -256,7 +260,6 @@ class World {
                     if (!this.flyingPaused) {
                         this.flyingPaused = true;
                         enemy.getHit(100);
-                        this.SMASHING_BOTTLE_SOUND.play();
                         this.DYING_BIRD_SOUND.play();
                         setTimeout(() => {
                             this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
@@ -269,7 +272,6 @@ class World {
                     if (!this.flyingPaused) {
                         this.flyingPaused = true;
                         enemy.getHit(20);
-                        this.SMASHING_BOTTLE_SOUND.play();
                         this.endbossHealthbar.setPercentage(enemy.lifepoints, this.endbossHealthbar.IMAGES_HEALTH_ENDBOSS);
                         setTimeout(() => {
                             this.flyingPaused = false;
@@ -309,6 +311,9 @@ class World {
 
     checkIfDeleteThrownBottle() {
         this.flyingBottles.forEach(flyingBottle => {
+            if (flyingBottle.isCollided) {
+                this.SMASHING_BOTTLE_SOUND.play();
+            }
             if (flyingBottle.splashed) {
                 this.flyingBottles.splice(this.flyingBottles.indexOf(flyingBottle), 1);
             }
