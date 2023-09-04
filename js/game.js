@@ -40,7 +40,6 @@ function setDefaultValues() {
 function settingsForMobileDevice() {
     if (isMobileDevice) {
         show('responsive-box');
-        show('button-fullscreen');
         hide('guide-box');
         runMobileEventListeners();
         if ((window.orientation === 90 || window.orientation === -90)) {
@@ -228,24 +227,5 @@ function runMobileEventListeners() {
         event.preventDefault();
         keyboard.SPACE = false;
     });
-
-    /**
-     * If the screen is turned to "landscape" mode, the document siwtches to fullscreen
-     * when it is not in the fullscreen mode yet. If it is turned to "portrait" mode,
-     * the document exits the fullscreen mode, when it is in fullscreen mode yet. 
-     */
-    window.addEventListener('orientationchange', () => {
-        if ((window.orientation === 90 || window.orientation === -90) && (!document.fullscreenElement || !document.webkitFullscreenElement || !document.mozFullScreenElement || !document.msFullscreenElement)) {
-            let fullscreen = document.getElementById('fullscreen');
-            world.enterFullscreen(fullscreen);
-            hide('button-fullscreen');
-            console.log('is fullscreen');
-        }
-        else if ((window.orientation === 0 || window.orientation === 180) && (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement)) {
-            world.exitFullscreen();
-            show('button-fullscreen');
-            console.log('is not fullscreen');
-        }
-    })
 };
 

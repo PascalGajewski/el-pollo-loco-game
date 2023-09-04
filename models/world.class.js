@@ -28,7 +28,6 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.keyboard = keyboard;
         this.drawStartMenu();
-        this.checkFullscreen();
         this.initiateSoundSettings();
     }
 
@@ -74,57 +73,6 @@ class World {
         if (Object.otherDirection) {
             Object.x = Object.x * -1;
             this.ctx.restore();
-        }
-    }
-
-
-    checkFullscreen() {
-        setInterval(() => {
-            if (this.keyboard.ENTER && (!document.fullscreenElement || !document.webkitFullscreenElement || !document.mozFullScreenElement || !document.msFullscreenElement)) {
-                let fullscreen = document.getElementById('fullscreen');
-                this.enterFullscreen(fullscreen);
-                console.log('is fullscreen');
-            }
-            else if (this.keyboard.ENTER && (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement)) {
-                this.exitFullscreen();
-                console.log('is not fullscreen');
-            }
-        }, 100);
-    }
-
-    enterFullscreen(element) {
-        if (element.requestFullscreen) {
-            element.requestFullscreen();
-        } else if (element.mozRequestFullScreen) { // Firefox
-            element.mozRequestFullScreen();
-        } else if (element.webkitRequestFullscreen) { // Chrome, Safari und Opera
-            element.webkitRequestFullscreen();
-        } else if (element.msRequestFullscreen) { // Internet Explorer
-            element.msRequestFullscreen();
-        }
-    }
-
-    exitFullscreen() {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.mozCancelFullScreen) { // Firefox
-            document.mozCancelFullScreen();
-        } else if (document.webkitExitFullscreen) { // Chrome, Safari und Opera
-            document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) { // Internet Explorer
-            document.msExitFullscreen();
-        }
-    }
-
-    switchFullscreen() {
-        if (!document.fullscreenElement || !document.webkitFullscreenElement || !document.mozFullScreenElement || !document.msFullscreenElement) {
-            let fullscreen = document.getElementById('fullscreen');
-            this.enterFullscreen(fullscreen);
-            console.log('is fullscreen');
-        }
-        if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
-            this.exitFullscreen();
-            console.log('is not fullscreen');
         }
     }
 

@@ -47,6 +47,7 @@ body h1 {
     justify-content: center;
     align-items: center;
     max-width: 720px;
+    max-height: 480px;
 }
 
 .overlay {
@@ -58,7 +59,6 @@ body h1 {
     height: 100%;
     justify-content: space-between;
 }
-
 
 .button-box {
     position: absolute;
@@ -132,6 +132,8 @@ body h1 {
 canvas {
     background-color: black;
     display: block;
+    width: auto;
+    height: auto;
 }
 
 .guide-box {
@@ -231,12 +233,6 @@ span {
     body h1 {
         display: none;
     }
-
-    #fullscreen:fullscreen .overlay {
-        width: 100vw;
-        padding-bottom: 66.67%;
-        height: auto;
-    }
 }
 
 @media only screen and (max-height: 300px) {
@@ -266,6 +262,10 @@ span {
 
     .responsive-box {
         margin: 3px 0px !important;
+    }
+
+    #button-sound {
+        bottom: 3px !important;
     }
 }
 
