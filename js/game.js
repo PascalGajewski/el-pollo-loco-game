@@ -238,3 +238,37 @@ function runMobileEventListeners() {
     });
 };
 
+document.addEventListener("keydown", function(event) {
+    // Überprüfen, ob die gedrückte Taste die Enter-Taste (KeyCode 13) ist
+    if ((event.keyCode === 13 || event.key === "Enter") && !isMobileDevice) {
+        // Das Element auswählen, das in den Vollbildmodus wechseln soll
+        const element = document.getElementById('fullscreen'); // gesamte Seite
+
+        // Prüfen, ob der Vollbildmodus bereits aktiv ist
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+            !document.webkitFullscreenElement && !document.msFullscreenElement) {
+            // In den Vollbildmodus wechseln
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            } else if (element.webkitRequestFullscreen) {
+                element.webkitRequestFullscreen();
+            } else if (element.msRequestFullscreen) {
+                element.msRequestFullscreen();
+            }
+        } else {
+            // Den Vollbildmodus verlassen, wenn bereits aktiv
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+    }
+});
+
