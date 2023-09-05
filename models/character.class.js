@@ -110,6 +110,7 @@ class Character extends MovableObject {
         this.WALKING_SOUND.playbackRate = 2.5;
         this.HURTING_SOUND.playbackRate = 0.5;
         this.SNORING_SOUND.volume = 0.35;
+        this.SNORING_SOUND.loop = true;
         this.JUMPING_SOUND.volume = 0.5;
         this.setMuteOrNot();
     }
