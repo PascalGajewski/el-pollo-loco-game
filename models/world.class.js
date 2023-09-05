@@ -434,7 +434,7 @@ class World {
             this.clearAllIntervals();
             cancelAnimationFrame(this.animationFrame);
             this.animationFrame = 0;
-        }, 25);
+        }, 50);
     }
 
     /**
