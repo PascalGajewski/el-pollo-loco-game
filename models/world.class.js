@@ -31,6 +31,9 @@ class World {
         this.initiateSoundSettings();
     }
 
+    /**
+     * This function clears the canvas and draws the start screen on it. 
+     */
     drawStartMenu() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.start_screen.loadImage("img/9_intro_outro_screens/start/startscreen_1.png");
@@ -43,39 +46,77 @@ class World {
         });
     }
 
-    drawObjectOnCanvas(Object) {
-        this.drawOnCanvas(Object);
+    /**
+     * This function draws ONE object from the class "DrawableObject" on the canvas by executing the 
+     * function "drawOnCanvas".
+     * 
+     * @param {DrawableObject} drawableObject - this is an object from the class "DrawableObject" 
+     * or an object from a class, that extends the "DrawableObject" class. 
+     */
+    drawObjectOnCanvas(drawableObject) {
+        this.drawOnCanvas(drawableObject);
     }
 
-    drawObjectArrayOnCanvas(ObjectArray) {
-        ObjectArray.forEach(Object => {
+    /**
+     * This function draws ALL objects from an array that is full of objects from the class "DrawableObject"
+     * by executing the function "drawOnCanvas" for every object in the array.
+     * 
+     * @param {ObjectArray} drawableObjectArray - this is an array of objects from the class "DrawableObject". 
+     */
+    drawObjectArrayOnCanvas(drawableObjectArray) {
+        drawableObjectArray.forEach(Object => {
             this.drawOnCanvas(Object);
         });
     }
 
-    drawOnCanvas(Object) {
-        this.checkReverse(Object);
-        this.ctx.drawImage(Object.img, Object.x, Object.y,
-            Object.width, Object.height);
-        this.restoreReverse(Object);
+    /**
+     * This function checks the orientation of an Object from the class "DrawableObject" and draws it on the canvas.
+     * 
+     * @param {DrawableObject} drawableObject - this is an object from the class "DrawableObject" 
+     * or an object from a class, that extends the "DrawableObject" class.
+     */
+    drawOnCanvas(drawableObject) {
+        drawableObject
+        this.checkReverse(drawableObject);
+        this.ctx.drawImage(drawableObject.img, drawableObject.x, drawableObject.y,
+            drawableObject.width, drawableObject.height);
+        this.restoreReverse(drawableObject);
     }
 
-    checkReverse(Object) {
-        if (Object.otherDirection) {
+    /**
+     * This function checks the orientation of a "DrawableObject" by checking the variable "otherDirection".
+     * If the value is true, the function turns the drawing direction into the other direction (on the x-axis) 
+     * before it is going to be drawn on the canvas.
+     * 
+     * @param {DrawableObject} drawableObject - this is an object from the class "DrawableObject" 
+     * or an object from a class, that extends the "DrawableObject" class. 
+     */
+    checkReverse(drawableObject) {
+        if (drawableObject.otherDirection) {
             this.ctx.save();
-            this.ctx.translate(Object.width, 0);
+            this.ctx.translate(drawableObject.width, 0);
             this.ctx.scale(-1, 1);
-            Object.x = Object.x * -1;
+            drawableObject.x = drawableObject.x * -1;
         }
     }
 
-    restoreReverse(Object) {
-        if (Object.otherDirection) {
-            Object.x = Object.x * -1;
+    /**
+     * This function changes the drawing direction into the saved direction, before the last "DrawableObject"
+     * with the value "otherDirection = true" was drawn on the canvas.
+     * 
+     * @param {DrawableObject} drawableObject - this is an object from the class "DrawableObject" 
+     * or an object from a class, that extends the "DrawableObject" class. 
+     */
+    restoreReverse(drawableObject) {
+        if (drawableObject.otherDirection) {
+            drawableObject.x = drawableObject.x * -1;
             this.ctx.restore();
         }
     }
 
+    /**
+     * This function initiates all the sound settings from the sounds in the class "World" on default.
+     */
     initiateSoundSettings() {
         this.THEME_SONG.muted = true;
         this.SMASHING_BOTTLE_SOUND.muted = true;
@@ -86,6 +127,11 @@ class World {
         this.FLYING_BOTTLE_SOUND.volume = 0.25;
     }
 
+    /**
+     * This function is executed when the game is started. It sets some variables and objects,
+     * turns them over to the object from the class "Character", draws the whole game on the canvas
+     * and starts running the feedback functions of the game. 
+     */
     startGame() {
         this.level = level1;
         this.character = new Character();
@@ -96,10 +142,18 @@ class World {
         this.runningFeedbackFunctions();
     }
 
+    /**
+     * This function turns over all the variables and objects from the object with the class "World"
+     * to the object with the class "Character"
+     */
     setWorldInCharacter() {
         this.character.world = this;
     }
 
+    /**
+     * This function draws all objects (movable and static) on the canvas after clearing it. It also
+     * resets the requestAnimationFrame.
+     */
     drawGame() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
@@ -113,6 +167,9 @@ class World {
         });
     }
 
+    /**
+     * This functions draws all the drawable objects on the canvas, that are NOT movable.
+     */
     drawAllStaticObjects() {
         this.drawObjectOnCanvas(this.characterHealthbar);
         this.drawObjectOnCanvas(this.coinbar);
@@ -122,6 +179,9 @@ class World {
         }
     }
 
+    /**
+     * This functions draws all the drawable objects on the canvas, that are movable.
+     */
     drawAllMovableObjects() {
         this.drawObjectArrayOnCanvas(this.level.backgroundObjects);
         this.drawObjectArrayOnCanvas(this.level.clouds);
@@ -134,6 +194,10 @@ class World {
         }
     }
 
+    /**
+     * This function starts to run all functions that are checking things in the background of the game 
+     * and that are giving feedback to several elements.
+     */
     runningFeedbackFunctions() {
         setInterval(() => {
             this.checkCollisions();
@@ -143,6 +207,9 @@ class World {
         }, 1000 / 60);
     }
 
+    /**
+     * This function checks all kinds of collisions in the game.
+     */
     checkCollisions() {
         if (!this.collidingPaused) {
             this.collisionWithEnemy();
@@ -152,6 +219,9 @@ class World {
         this.collisionFlyingBottles();
     }
 
+    /**
+     * This function checks all collisions between the character and the enemies (chickens and endboss).
+     */
     collisionWithEnemy() {
         this.level.enemies.forEach((enemy) => {
             if (!enemy.killed) {
@@ -161,6 +231,12 @@ class World {
         });
     }
 
+    /**
+     * This function hurts the character, if it is colliding with an enemy, and the character has not
+     * jumped onto the enemy.
+     * 
+     * @param {MovableObject} enemy - an object from the class "Chicken" or "Endboss". 
+     */
     characterGetsHurt(enemy) {
         if (this.character.checkIfColliding(enemy) && this.character.y > 80 && !enemy.checkIfDead()) {
             this.character.getHit(0.25);
@@ -168,6 +244,11 @@ class World {
         };
     }
 
+    /**
+     * This function hurts/kills an enemy object if it is from the class "Chicken" and the character jumps on it.
+     * 
+     * @param {MovableObject} enemy - an object from the class "Chicken" or "Endboss". 
+     */
     enemyGetsHurt(enemy) {
         if (this.character.checkIfColliding(enemy) && this.character.y <= 80 && enemy instanceof Chicken && this.character.speed_y < 0 && !this.collidingPaused) {
             this.collidingPaused = true;
@@ -180,6 +261,10 @@ class World {
         }
     }
 
+    /**
+     * This function checks if the character collected an object from the class "Coin"
+     * and increases the coin storage of the character. The coin is also deleted from the canvas.
+     */
     collisionWithCoin() {
         this.level.coins.forEach((coin) => {
             if (this.character.checkIfColliding(coin)) {
@@ -190,6 +275,10 @@ class World {
         });
     }
 
+    /**
+     * This function checks if the character collected an object from the class "Bottle"
+     * and increases the bottle storage of the character. The bottle is also deleted from the canvas.
+     */
     collisionWithBottle() {
         this.level.bottles.forEach((bottle) => {
             if (this.character.checkIfColliding(bottle)) {
@@ -200,48 +289,93 @@ class World {
         });
     }
 
+    /**
+     * This function checks all collisions between a thrown bottle and the enemies. It also checks
+     * if a thrown bottle killed the endboss and in case it ends the game.
+     */
     collisionFlyingBottles() {
         this.flyingBottles.forEach(thrownBottle => {
             this.level.enemies.forEach(enemy => {
-                if (thrownBottle.checkIfColliding(enemy) && enemy instanceof Chicken) {
-                    thrownBottle.isCollided = true;
-                    if (!this.flyingPaused) {
-                        this.flyingPaused = true;
-                        enemy.getHit(100);
-                        this.DYING_BIRD_SOUND.play();
-                        setTimeout(() => {
-                            this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
-                            this.flyingPaused = false;
-                        }, 1000);
-                    }
-                }
-                if (thrownBottle.checkIfColliding(enemy) && enemy instanceof Endboss) {
-                    thrownBottle.isCollided = true;
-                    if (!this.flyingPaused) {
-                        this.flyingPaused = true;
-                        enemy.getHit(20);
-                        this.endbossHealthbar.setPercentage(enemy.lifepoints, this.endbossHealthbar.IMAGES_HEALTH_ENDBOSS);
-                        setTimeout(() => {
-                            this.flyingPaused = false;
-                        }, 1000);
-                    }
-                }
-                if (enemy instanceof Endboss && enemy.killed) {
-                    this.DYING_BIRD_SOUND.play();
-                    setTimeout(() => {
-                        this.drawGameOver();
-                        show('restart-button');
-                    }, 500);
-                }
+                this.bottleCollidsWithChicken(thrownBottle, enemy);
+                this.bottleCollidsWithEndboss(thrownBottle, enemy);
+                this.checkIfBottleKilledEndboss(enemy);
             });
         })
     }
 
+    /**
+     * This function checks the collisions between thrown bottles and objects from class "Chicken".
+     * If they are colliding, the chicken gets hurt/killed and it is deleted from canvas and the enemies
+     * array. The dying bird sound is also played ones.
+     * 
+     * @param {ThrowableBottle} thrownBottle - an object from the class "ThrowableBottle".
+     * @param {MovableObject} enemy - an object from the class "Chicken" or "Endboss".  
+     */
+    bottleCollidsWithChicken(thrownBottle, enemy) {
+        if (thrownBottle.checkIfColliding(enemy) && enemy instanceof Chicken) {
+            thrownBottle.isCollided = true;
+            if (!this.flyingPaused) {
+                this.flyingPaused = true;
+                enemy.getHit(100);
+                this.DYING_BIRD_SOUND.play();
+                setTimeout(() => {
+                    this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
+                    this.flyingPaused = false;
+                }, 1000);
+            }
+        }
+    }
+
+    /**
+     * This function checks the collisions between thrown bottles and objects from class "Endboss".
+     * If they are colliding, the endboss gets hurt and the endbosses healthbar is refreshed.
+     * 
+     * @param {ThrowableBottle} thrownBottle - an object from the class "ThrowableBottle".
+     * @param {MovableObject} enemy - an object from the class "Chicken" or "Endboss".  
+     */
+    bottleCollidsWithEndboss(thrownBottle, enemy) {
+        if (thrownBottle.checkIfColliding(enemy) && enemy instanceof Endboss) {
+            thrownBottle.isCollided = true;
+            if (!this.flyingPaused) {
+                this.flyingPaused = true;
+                enemy.getHit(20);
+                this.endbossHealthbar.setPercentage(enemy.lifepoints, this.endbossHealthbar.IMAGES_HEALTH_ENDBOSS);
+                setTimeout(() => {
+                    this.flyingPaused = false;
+                }, 1000);
+            }
+        }
+    }
+
+    /**
+     * This function checks if the endboss is killed. In case it draws the end-screen and shows 
+     * the restart button. The dying bird sound is also played ones.
+     * 
+     * @param {MovableObject} enemy - an object from the class "Chicken" or "Endboss".  
+     */
+    checkIfBottleKilledEndboss(enemy) {
+        if (enemy instanceof Endboss && enemy.killed) {
+            this.DYING_BIRD_SOUND.play();
+            setTimeout(() => {
+                this.drawGameOver();
+                show('restart-button');
+            }, 500);
+        }
+    }
+
+    /**
+     * This function checks if a bottle is thrown. It generates and deletes the thrown bottles.
+     */
     checkThrowObjects() {
         this.generateThrownBottle();
         this.checkIfDeleteThrownBottle();
     }
 
+    /**
+     * This function generates an object from the class "ThrowableObject" if the SPACE button is triggered
+     * and there are bottles in the characters bottle storage. A throwing sound is played characters bottle 
+     * storage and healtbar is refreshed.
+     */
     generateThrownBottle() {
         if (this.keyboard.SPACE && this.character.bottleStore > 0 && !this.throwingPaused) {
             this.throwingPaused = true;
@@ -257,6 +391,10 @@ class World {
         }
     }
 
+    /**
+     * This function checks if the thrown bottle is colliding with an enemy or the ground. In case it 
+     * play a smashing bottle sound and deletes the smashed bottle afterwards.
+     */
     checkIfDeleteThrownBottle() {
         this.flyingBottles.forEach(flyingBottle => {
             if (flyingBottle.isCollided) {
@@ -268,6 +406,10 @@ class World {
         });
     }
 
+    /**
+     * This function checks if the game is over, because of the dead of the character. In case it 
+     * ends the game and shows the restart button.
+     */
     checkGameOver() {
         if (this.character.checkIfDead() && !this.gameOver) {
             this.drawGameOver();
@@ -275,17 +417,24 @@ class World {
         }
     }
 
-    checkCharacterMovement() {
-        if (!this.keyboard.LEFT && !this.keyboard.UP && !this.keyboard.RIGHT && !this.keyboard.SPACE && !this.keyboard.ENTER) {
-            this.lastCharacterMove.push(new Date().getTime());
-        }
-        else {
-            this.lastCharacterMove = [];
-        }
-    }
-
+    /**
+     * This function draws the end screen on the canvas and resets the requestAnimationFrame. 
+     * It also clears all the running intervals in the game.
+     */
     drawGameOver() {
         this.gameOver = true;
+        this.drawEndScreen();
+        setTimeout(() => {
+            this.clearAllIntervals();
+            cancelAnimationFrame(this.animationFrame);
+            this.animationFrame = 0;
+        }, 25);
+    }
+
+    /**
+     * This function draws the end screen on the canvas.
+     */
+    drawEndScreen() {
         this.end_screen.loadImage("img/9_intro_outro_screens/game_over/game over!.png");
         this.end_screen.width = 720;
         this.end_screen.height = 480;
@@ -295,16 +444,28 @@ class World {
         this.animationFrame = requestAnimationFrame(function () {
             self.drawGameOver()
         });
-        setTimeout(() => {
-            this.clearAllIntervals();
-            cancelAnimationFrame(this.animationFrame);
-            this.animationFrame = 0;
-        }, 25);
     }
-
+    
+    /**
+     * This function clears the intervals with the ids 1-1000 (all intervals in the game).
+     */
     clearAllIntervals() {
         for (let i = 0; i < 1000; i++) {
             clearInterval(i);
+        }
+    }
+
+    /**
+     * This function checks the last movement of the character. It fills the "lastCharacterMove" array since the 
+     * moment, the character does not move anymore. The first value in the arry is later used to calculate the 
+     * time the character has not moved. If the character moves again, the array "lastCharacterMove" is blanked.
+     */
+    checkCharacterMovement() {
+        if (!this.keyboard.LEFT && !this.keyboard.UP && !this.keyboard.RIGHT && !this.keyboard.SPACE && !this.keyboard.ENTER) {
+            this.lastCharacterMove.push(new Date().getTime());
+        }
+        else {
+            this.lastCharacterMove = [];
         }
     }
 }
