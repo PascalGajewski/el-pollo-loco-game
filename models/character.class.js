@@ -1,7 +1,7 @@
 class Character extends MovableObject {
     world;
     ground_level = 130;
-    x = 100;
+    x = 0;
     y = this.ground_level;
     width = 120;
     height = 300;
@@ -120,10 +120,10 @@ class Character extends MovableObject {
     movingLeft() {
         setInterval(() => {
             if (!this.reachedEndboss) {
-                this.doesNotReachedEndboss();
+                this.leftIfNotReachedEndboss();
             }
             else {
-                this.ReachedEndboss();
+                this.leftIfReachedEndboss();
             }
         }, 1000 / 60);
     }
@@ -142,12 +142,12 @@ class Character extends MovableObject {
      * This function moves the character to the left normaly. It is only
      * executed, when the chacracter is not paralysed by getting hurt.
      */
-    doesNotReachedEndboss() {
+    leftIfNotReachedEndboss() {
         if (this.world.keyboard.LEFT && this.x > 0 && !this.paralysed) {
             this.otherDirection = true;
             this.x -= this.speed_x;
         }
-        this.world.camera_x = -this.x + 100;
+        this.world.camera_x = -this.x + 300;
     }
 
     /**
@@ -155,12 +155,12 @@ class Character extends MovableObject {
      * 2800. This is to limit the moving area of the character and the endboss, 
      * when the character reached the endboss once. 
      */
-    ReachedEndboss() {
+    leftIfReachedEndboss() {
         if (this.world.keyboard.LEFT && this.x > 2800 && !this.paralysed) {
             this.otherDirection = true;
             this.x -= this.speed_x;
         }
-        this.world.camera_x = -this.x + 100;
+        this.world.camera_x = -this.x + 300;
     }
 
     /**
@@ -172,7 +172,7 @@ class Character extends MovableObject {
                 this.otherDirection = false;
                 this.x += this.speed_x;
             }
-            this.world.camera_x = -this.x + 100;
+            this.world.camera_x = -this.x + 300;
         }, 1000 / 60);
     }
 
@@ -190,7 +190,7 @@ class Character extends MovableObject {
     }
 
     /**
-     * This function animates the different moves.
+     * This function animates the different moves of the character.
      */
     animateMoves() {
         setInterval(() => {
