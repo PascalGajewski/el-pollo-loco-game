@@ -22,6 +22,8 @@ class World {
     DYING_BIRD_SOUND = new Audio('audio/bird-dying.mp3');
     SMASHING_BOTTLE_SOUND = new Audio('audio/smashing-bottle.mp3');
     FLYING_BOTTLE_SOUND = new Audio('audio/flying-bottle.mp3');
+    PICK_COIN_SOUND = new Audio('audio/pick-coin.mp3');
+    PICK_BOTTLE_SOUND = new Audio('audio/pick-bottle.mp3');
 
     constructor(canvas, keyboard) {
         this.canvas = canvas;
@@ -118,13 +120,12 @@ class World {
      * This function initiates all the sound settings from the sounds in the class "World" to a default value.
      */
     initiateSoundSettings() {
-        this.THEME_SONG.muted = true;
-        this.SMASHING_BOTTLE_SOUND.muted = true;
-        this.FLYING_BOTTLE_SOUND.muted = true;
-        this.DYING_BIRD_SOUND.muted = true;
         this.THEME_SONG.loop = true;
-        this.THEME_SONG.volume = 0.5;
+        this.THEME_SONG.volume = 0.35;
         this.FLYING_BOTTLE_SOUND.volume = 0.25;
+        this.DYING_BIRD_SOUND.volume = 0.25;
+        this.PICK_BOTTLE_SOUND.volume = 0.5;
+        this.SMASHING_BOTTLE_SOUND.volume = 0.35;
     }
 
     /**
@@ -268,6 +269,8 @@ class World {
     collisionWithCoin() {
         this.level.coins.forEach((coin) => {
             if (this.character.checkIfColliding(coin)) {
+                this.PICK_COIN_SOUND.currentTime = 0;
+                this.PICK_COIN_SOUND.play();
                 this.level.coins.splice(this.level.coins.indexOf(coin), 1);
                 this.character.coinStore++;
                 this.coinbar.setPercentage(((this.character.coinStore / this.level.maxCoins) * 100), this.coinbar.IMAGES_COIN);
@@ -282,6 +285,8 @@ class World {
     collisionWithBottle() {
         this.level.bottles.forEach((bottle) => {
             if (this.character.checkIfColliding(bottle)) {
+                this.PICK_BOTTLE_SOUND.currentTime = 0;
+                this.PICK_BOTTLE_SOUND.play();
                 this.level.bottles.splice(this.level.bottles.indexOf(bottle), 1);
                 this.character.bottleStore++;
                 this.bottlebar.setPercentage(((this.character.bottleStore / this.level.maxBottles) * 100), this.bottlebar.IMAGES_BOTTLE);
@@ -339,6 +344,7 @@ class World {
             if (!this.flyingPaused) {
                 this.flyingPaused = true;
                 enemy.getHit(20);
+                this.DYING_BIRD_SOUND.play();
                 this.endbossHealthbar.setPercentage(enemy.lifepoints, this.endbossHealthbar.IMAGES_HEALTH_ENDBOSS);
                 setTimeout(() => {
                     this.flyingPaused = false;
@@ -355,7 +361,6 @@ class World {
      */
     checkIfBottleKilledEndboss(enemy) {
         if (enemy instanceof Endboss && enemy.killed) {
-            this.DYING_BIRD_SOUND.play();
             setTimeout(() => {
                 this.drawGameOver();
                 show('restart-button');

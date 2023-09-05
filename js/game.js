@@ -20,6 +20,9 @@ function init() {
         world.THEME_SONG.play();
         unmuteAllAudio();
     }
+    else{
+        muteAllAudio();
+    }
 }
 
 /**
@@ -161,10 +164,13 @@ function muteAllAudio() {
     world.DYING_BIRD_SOUND.muted = true;
     world.FLYING_BOTTLE_SOUND.muted = true;
     world.SMASHING_BOTTLE_SOUND.muted = true;
+    world.PICK_COIN_SOUND.muted = true;
+    world.PICK_BOTTLE_SOUND.muted = true;
     if (world.character) {
         world.character.WALKING_SOUND.muted = true;
         world.character.JUMPING_SOUND.muted = true;
         world.character.HURTING_SOUND.muted = true;
+        world.character.SNORING_SOUND.muted = true;
     }
 }
 
@@ -176,10 +182,13 @@ function unmuteAllAudio() {
     world.DYING_BIRD_SOUND.muted = false;
     world.FLYING_BOTTLE_SOUND.muted = false;
     world.SMASHING_BOTTLE_SOUND.muted = false;
+    world.PICK_COIN_SOUND.muted = false;
+    world.PICK_BOTTLE_SOUND.muted = false;
     if (world.character) {
         world.character.WALKING_SOUND.muted = false;
         world.character.JUMPING_SOUND.muted = false;
         world.character.HURTING_SOUND.muted = false;
+        world.character.SNORING_SOUND.muted = false;
     }
 }
 

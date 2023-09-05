@@ -71,6 +71,7 @@ class Character extends MovableObject {
     WALKING_SOUND = new Audio('audio/walk.mp3');
     HURTING_SOUND = new Audio('audio/hurt.mp3');
     JUMPING_SOUND = new Audio('audio/jump.mp3');
+    SNORING_SOUND = new Audio('audio/snoring.mp3');
 
     constructor() {
         super().loadImage('img/2_character_pepe/3_jump/J-31.png');
@@ -108,9 +109,12 @@ class Character extends MovableObject {
     initiateAudioSetting() {
         this.WALKING_SOUND.playbackRate = 2.5;
         this.HURTING_SOUND.playbackRate = 0.5;
-        this.WALKING_SOUND.muted = true;
-        this.JUMPING_SOUND.muted = true;
+        this.SNORING_SOUND.volume = 0.35;
+        this.JUMPING_SOUND.volume = 0.5;
         this.HURTING_SOUND.muted = true;
+        this.JUMPING_SOUND.muted = true;
+        this.WALKING_SOUND.muted = true;
+        this.SNORING_SOUND.muted = true;
     }
 
     /**
@@ -147,7 +151,7 @@ class Character extends MovableObject {
             this.otherDirection = true;
             this.x -= this.speed_x;
         }
-        this.world.camera_x = -this.x + 300;
+        this.world.camera_x = -this.x + 200;
     }
 
     /**
@@ -160,7 +164,7 @@ class Character extends MovableObject {
             this.otherDirection = true;
             this.x -= this.speed_x;
         }
-        this.world.camera_x = -this.x + 300;
+        this.world.camera_x = -this.x + 200;
     }
 
     /**
@@ -172,7 +176,7 @@ class Character extends MovableObject {
                 this.otherDirection = false;
                 this.x += this.speed_x;
             }
-            this.world.camera_x = -this.x + 300;
+            this.world.camera_x = -this.x + 200;
         }, 1000 / 60);
     }
 
@@ -195,6 +199,7 @@ class Character extends MovableObject {
     animateMoves() {
         setInterval(() => {
             this.WALKING_SOUND.pause();
+            this.SNORING_SOUND.pause();
             this.checkReachedEndboss();
             if (this.checkIfDead()) {
                 this.animateMovement(this.IMAGES_DEAD);
@@ -208,6 +213,7 @@ class Character extends MovableObject {
             }
             else if (this.checkIfSleeping()) {
                 this.animateMovement(this.IMAGES_SLEEP);
+                this.SNORING_SOUND.play();
             }
             else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
                 this.animateMovement(this.IMAGES_WALKING);
