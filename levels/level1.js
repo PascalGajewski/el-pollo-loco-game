@@ -1,5 +1,9 @@
 let level1;
 
+/**
+ * This function sets a new object from class "Level" to the variable "level1". It creates 
+ * the background objects, the enemies and the coins and bottles.
+ */
 function initLevel() {
     level1 = new Level(
         [

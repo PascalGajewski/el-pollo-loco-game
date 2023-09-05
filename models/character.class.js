@@ -80,21 +80,9 @@ class Character extends MovableObject {
         this.initiateAudioSetting();
     }
 
-    animate() {
-        this.animateMoves();
-        this.movingLeft();
-        this.movingRight();
-        this.movingUp();
-    }
-
-    initiateAudioSetting(){
-        this.WALKING_SOUND.playbackRate = 2.5;
-        this.HURTING_SOUND.playbackRate = 0.5;
-        this.WALKING_SOUND.muted = true;
-        this.JUMPING_SOUND.muted = true; 
-        this.HURTING_SOUND.muted = true;  
-    }
-
+    /**
+     * This function loads the whole Image Arrays into the current objets variable "imgCache".
+     */
     loadCompleteImageCache() {
         this.loadImageCache(this.IMAGES_WALKING);
         this.loadImageCache(this.IMAGES_JUMPING);
@@ -104,25 +92,80 @@ class Character extends MovableObject {
         this.loadImageCache(this.IMAGES_SLEEP);
     }
 
+    /**
+    * This function animates all the characters moves.
+    */
+    animate() {
+        this.animateMoves();
+        this.movingLeft();
+        this.movingRight();
+        this.movingUp();
+    }
+
+    /**
+    * This function initiates all the sound settings from the sounds in the class "Character" to a default value. 
+    */
+    initiateAudioSetting() {
+        this.WALKING_SOUND.playbackRate = 2.5;
+        this.HURTING_SOUND.playbackRate = 0.5;
+        this.WALKING_SOUND.muted = true;
+        this.JUMPING_SOUND.muted = true;
+        this.HURTING_SOUND.muted = true;
+    }
+
+    /**
+     * This function moves the characters position to the left, depending if 
+     * it already reached the endboss or not.
+     */
     movingLeft() {
         setInterval(() => {
             if (!this.reachedEndboss) {
-                if (this.world.keyboard.LEFT && this.x > 0 && !this.paralysed) {
-                    this.otherDirection = true;
-                    this.x -= this.speed_x;
-                }
-                this.world.camera_x = -this.x + 100;
+                this.doesNotReachedEndboss();
             }
             else {
-                if (this.world.keyboard.LEFT && this.x > 2800 && !this.paralysed) {
-                    this.otherDirection = true;
-                    this.x -= this.speed_x;
-                }
-                this.world.camera_x = -this.x + 100;
+                this.ReachedEndboss();
             }
         }, 1000 / 60);
     }
 
+    /**
+     * This function checks if the character already reached the endboss. In case it sets 
+     * the variable "reachedEndboss" to "true".
+     */
+    checkReachedEndboss() {
+        if (this.x > 3200) {
+            this.reachedEndboss = true;
+        }
+    };
+
+    /**
+     * This function moves the character to the left normaly. It is only
+     * executed, when the chacracter is not paralysed by getting hurt.
+     */
+    doesNotReachedEndboss() {
+        if (this.world.keyboard.LEFT && this.x > 0 && !this.paralysed) {
+            this.otherDirection = true;
+            this.x -= this.speed_x;
+        }
+        this.world.camera_x = -this.x + 100;
+    }
+
+    /**
+     * This function moves the character only left, if it is x position is up to
+     * 2800. This is to limit the moving area of the character and the endboss, 
+     * when the character reached the endboss once. 
+     */
+    ReachedEndboss() {
+        if (this.world.keyboard.LEFT && this.x > 2800 && !this.paralysed) {
+            this.otherDirection = true;
+            this.x -= this.speed_x;
+        }
+        this.world.camera_x = -this.x + 100;
+    }
+
+    /**
+     * This function moves the character to the right normaly, if it is not paralysed by getting hurt.
+     */
     movingRight() {
         setInterval(() => {
             if (this.world.keyboard.RIGHT && this.x < (this.world.level.level_end_x - 680) && !this.paralysed) {
@@ -133,6 +176,9 @@ class Character extends MovableObject {
         }, 1000 / 60);
     }
 
+    /**
+     * This function lets the character jump up, as long as it is not getting hurt or already jumping.
+     */
     movingUp() {
         setInterval(() => {
             if (this.world.keyboard.UP && !this.checkIfAboveGround() && !this.checkIfHurt()) {
@@ -143,6 +189,9 @@ class Character extends MovableObject {
         }, 1000 / 60);
     }
 
+    /**
+     * This function animates the different moves.
+     */
     animateMoves() {
         setInterval(() => {
             this.WALKING_SOUND.pause();
@@ -152,7 +201,7 @@ class Character extends MovableObject {
             }
             else if (this.checkIfHurt()) {
                 this.animateMovement(this.IMAGES_HURT);
-                this.animateParalisation();
+                this.setParalisation();
             }
             else if (this.checkIfAboveGround()) {
                 this.animateMovement(this.IMAGES_JUMPING);
@@ -168,29 +217,31 @@ class Character extends MovableObject {
                 this.animateMovement(this.IMAGES_IDLE);
             }
         }, 75);
-}
-
-checkReachedEndboss() {
-    if (this.x > 3200) {
-        this.reachedEndboss = true;
     }
-};
 
-animateParalisation() {
-    this.paralysed = true;
-    this.HURTING_SOUND.play();
-    setTimeout(() => {
-        this.paralysed = false;
-    }, 50);
-}
+    /**
+     * This function sets the paralysation and plays the assosiated sound. 
+     */
+    setParalisation() {
+        this.paralysed = true;
+        this.HURTING_SOUND.play();
+        setTimeout(() => {
+            this.paralysed = false;
+        }, 50);
+    }
 
-checkIfSleeping(){
-    if(this.world.lastCharacterMove){
-    let timePassed = (new Date().getTime() - this.world.lastCharacterMove[0]) / 1000;
-    return timePassed > 3
+    /**
+     * This function checks, if the character has not been moved for longer than 3 seconds.
+     * 
+     * @returns Boolean
+     */
+    checkIfSleeping() {
+        if (this.world.lastCharacterMove) {
+            let timePassed = (new Date().getTime() - this.world.lastCharacterMove[0]) / 1000;
+            return timePassed > 3
+        }
+        else {
+            return false;
+        }
     }
-    else {
-        return false;
-    }
-}
 }

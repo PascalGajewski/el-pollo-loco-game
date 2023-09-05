@@ -4,9 +4,9 @@ class ThrowableBottle extends MovableObject {
     speed_y = 13.5;
     acceleration_y = 0.5;
     otherDirection;
-    offsetX = 15; 
+    offsetX = 15;
     offsetY = 20;
-    offsetWidth = -30; 
+    offsetWidth = -30;
     offsetHeight = -30;
     splashed = false;
     isCollided = false;
@@ -33,6 +33,11 @@ class ThrowableBottle extends MovableObject {
         this.throw();
     }
 
+    /**
+     * This function animates the whole bottle if it is constructed.
+     * The rotation oft the flying bottle, the gravity, the movement on x-axis
+     * and the collision is included.
+     */
     throw() {
         let rotatingBottleInterval = setInterval(() => {
             this.animateMovement(this.IMAGES_ROTATING_BOTTLE);
@@ -40,28 +45,50 @@ class ThrowableBottle extends MovableObject {
         this.applyGravity();
         let flyingBottleInterval = setInterval(() => {
             if (this.y < 350 && !this.isCollided) {
-                if (!this.otherDirection) {
-                    this.x += 10;
-                }
-                else {
-                    this.x -= 10;
-                }
+                this.bottleIsFlying();
             }
             else {
-                this.isCollided = true;
-                clearInterval(this.gravityInterval);
-                this.speed_y = 0;
-                this.acceleration_y = 0;
-                clearInterval(rotatingBottleInterval);
-                clearInterval(flyingBottleInterval);
-                setTimeout(() => {
-                    this.splashed = true;
-                }, 500);
-                this.animateSplashingBottle();
+                this.bottleIsCollided(rotatingBottleInterval, flyingBottleInterval);
             }
         }, 25);
     }
 
+    /**
+     * This function moves the flying bottle to the left or right, depending on its
+     * current thrown direction.
+     */
+    bottleIsFlying() {
+        if (!this.otherDirection) {
+            this.x += 10;
+        }
+        else {
+            this.x -= 10;
+        }
+    }
+
+    /**
+     * This function stops all the movement of the bottle, if it is collided. 
+     * Afterwards it animates the splashing of tabasco.
+     * 
+     * @param {Interval} rotatingBottleInterval - the interval for the bottles rotation.
+     * @param {Interval} flyingBottleInterval - the interval for the bottles movement.
+     */
+    bottleIsCollided(rotatingBottleInterval, flyingBottleInterval) {
+        this.isCollided = true;
+        clearInterval(this.gravityInterval);
+        clearInterval(rotatingBottleInterval);
+        clearInterval(flyingBottleInterval);
+        this.speed_y = 0;
+        this.acceleration_y = 0;
+        setTimeout(() => {
+            this.splashed = true;
+        }, 500);
+        this.animateSplashingBottle();
+    }
+
+    /**
+     * This function animates the splash of tabasco, if the bottle collided.
+     */
     animateSplashingBottle() {
         let i = 0;
         setInterval(() => {

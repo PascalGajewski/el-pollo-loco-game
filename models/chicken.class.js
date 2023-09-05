@@ -19,6 +19,9 @@ class Chicken extends MovableObject {
         this.moveLeft(this.speed);
     }
 
+    /**
+     * This function animates the walking and the dying chicken moves.
+     */
     animate() {
         setInterval(() => {
             if (!this.checkIfDead()) {

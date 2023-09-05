@@ -44,12 +44,23 @@ class StatusBar extends DrawableObject {
         this.setPercentage(this.percentage, this[`IMAGES_${bar}`]);
     }
 
+    /**
+     * This function loads the current status bar image, depending on its current percentage.
+     * 
+     * @param {Number} percentage - value of the current status bar percentage.
+     * @param {String} bar - string with the kind of status bar (HEALTH, COIN, BOTTLE).
+     */
     setPercentage(percentage, bar) {
         this.percentage = percentage;
         let path = bar[this.resolveImageIndex()];
         this.img = this.imgCache[path];
     }
 
+    /**
+     * This function returns a value (1-5), depending the current percentage of the status bar.  
+     * 
+     * @returns Number
+     */
     resolveImageIndex() {
         if (this.percentage == 100) {
             return 5;

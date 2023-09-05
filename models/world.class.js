@@ -115,7 +115,7 @@ class World {
     }
 
     /**
-     * This function initiates all the sound settings from the sounds in the class "World" on default.
+     * This function initiates all the sound settings from the sounds in the class "World" to a default value.
      */
     initiateSoundSettings() {
         this.THEME_SONG.muted = true;

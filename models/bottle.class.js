@@ -17,6 +17,9 @@ class Bottle extends MovableObject {
         this.calculateOffsetX();
     }
 
+    /**
+     * This function sets a left or right bottle randomly.
+     */
     randomiseBottleImage() {
         let x = Math.random();
         if (x < 0.5) {
@@ -30,11 +33,19 @@ class Bottle extends MovableObject {
 
     }
 
+    /**
+     * This function calculates a random place for the bottle on the x-axis.
+     * 
+     * @returns Number
+     */
     calculateDistanceX() {
         let x = Math.floor((Math.random() * 25) + 1);
         return x * ((719 * 4) / 25)
     }
 
+    /**
+     * This functions corrects the bottles offsetX, depending on its direction. 
+     */
     calculateOffsetX() {
         if (this.direction == 1) {
             this.offsetX = 25;
