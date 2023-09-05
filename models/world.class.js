@@ -384,6 +384,7 @@ class World {
     generateThrownBottle() {
         if (this.keyboard.SPACE && this.character.bottleStore > 0 && !this.throwingPaused) {
             this.throwingPaused = true;
+            this.FLYING_BOTTLE_SOUND.currentTime = 0;
             this.FLYING_BOTTLE_SOUND.play();
             this.flyingBottles.push(new ThrowableBottle(this.character.x + 25, this.character.y + 100, this.character.otherDirection));
             if (this.character.bottleStore > 0) {

@@ -111,10 +111,25 @@ class Character extends MovableObject {
         this.HURTING_SOUND.playbackRate = 0.5;
         this.SNORING_SOUND.volume = 0.35;
         this.JUMPING_SOUND.volume = 0.5;
-        this.HURTING_SOUND.muted = true;
-        this.JUMPING_SOUND.muted = true;
-        this.WALKING_SOUND.muted = true;
-        this.SNORING_SOUND.muted = true;
+        this.setMuteOrNot();
+    }
+
+    /**
+    * This function sets the chacracter sounds muted or unmuted. 
+    */
+    setMuteOrNot() {
+        if (isMuted) {
+            this.HURTING_SOUND.muted = true;
+            this.JUMPING_SOUND.muted = true;
+            this.WALKING_SOUND.muted = true;
+            this.SNORING_SOUND.muted = true;
+        }
+        else {
+            this.HURTING_SOUND.muted = false;
+            this.JUMPING_SOUND.muted = false;
+            this.WALKING_SOUND.muted = false;
+            this.SNORING_SOUND.muted = false;
+        }
     }
 
     /**
