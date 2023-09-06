@@ -309,6 +309,7 @@ function enterFullscreen(element) {
     } else if (element.msRequestFullscreen) {
         element.msRequestFullscreen();
     }
+        document.getElementById('overlay').style.height = document.getElementById('canvas').style.height;
 }
 
 

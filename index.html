@@ -39,7 +39,7 @@
                 <p class="card-text">You are playing on a mobile device. Please turn your device into landscape mode if
                     it is not yet.</p>
                 <a href="#" class="btn btn-warning border border-black"
-                    onclick="hide('start-dialog-box')">Go on</a>
+                    onclick="hide('start-dialog-box'), changeToFullscreenIfLandscape()">Go on</a>
             </div>
         </div>
     </div>
@@ -59,7 +59,7 @@
     </div>
     <h1>El Pollo Loco</h1>
     <div id="fullscreen">
-        <div class="overlay">
+        <div class="overlay" id="overlay">
             <div class="button-box" id="button-box">
                 <button class="menu-button" id="start-button"
                     onclick="initLevel(), world.startGame(), hide('start-button')">Start

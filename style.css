@@ -48,18 +48,19 @@ body h1 {
     max-width: 720px;
     max-height: 480px;
 }
-/*
+
 #fullscreen:fullscreen .overlay{
     width: 100vw;
     max-width: 1024px;
+    max-height: 100vh;
+    height: initial !important;
 }
 
 #fullscreen:fullscreen canvas{
     width: 100vw;
     max-width: 1024px;
-    height: auto;
 }
-*/
+
 .overlay {
     position: relative;
     display: flex;
@@ -247,6 +248,10 @@ span {
 
     .guide-box {
         font-size: 0.75rem;
+    }
+
+    .button-box{
+        margin: 0;
     }
 }
 
