@@ -20,7 +20,7 @@ function init() {
         world.THEME_SONG.play();
         unmuteAllAudio();
     }
-    else{
+    else {
         muteAllAudio();
     }
 }
@@ -43,14 +43,9 @@ function setDefaultValues() {
 function settingsForMobileDevice() {
     if (isMobileDevice) {
         show('responsive-box');
+        show('start-dialog-box');
         hide('guide-box');
         runMobileEventListeners();
-        if ((window.orientation === 90 || window.orientation === -90)) {
-            hide('dialog-box');
-        }
-        else {
-            show('dialog-box');
-        }
     }
 }
 
@@ -137,6 +132,40 @@ window.addEventListener("keyup", (event) => {
         keyboard.ENTER = false;
     };
 });
+
+/**
+ * This function opens the fullscreen dialog box, if a mobile device is used an the screen is changed to 
+ * landscape mode, and exits the fullscreen mode, it the device is turned into portrait mode.
+ */
+window.matchMedia("(orientation: landscape)").addEventListener('change', (event) => {
+    if (isMobileDevice) {
+        const landscapeMode = event.matches;
+        if (landscapeMode) {
+            if (!document.fullscreenElement && !document.mozFullScreenElement &&
+                !document.webkitFullscreenElement && !document.msFullscreenElement) {
+                show('fullscreen-dialog-box');
+            }
+        }
+        else if (document.fullscreenElement || document.mozFullScreenElement ||
+            document.webkitFullscreenElement || document.msFullscreenElement) {
+            exitFullscreen();
+        }
+    }
+});
+
+
+/**
+ * This function enters the fullscreen mode, if it is in the landscape mode. 
+ */
+function changeToFullscreenIfLandscape() {
+    const element = document.getElementById('fullscreen');
+    if (window.matchMedia("(orientation: landscape)").matches) {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+            !document.webkitFullscreenElement && !document.msFullscreenElement) {
+            enterFullscreen(element);
+        };
+    }
+}
 
 /**
  *  Switches the sound mode, if the sound button is pressed/touched 
@@ -238,37 +267,62 @@ function runMobileEventListeners() {
     });
 };
 
-document.addEventListener("keydown", function(event) {
-    // Überprüfen, ob die gedrückte Taste die Enter-Taste (KeyCode 13) ist
+/**
+ * This function is an event listener for the keydown on the "Enter" key. If its pressed, 
+ * the screen moves to the fullscreen mode on desktop devices.
+ */
+document.addEventListener("keydown", (event) => {
+    const element = document.getElementById('fullscreen');
     if ((event.keyCode === 13 || event.key === "Enter") && !isMobileDevice) {
-        // Das Element auswählen, das in den Vollbildmodus wechseln soll
-        const element = document.getElementById('fullscreen'); // gesamte Seite
-
-        // Prüfen, ob der Vollbildmodus bereits aktiv ist
-        if (!document.fullscreenElement && !document.mozFullScreenElement &&
-            !document.webkitFullscreenElement && !document.msFullscreenElement) {
-            // In den Vollbildmodus wechseln
-            if (element.requestFullscreen) {
-                element.requestFullscreen();
-            } else if (element.mozRequestFullScreen) {
-                element.mozRequestFullScreen();
-            } else if (element.webkitRequestFullscreen) {
-                element.webkitRequestFullscreen();
-            } else if (element.msRequestFullscreen) {
-                element.msRequestFullscreen();
-            }
-        } else {
-            // Den Vollbildmodus verlassen, wenn bereits aktiv
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-            } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
-            }
-        }
+        event.preventDefault();
+        toggleFullscreen(element);
     }
 });
 
+/**
+ * This function enters the fullscreen mode for the html div with the Id "fullscreen", or 
+ * exits the fullscreen mode, depending on its current mode.
+ * 
+ * @param {String} element - the html element that should be switched to fullscreen mode.
+ */
+function toggleFullscreen(element) {
+    if (!document.fullscreenElement && !document.mozFullScreenElement &&
+        !document.webkitFullscreenElement && !document.msFullscreenElement) {
+        enterFullscreen(element);
+    } else {
+        exitFullscreen();
+    }
+}
+
+/**
+ * This function enters the fullscreen mode.
+ * 
+ * @param {String} element - the html element that should be switched to fullscreen mode.
+ */
+function enterFullscreen(element) {
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+    } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+    }
+}
+
+
+/**
+ * This function exits the fullscreen mode.
+ */
+function exitFullscreen() {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+    }
+}

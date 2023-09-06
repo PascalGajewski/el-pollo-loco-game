@@ -41,7 +41,6 @@ body h1 {
 }
 
 #fullscreen {
-    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -49,11 +48,10 @@ body h1 {
     max-width: 720px;
     max-height: 480px;
 }
-
+/*
 #fullscreen:fullscreen .overlay{
     width: 100vw;
     max-width: 1024px;
-    height: 90%;
 }
 
 #fullscreen:fullscreen canvas{
@@ -61,15 +59,15 @@ body h1 {
     max-width: 1024px;
     height: auto;
 }
-
+*/
 .overlay {
-    position: absolute;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
     height: 100%;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .button-box {
@@ -80,6 +78,7 @@ body h1 {
     height: 3rem;
     width: 100%;
     margin: 1rem 0;
+    top: 0;
 }
 
 .menu-button {
@@ -187,16 +186,9 @@ span {
     .button-responsive img {
         height: 1.25rem;
     }
-}
 
-@media only screen and (max-width: 560px) {
-    .button-responsive {
-        height: 2.5rem;
-        width: 2.5rem;
-    }
-
-    .button-responsive img {
-        height: 1.25rem;
+    .guide-box {
+        font-size: 1.25rem;
     }
 }
 
@@ -243,6 +235,19 @@ span {
     .button-responsive img {
         height: 1rem;
     }
+
+    .menu-button {
+        font-size: 1rem;
+        letter-spacing: 0.2rem;
+    }
+    
+    .menu-button:hover {
+        font-size: 1.25rem;
+    }
+
+    .guide-box {
+        font-size: 0.75rem;
+    }
 }
 
 
@@ -258,7 +263,7 @@ span {
     }
 }
 
-@media only screen and (max-height: 586px) {
+@media only screen and (max-height: 615px) {
     .guide-box {
         display: none;
     }
@@ -282,6 +287,10 @@ span {
 }
 
 @media only screen and (max-height: 370px) {
+    .button-box{
+        margin: 0.5rem 0;
+    }
+
     .button-responsive {
         height: 2.5rem;
         width: 2.5rem;
@@ -289,6 +298,15 @@ span {
 
     .button-responsive img {
         height: 1.25rem;
+    }
+
+    .menu-button {
+        font-size: 1.25rem;
+        letter-spacing: 0.2rem;
+    }
+    
+    .menu-button:hover {
+        font-size: 1.5rem;
     }
 }
 
