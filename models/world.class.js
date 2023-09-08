@@ -203,8 +203,11 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
-            this.checkGameOver();
             this.checkCharacterMovement();
+            if (this.character.checkIfDead() && !this.gameOver) {
+                this.characterHealthbar.setPercentage(this.character.lifepoints, this.characterHealthbar.IMAGES_HEALTH);
+                this.endGame();
+            }
         }, 1000 / 60);
     }
 
@@ -361,10 +364,8 @@ class World {
      */
     checkIfBottleKilledEndboss(enemy) {
         if (enemy instanceof Endboss && enemy.killed) {
-            setTimeout(() => {
-                this.drawGameOver();
-                show('restart-button');
-            }, 500);
+            this.endbossHealthbar.setPercentage(enemy.lifepoints, this.endbossHealthbar.IMAGES_HEALTH_ENDBOSS);
+            this.endGame();
         }
     }
 
@@ -413,14 +414,14 @@ class World {
     }
 
     /**
-     * This function checks if the game is over, because of the dead of the character. In case it 
-     * ends the game and shows the restart button.
+     * This function ends the game and shows the restart button.
      */
-    checkGameOver() {
-        if (this.character.checkIfDead() && !this.gameOver) {
+    endGame() {
+        this.drawGame();
+        setTimeout(() => {
             this.drawGameOver();
             show('restart-button');
-        }
+        }, 250);
     }
 
     /**
@@ -451,7 +452,7 @@ class World {
             self.drawGameOver()
         });
     }
-    
+
     /**
      * This function clears the intervals with the ids 1-1000 (all intervals in the game).
      */
